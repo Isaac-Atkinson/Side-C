@@ -1,0 +1,11 @@
+### GET request to example server
+POST http://localhost:8080/api/albums
+Content-Type: application/json
+
+{
+  "title": "Dark side of the moon",
+  "year": 1973,
+  "rating": 10
+}
+
+###
