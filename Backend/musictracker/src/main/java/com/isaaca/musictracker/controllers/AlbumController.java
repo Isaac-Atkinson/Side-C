@@ -1,13 +1,15 @@
 package com.isaaca.musictracker.controllers;
 
-import com.isaaca.musictracker.AlbumRequest;
+import com.isaaca.musictracker.requests.AlbumRequest;
 import com.isaaca.musictracker.entities.Album;
 import com.isaaca.musictracker.entities.Artist;
 import com.isaaca.musictracker.repositories.AlbumRepository;
 import com.isaaca.musictracker.repositories.ArtistRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/albums")
@@ -24,6 +26,13 @@ public class AlbumController {
     @GetMapping
     public List<Album> getAlbums() {
         return albumRepository.findAll();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Album> getAlbumById(@PathVariable Integer id) {
+        return albumRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping

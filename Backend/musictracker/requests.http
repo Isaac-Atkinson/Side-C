@@ -1,4 +1,5 @@
-### GET request to example server
+###
+
 POST http://localhost:8080/api/albums
 Content-Type: application/json
 
@@ -9,7 +10,35 @@ Content-Type: application/json
   "artist": "Pink Floyd"
 }
 
+###
+
+POST http://localhost:8080/api/albums
+Content-Type: application/json
+
+{
+  "title": "Blonde",
+  "year": 2016,
+  "rating": 10,
+  "artist": "Frank Ocean"
+}
 
 ###
 
+GET http://localhost:8080/api/albums/11
+
+###
+
+GET http://localhost:8080/api/albums/999
+
+###
+
+GET http://localhost:8080/api/albums
+
+###
+
+
 DELETE http://localhost:8080/api/albums
+
+###
+
+

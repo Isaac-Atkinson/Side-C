@@ -1,4 +1,4 @@
-package com.isaaca.musictracker;
+package com.isaaca.musictracker.requests;
 
 public class AlbumRequest {
 
