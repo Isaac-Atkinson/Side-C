@@ -1,4 +1,4 @@
-package com.isaaca.musictracker;
+package com.isaaca.musictracker.entities;
 
 import jakarta.persistence.*;
 
@@ -13,9 +13,9 @@ public class Album {
     private int year;
     private int rating;
 
-//    @ManyToOne
-//    @JoinColumn(name = "artist_id")
-//    private Artist artist;
+    @ManyToOne
+    @JoinColumn(name = "artist_id")
+    private Artist artist;
 
     public Album() {}
 
@@ -47,11 +47,11 @@ public class Album {
         this.rating = rating;
     }
 
-//    public Artist getArtist() {
-//        return artist;
-//    }
-//
-//    public void setArtist(Artist artist) {
-//        this.artist = artist;
-//    }
+    public Artist getArtist() {
+        return artist;
+    }
+
+    public void setArtist(Artist artist) {
+        this.artist = artist;
+    }
 }

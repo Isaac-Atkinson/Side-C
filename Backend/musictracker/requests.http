@@ -5,7 +5,11 @@ Content-Type: application/json
 {
   "title": "Dark side of the moon",
   "year": 1973,
-  "rating": 10
+  "rating": 10,
+  "artist": "Pink Floyd"
 }
 
+
 ###
+
+DELETE http://localhost:8080/api/albums

@@ -1,4 +1,4 @@
-package com.isaaca.musictracker;
+package com.isaaca.musictracker.entities;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,4 +13,16 @@ public class Artist {
     private Integer id;
 
     private String name;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }
