@@ -6,8 +6,8 @@ Content-Type: application/json
 {
   "title": "Dark side of the moon",
   "year": 1973,
-  "rating": 10,
-  "artist": "Pink Floyd"
+  "rating": 10
+
 }
 
 ###
@@ -18,9 +18,22 @@ Content-Type: application/json
 {
   "title": "Blonde",
   "year": 2016,
+  "rating": 3,
+  "artist": "Frank Ocean"
+}
+
+###
+
+PUT http://localhost:8080/api/albums/45
+Content-Type: application/json
+
+{
+  "title": "Blonde",
+  "year": 2016,
   "rating": 10,
   "artist": "Frank Ocean"
 }
+
 
 ###
 
@@ -40,5 +53,7 @@ GET http://localhost:8080/api/albums
 DELETE http://localhost:8080/api/albums
 
 ###
+
+DELETE http://localhost:8080/api/albums/43
 
 

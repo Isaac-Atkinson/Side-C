@@ -10,8 +10,8 @@ public class Album {
     private Integer id;
 
     private String title;
-    private int year;
-    private int rating;
+    private Integer year;
+    private Integer rating;
 
     @ManyToOne
     @JoinColumn(name = "artist_id")
@@ -31,19 +31,19 @@ public class Album {
         this.title = title;
     }
 
-    public int getYear() {
+    public Integer getYear() {
         return year;
     }
 
-    public void setYear(int year) {
+    public void setYear(Integer year) {
         this.year = year;
     }
 
-    public int getRating() {
+    public Integer getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(Integer rating) {
         this.rating = rating;
     }
 

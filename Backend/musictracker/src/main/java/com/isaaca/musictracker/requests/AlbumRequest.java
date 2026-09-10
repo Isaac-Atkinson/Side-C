@@ -1,21 +1,36 @@
 package com.isaaca.musictracker.requests;
 
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 public class AlbumRequest {
 
+    @NotBlank
     private String title;
-    private int year;
-    private int rating;
+
+    @NotNull
+    private Integer year;
+
+    @NotNull
+    @Min(0)
+    @Max(10)
+    private Integer rating;
+
+    @NotBlank
     private String artist;
 
     public String getTitle() {
         return title;
     }
 
-    public int getYear() {
+    public Integer getYear() {
         return year;
     }
 
-    public int getRating() {
+    public Integer getRating() {
         return rating;
     }
 
@@ -27,11 +42,11 @@ public class AlbumRequest {
         this.title = title;
     }
 
-    public void setYear(int year) {
+    public void setYear(Integer year) {
         this.year = year;
     }
 
-    public void setRating(int rating) {
+    public void setRating(Integer rating) {
         this.rating = rating;
     }
 
