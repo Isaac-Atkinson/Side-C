@@ -6,6 +6,7 @@ import com.isaaca.musictracker.entities.Artist;
 import com.isaaca.musictracker.repositories.AlbumRepository;
 import com.isaaca.musictracker.repositories.ArtistRepository;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,14 +38,14 @@ public class AlbumController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> addAlbum(@Valid @RequestBody AlbumRequest albumRequest) {
+    public ResponseEntity<Album> addAlbum(@Valid @RequestBody AlbumRequest albumRequest) {
 
-        albumRepository.save(buildAlbum(albumRequest));
-        return ResponseEntity.ok().build();
+        Album album = buildAlbum(albumRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(album);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateAlbum(@PathVariable Integer id, @Valid @RequestBody AlbumRequest albumRequest) {
+    public ResponseEntity<Album> updateAlbum(@PathVariable Integer id, @Valid @RequestBody AlbumRequest albumRequest) {
         Optional<Album> optionalAlbum = albumRepository.findById(id);
 
         if (optionalAlbum.isEmpty()) {
@@ -68,11 +69,11 @@ public class AlbumController {
         album.setArtist(artist);
         albumRepository.save(album);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(album);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAlbumById(@PathVariable Integer id) {
+    public ResponseEntity<Void> deleteAlbum(@PathVariable Integer id) {
         Optional<Album> album = albumRepository.findById(id);
 
         if (album.isPresent()) {
@@ -104,6 +105,7 @@ public class AlbumController {
         album.setRating(albumRequest.getRating());
         album.setArtist(artist);
 
+        albumRepository.save(album);
         return album;
     }
 
