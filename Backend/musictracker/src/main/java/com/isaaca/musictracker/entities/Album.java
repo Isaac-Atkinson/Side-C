@@ -23,6 +23,10 @@ public class Album {
         return id;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public String getTitle() {
         return title;
     }
@@ -54,4 +58,6 @@ public class Album {
     public void setArtist(Artist artist) {
         this.artist = artist;
     }
+
+
 }

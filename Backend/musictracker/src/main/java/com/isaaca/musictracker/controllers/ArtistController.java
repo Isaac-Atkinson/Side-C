@@ -27,11 +27,11 @@ public class ArtistController {
     }
 
     @GetMapping
-    public List<Artist> getArtists() {
-        return artistRepository.findAll();
+    public ResponseEntity<List<Artist>> getArtists() {
+        return ResponseEntity.ok(artistRepository.findAll());
     }
 
-    @GetMapping("/{id")
+    @GetMapping("/{id}")
     public ResponseEntity<Artist> getArtist(@PathVariable Integer id) {
         return artistRepository.findById(id)
                 .map(ResponseEntity::ok)
@@ -40,6 +40,10 @@ public class ArtistController {
 
     @PostMapping
     public ResponseEntity<Artist> addArtist(@Valid @RequestBody ArtistRequest artistRequest) {
+
+        if(artistRepository.findByNameIgnoreCase(artistRequest.getName()).isPresent()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
 
         Artist artist = buildArtist(artistRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(artist);
@@ -74,13 +78,12 @@ public class ArtistController {
         }
 
         artistRepository.deleteById(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     private Artist buildArtist(ArtistRequest artistRequest) {
         Artist artist = new Artist();
         artist.setName(artistRequest.getName());
-        artistRepository.save(artist);
-        return artist;
+        return artistRepository.save(artist);
     }
 }

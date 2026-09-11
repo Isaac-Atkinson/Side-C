@@ -26,8 +26,8 @@ public class AlbumController {
     }
 
     @GetMapping
-    public List<Album> getAlbums() {
-        return albumRepository.findAll();
+    public ResponseEntity<List<Album>> getAlbums() {
+        return ResponseEntity.ok(albumRepository.findAll());
     }
 
     @GetMapping("/{id}")
@@ -39,6 +39,14 @@ public class AlbumController {
 
     @PostMapping
     public ResponseEntity<Album> addAlbum(@Valid @RequestBody AlbumRequest albumRequest) {
+
+        if(albumRepository.findByTitleIgnoreCaseAndArtist_NameIgnoreCase(
+                albumRequest.getTitle(),
+                albumRequest.getArtist())
+                .isPresent()) {
+
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
 
         Album album = buildAlbum(albumRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(album);
@@ -78,15 +86,17 @@ public class AlbumController {
 
         if (album.isPresent()) {
             albumRepository.deleteById(id);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.noContent().build();
         } else return ResponseEntity.notFound().build();
     }
 
 
+    /**
+     * TEST ONLY!!!
+     */
     @DeleteMapping
     public void deleteAll() {
         albumRepository.deleteAll();
-        artistRepository.deleteAll();
     }
 
     private Album buildAlbum(AlbumRequest albumRequest) {
@@ -105,8 +115,7 @@ public class AlbumController {
         album.setRating(albumRequest.getRating());
         album.setArtist(artist);
 
-        albumRepository.save(album);
-        return album;
+        return albumRepository.save(album);
     }
 
 }
