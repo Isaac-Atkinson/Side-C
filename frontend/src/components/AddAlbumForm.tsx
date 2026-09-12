@@ -22,7 +22,7 @@ function AddAlbumForm() {
         });
 
         if(response.ok){
-            console.log(response.body);
+            console.log("Successfully added album");
         }
 
     }

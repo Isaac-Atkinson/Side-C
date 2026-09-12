@@ -1,21 +1,11 @@
 import './App.css'
 import AddAlbumForm from "./components/AddAlbumForm.tsx";
+import AlbumList from "./components/AlbumList.tsx";
 
 import { useEffect, useState } from "react";
 import {API_BASE_URL} from "./config/api.ts";
+import type {Album} from "./types/Album.ts";
 
-type Artist = {
-  id: number
-  name: string,
-};
-
-type Album = {
-  id: number,
-  title: string,
-  year: number,
-  rating: number,
-  artist: Artist
-};
 
 
 function App() {
@@ -28,28 +18,27 @@ function App() {
         .then(data => setAlbums(data));
   }, [])
 
+    const handleAlbumDeleted = (id: number) => {
+      setAlbums(albums.filter(album => album.id !== id));
+    };
 
 
-  return (
+
+  return(
 
       <div>
-        <h1>music-tracker</h1>
 
+        <h1>Music Tracker</h1>
 
-        {albums.map(album => (
-            <div key={album.id}>
-              <h2>{album.title}</h2>
-              <p>{album.year}</p>
-              <p>{album.artist.name}</p>
-              <p>{album.rating}</p>
-            </div>
-        ))}
+        <AlbumList
+            albums={albums}
+            onAlbumDeleted={handleAlbumDeleted}
+        />
 
         <AddAlbumForm />
       </div>
 
-
-  );
+  )
 }
 
 export default App
