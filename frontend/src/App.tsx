@@ -1,10 +1,8 @@
-
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
 import './App.css'
+import AddAlbumForm from "./components/AddAlbumForm.tsx";
 
 import { useEffect, useState } from "react";
+import {API_BASE_URL} from "./config/api.ts";
 
 type Artist = {
   id: number
@@ -23,8 +21,9 @@ type Album = {
 function App() {
   const [albums, setAlbums] = useState<Album[]>([]);
 
+  //Fetch all albums
   useEffect(() => {
-    fetch("http://localhost:8080/api/albums")
+    fetch(`${API_BASE_URL}/albums`,)
         .then(response => response.json())
         .then(data => setAlbums(data));
   }, [])
@@ -36,6 +35,7 @@ function App() {
       <div>
         <h1>music-tracker</h1>
 
+
         {albums.map(album => (
             <div key={album.id}>
               <h2>{album.title}</h2>
@@ -44,7 +44,11 @@ function App() {
               <p>{album.rating}</p>
             </div>
         ))}
+
+        <AddAlbumForm />
       </div>
+
+
   );
 }
 
