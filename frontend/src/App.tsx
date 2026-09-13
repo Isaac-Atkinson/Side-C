@@ -33,6 +33,10 @@ function App() {
     setAlbumReviews(albumReviews.filter(albumReview => albumReview.id !== id));
   };
 
+  const handleArtistDeleted = (id: number) => {
+      setArtistReviews(artistReviews.filter(artistReview => artistReview.id !== id));
+  }
+
 
   return(
 
@@ -47,6 +51,7 @@ function App() {
 
         <ArtistList
             artistReviews={artistReviews}
+            onArtistDeleted={handleArtistDeleted}
         />
 
         <AddAlbumForm />

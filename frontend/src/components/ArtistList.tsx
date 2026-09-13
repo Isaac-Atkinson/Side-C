@@ -4,9 +4,10 @@ import ArtistCard from "./ArtistCard.tsx";
 
 type ArtistListProps = {
     artistReviews: ArtistReview[];
+    onArtistDeleted: (id : number) => void;
 };
 
-function ArtistList({ artistReviews }: ArtistListProps) {
+function ArtistList({ artistReviews, onArtistDeleted }: ArtistListProps) {
     return (
 
         <div>
@@ -14,6 +15,7 @@ function ArtistList({ artistReviews }: ArtistListProps) {
                 <ArtistCard
                     key = {review.id}
                     review={review}
+                    onArtistDeleted = {onArtistDeleted}
                 />
             ))}
         </div>
