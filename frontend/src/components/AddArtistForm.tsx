@@ -1,8 +1,13 @@
 import {useState} from "react";
 import {API_BASE_URL} from "../config/api.ts";
 import {Box, Button, TextField} from "@mui/material";
+import type {ArtistReview} from "../types/ArtistReview.ts";
 
-function AddArtistForm(){
+type AddArtistFormProps = {
+    onArtistAdded : (newArtistReview : ArtistReview) => void;
+}
+
+function AddArtistForm({onArtistAdded}: AddArtistFormProps) {
     const[name, setName] = useState("");
     const[rating, setRating] = useState("");
     const[reviewText, setReviewText] = useState("");
@@ -20,6 +25,9 @@ function AddArtistForm(){
         });
 
         if(response.ok){
+            const newArtistReview: ArtistReview = await response.json();
+
+            onArtistAdded(newArtistReview);
             console.log("Success");
         }
 

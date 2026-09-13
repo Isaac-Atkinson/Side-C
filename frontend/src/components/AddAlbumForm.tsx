@@ -1,8 +1,14 @@
 import {useState} from "react";
 import { Box, Button, TextField } from "@mui/material";
 import {API_BASE_URL} from "../config/api.ts";
+import type {AlbumReview} from "../types/AlbumReview.ts";
 
-function AddAlbumForm() {
+
+type AddAlbumFormProps = {
+    onAlbumAdded : (newAlbumReview : AlbumReview) => void;
+}
+
+function AddAlbumForm({onAlbumAdded}: AddAlbumFormProps) {
     const[title, setTitle] = useState("");
     const[artist, setArtist] = useState("");
     const[year, setYear] = useState("");
@@ -22,6 +28,9 @@ function AddAlbumForm() {
         });
 
         if(response.ok){
+            const newAlbumReview: AlbumReview = await response.json();
+
+            onAlbumAdded(newAlbumReview);
             console.log("Successfully added album");
         }
 

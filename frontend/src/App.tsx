@@ -37,6 +37,14 @@ function App() {
       setArtistReviews(artistReviews.filter(artistReview => artistReview.id !== id));
   }
 
+  const handleAlbumAdded = (newAlbumReview : AlbumReview) => {
+      setAlbumReviews([...albumReviews, newAlbumReview]);
+  }
+
+  const handleArtistAdded = (newArtistReview : ArtistReview) => {
+      setArtistReviews([...artistReviews, newArtistReview]);
+  }
+
 
   return(
 
@@ -54,8 +62,10 @@ function App() {
             onArtistDeleted={handleArtistDeleted}
         />
 
-        <AddAlbumForm />
-        <AddArtistForm />
+        <AddAlbumForm
+            onAlbumAdded={handleAlbumAdded}/>
+        <AddArtistForm
+            onArtistAdded={handleArtistAdded}/>
       </div>
 
   )
