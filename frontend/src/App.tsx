@@ -5,11 +5,15 @@ import AlbumList from "./components/AlbumList.tsx";
 import { useEffect, useState } from "react";
 import {API_BASE_URL} from "./config/api.ts";
 import type {Album} from "./types/Album.ts";
+import AddArtistForm from "./components/AddArtistForm.tsx";
+import type {ArtistReview} from "./types/ArtistReview.ts";
+import ArtistList from "./components/ArtistList.tsx";
 
 
 
 function App() {
   const [albums, setAlbums] = useState<Album[]>([]);
+  const[artistReviews, setArtistReviews] = useState<ArtistReview[]>([]);
 
   //Fetch all albums
   useEffect(() => {
@@ -18,9 +22,17 @@ function App() {
         .then(data => setAlbums(data));
   }, [])
 
-    const handleAlbumDeleted = (id: number) => {
-      setAlbums(albums.filter(album => album.id !== id));
-    };
+    useEffect(() => {
+        fetch(`${API_BASE_URL}/artists/reviews`,)
+            .then(response => response.json())
+            .then(data => setArtistReviews(data));
+    }, [])
+
+  const handleAlbumDeleted = (id: number) => {
+    setAlbums(albums.filter(album => album.id !== id));
+  };
+
+
 
 
 
@@ -35,7 +47,12 @@ function App() {
             onAlbumDeleted={handleAlbumDeleted}
         />
 
+        <ArtistList
+            artistReviews={artistReviews}
+        />
+
         <AddAlbumForm />
+        <AddArtistForm />
       </div>
 
   )

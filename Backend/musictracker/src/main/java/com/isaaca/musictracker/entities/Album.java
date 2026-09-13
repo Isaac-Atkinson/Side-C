@@ -1,6 +1,9 @@
 package com.isaaca.musictracker.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Album {
@@ -11,7 +14,19 @@ public class Album {
 
     private String title;
     private Integer year;
+
+    @NotNull
+    @Min(0)
+    @Max(10)
     private Integer rating;
+
+    public Integer getRating() {
+        return rating;
+    }
+
+    public void setRating(Integer rating) {
+        this.rating = rating;
+    }
 
     @ManyToOne
     @JoinColumn(name = "artist_id")
@@ -41,14 +56,6 @@ public class Album {
 
     public void setYear(Integer year) {
         this.year = year;
-    }
-
-    public Integer getRating() {
-        return rating;
-    }
-
-    public void setRating(Integer rating) {
-        this.rating = rating;
     }
 
     public Artist getArtist() {
