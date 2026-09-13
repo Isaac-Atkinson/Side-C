@@ -74,7 +74,6 @@ public class AlbumController {
 
         album.setTitle(albumRequest.getTitle());
         album.setYear(albumRequest.getYear());
-        album.setRating(albumRequest.getRating());
         album.setArtist(artist);
         albumRepository.save(album);
 
@@ -113,7 +112,6 @@ public class AlbumController {
         Album album = new Album();
         album.setTitle(albumRequest.getTitle());
         album.setYear(albumRequest.getYear());
-        album.setRating(albumRequest.getRating());
         album.setArtist(artist);
 
         return albumRepository.save(album);

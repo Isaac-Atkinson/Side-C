@@ -1,26 +1,27 @@
-import type {Album} from "../types/Album.ts";
+
 import {Button} from "@mui/material";
 import {API_BASE_URL} from "../config/api.ts";
+import type {AlbumReview} from "../types/AlbumReview.ts";
 
 
 type AlbumDataProps = {
-    album : Album;
+    albumReview : AlbumReview;
     onAlbumDeleted: (id: number) => void;
 };
 
 
 
-function AlbumCard({album, onAlbumDeleted }: AlbumDataProps){
+function AlbumCard({albumReview, onAlbumDeleted }: AlbumDataProps){
 
     const handleDelete = async () => {
-        const response = await fetch(`${API_BASE_URL}/albums/${album.id}`,
+        const response = await fetch(`${API_BASE_URL}/albums/reviews/${albumReview.id}`,
             {
                 method : "DELETE"
             }
         );
 
         if(response.ok){
-            onAlbumDeleted(album.id);
+            onAlbumDeleted(albumReview.id);
             console.log("Successfully deleted album");
         } else {
             console.log("Error while deleting album");
@@ -30,10 +31,9 @@ function AlbumCard({album, onAlbumDeleted }: AlbumDataProps){
 
     return (
         <div>
-            <h2>{album.title}</h2>
-            <p>{album.year}</p>
-            <p>{album.artist.name}</p>
-            <p>{album.rating}</p>
+            <h2>{albumReview.album.title}</h2>
+            <p>{albumReview.album.artist.name}</p>
+            <p>{albumReview.rating}</p>
 
             <Button onClick={handleDelete}>
                 Delete

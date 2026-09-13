@@ -15,19 +15,6 @@ public class Album {
     private String title;
     private Integer year;
 
-    @NotNull
-    @Min(0)
-    @Max(10)
-    private Integer rating;
-
-    public Integer getRating() {
-        return rating;
-    }
-
-    public void setRating(Integer rating) {
-        this.rating = rating;
-    }
-
     @ManyToOne
     @JoinColumn(name = "artist_id")
     private Artist artist;

@@ -1,20 +1,20 @@
 import AlbumCard from "./AlbumCard.tsx";
-import type {Album} from "../types/Album.ts";
+import type {AlbumReview} from "../types/AlbumReview.ts";
 
 
 type AlbumListProps = {
-    albums: Album[];
+    albumReviews: AlbumReview[];
     onAlbumDeleted: (id: number) => void;
 };
 
-function AlbumList({albums, onAlbumDeleted}: AlbumListProps) {
+function AlbumList({albumReviews, onAlbumDeleted}: AlbumListProps) {
     return (
 
         <div>
-            {albums.map(album => (
+            {albumReviews.map(review => (
                 <AlbumCard
-                    key={album.id}
-                    album={album}
+                    key={review.id}
+                    albumReview={review}
                     onAlbumDeleted = {onAlbumDeleted}
                 />
             ))}

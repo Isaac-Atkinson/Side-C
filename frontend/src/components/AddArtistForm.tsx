@@ -9,7 +9,7 @@ function AddArtistForm(){
 
     const handleSubmit = async (e: React.SubmitEvent) => {
         e.preventDefault();
-        const response = await fetch(`${API_BASE_URL}/artists`, {
+        const response = await fetch(`${API_BASE_URL}/artists/reviews`, {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({

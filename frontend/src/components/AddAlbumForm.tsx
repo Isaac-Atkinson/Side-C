@@ -10,7 +10,7 @@ function AddAlbumForm() {
 
     const handleSubmit = async (e: React.SubmitEvent) => {
         e.preventDefault();
-        const response = await fetch(`${API_BASE_URL}/albums`, {
+        const response = await fetch(`${API_BASE_URL}/albums/reviews`, {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({

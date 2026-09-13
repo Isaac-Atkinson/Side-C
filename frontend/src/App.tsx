@@ -4,22 +4,23 @@ import AlbumList from "./components/AlbumList.tsx";
 
 import { useEffect, useState } from "react";
 import {API_BASE_URL} from "./config/api.ts";
-import type {Album} from "./types/Album.ts";
+
 import AddArtistForm from "./components/AddArtistForm.tsx";
 import type {ArtistReview} from "./types/ArtistReview.ts";
 import ArtistList from "./components/ArtistList.tsx";
+import type {AlbumReview} from "./types/AlbumReview.ts";
 
 
 
 function App() {
-  const [albums, setAlbums] = useState<Album[]>([]);
+  const [albumReviews, setAlbumReviews] = useState<AlbumReview[]>([]);
   const[artistReviews, setArtistReviews] = useState<ArtistReview[]>([]);
 
   //Fetch all albums
   useEffect(() => {
-    fetch(`${API_BASE_URL}/albums`,)
+    fetch(`${API_BASE_URL}/albums/reviews`,)
         .then(response => response.json())
-        .then(data => setAlbums(data));
+        .then(data => setAlbumReviews(data));
   }, [])
 
     useEffect(() => {
@@ -29,11 +30,8 @@ function App() {
     }, [])
 
   const handleAlbumDeleted = (id: number) => {
-    setAlbums(albums.filter(album => album.id !== id));
+    setAlbumReviews(albumReviews.filter(albumReview => albumReview.id !== id));
   };
-
-
-
 
 
   return(
@@ -43,7 +41,7 @@ function App() {
         <h1>Music Tracker</h1>
 
         <AlbumList
-            albums={albums}
+            albumReviews={albumReviews}
             onAlbumDeleted={handleAlbumDeleted}
         />
 
