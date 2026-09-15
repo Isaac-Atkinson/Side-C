@@ -1,5 +1,5 @@
 import {useState} from "react";
-import { Box, Button, TextField } from "@mui/material";
+import {Alert, Box, Button, TextField} from "@mui/material";
 import {API_BASE_URL, MAX_REVIEW_LENGTH} from "../../config/api.ts";
 import type {AlbumReview} from "../../types/AlbumReview.ts";
 
@@ -22,6 +22,7 @@ function AddAlbumForm({onAlbumAdded, onSuccess, onCancel}: AddAlbumFormProps) {
     const [yearError, setYearError] = useState("");
     const [ratingError, setRatingError] = useState("");
     const [reviewTextError, setReviewTextError] = useState("");
+    const [submitError, setSubmitError] = useState("");
 
     const validateForm= () => {
         let valid = true;
@@ -63,6 +64,7 @@ function AddAlbumForm({onAlbumAdded, onSuccess, onCancel}: AddAlbumFormProps) {
     const handleSubmit = async (e: React.SubmitEvent) => {
         e.preventDefault();
 
+        setSubmitError("");
         if(!validateForm()) return;
 
         const response = await fetch(`${API_BASE_URL}/albums/reviews`, {
@@ -83,6 +85,12 @@ function AddAlbumForm({onAlbumAdded, onSuccess, onCancel}: AddAlbumFormProps) {
 
             onSuccess();
             console.log("Successfully added album");
+        } else if(response.status === 409){
+            setSubmitError("You have already reviewed this album");
+        } else if(response.status === 400){
+            setSubmitError("Invalid information entered");
+        } else {
+            setSubmitError("Something went wrong");
         }
 
     }
@@ -150,6 +158,12 @@ function AddAlbumForm({onAlbumAdded, onSuccess, onCancel}: AddAlbumFormProps) {
             <Button onClick={onCancel}>
                 Cancel
             </Button>
+
+            {submitError && (
+                <Alert severity="error">
+                    {submitError}
+                </Alert>
+            )}
         </Box>
     );
 }

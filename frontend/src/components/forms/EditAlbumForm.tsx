@@ -48,7 +48,7 @@ function EditAlbumForm({albumReview, onCancel, onAlbumUpdated, onSuccess}: EditA
                 artist: albumReview.album.artist.name,
                 year: Number(albumReview.album.year),
                 rating: Number(rating),
-                reviewText: albumReview.reviewText
+                reviewText: reviewText
             })
         });
         if (response.ok) {
@@ -58,6 +58,10 @@ function EditAlbumForm({albumReview, onCancel, onAlbumUpdated, onSuccess}: EditA
             onSuccess();
 
             console.log("Successfully updated album");
+        } else if(response.status === 404){
+            console.log("Album not found");
+        } else {
+            console.log("Something went wrong");
         }
     }
 

@@ -44,6 +44,11 @@ public class ArtistReviewController {
 
     @PostMapping
     public ResponseEntity<ArtistReview> addArtistReview(@Valid @RequestBody ArtistRequest artistRequest) {
+        Optional<ArtistReview> optionalArtistReview = artistReviewRepository.findArtistReviewByArtist_NameIgnoreCase(artistRequest.getName());
+
+        if (optionalArtistReview.isPresent()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(optionalArtistReview.get());
+        }
 
         Optional<Artist> existingArtist = artistRepository.findByNameIgnoreCase(artistRequest.getName());
 

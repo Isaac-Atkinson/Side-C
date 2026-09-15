@@ -45,9 +45,16 @@ public class AlbumReviewController {
 
     @PostMapping
     public ResponseEntity<AlbumReview> addAlbumReview(@Valid @RequestBody AlbumRequest albumRequest) {
+        Optional<AlbumReview> optionalAlbumReview = albumReviewRepository.findByAlbum_TitleIgnoreCase(albumRequest.getTitle());
+        if(optionalAlbumReview.isPresent()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(optionalAlbumReview.get());
+        }
+
         Optional<Album> optionalAlbum = albumRepository.findByTitleIgnoreCaseAndArtist_NameIgnoreCase(
                 albumRequest.getTitle(),
                 albumRequest.getArtist());
+
+
 
         if (optionalAlbum.isEmpty()){
             Album album = buildAlbum(albumRequest);
@@ -75,6 +82,7 @@ public class AlbumReviewController {
 
         AlbumReview albumReview = optionalAlbumReview.get();
         albumReview.setRating(albumRequest.getRating());
+        albumReview.setReviewText(albumRequest.getReviewText());
 
         return ResponseEntity.ok(albumReviewRepository.save(albumReview));
     }

@@ -27,6 +27,8 @@ function DetailedAlbumCard({albumReview, onAlbumUpdated}: DetailedAlbumCardProps
         if(response.ok){
             console.log("Successfully deleted album");
            navigate("/albums");
+        } else if (response.status === 404) {
+            console.log("Album not found");
         } else {
             console.log("Error while deleting album");
         }

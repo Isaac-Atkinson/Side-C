@@ -26,6 +26,8 @@ function DetailedArtistCard({artistReview, onArtistUpdated}: DetailedArtistCardP
         if(response.ok){
             console.log("Successfully deleted artist");
             navigate("/artists");
+        } else if(response.status === 404){
+            console.log("Artist not found");
         } else {
             console.log("Error while deleting artist");
         }

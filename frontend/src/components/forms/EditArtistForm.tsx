@@ -57,6 +57,10 @@ function EditArtistForm({ artistReview, onCancel, onArtistUpdated, onSuccess }: 
             onSuccess();
 
             console.log("Successfully updated artist");
+        } else if(response.status === 404){
+            console.log("Artist not found");
+        } else {
+            console.log("Something went wrong");
         }
     }
     return(

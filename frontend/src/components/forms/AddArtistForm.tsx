@@ -1,6 +1,6 @@
 import {useState} from "react";
 import {API_BASE_URL, MAX_REVIEW_LENGTH} from "../../config/api.ts";
-import {Box, Button, TextField} from "@mui/material";
+import {Alert, Box, Button, TextField} from "@mui/material";
 import type {ArtistReview} from "../../types/ArtistReview.ts";
 
 type AddArtistFormProps = {
@@ -17,6 +17,7 @@ function AddArtistForm({onArtistAdded, onSuccess, onCancel}: AddArtistFormProps)
     const [nameError, setNameError] = useState("");
     const [ratingError, setRatingError] = useState("");
     const [reviewTextError, setReviewTextError] = useState("");
+    const [submitError, setSubmitError] = useState("");
 
     const validateForm = () => {
         let valid = true;
@@ -45,6 +46,7 @@ function AddArtistForm({onArtistAdded, onSuccess, onCancel}: AddArtistFormProps)
 
     const handleSubmit = async (e: React.SubmitEvent) => {
         e.preventDefault();
+        setSubmitError("");
 
         if(!validateForm()) return;
 
@@ -65,6 +67,12 @@ function AddArtistForm({onArtistAdded, onSuccess, onCancel}: AddArtistFormProps)
             onSuccess();
 
             console.log("Success");
+        } else if(response.status === 409){
+            setSubmitError("You have already reviewed this artist");
+        } else if(response.status === 400){
+            setSubmitError("Invalid information entered");
+        } else {
+            setSubmitError("Something went wrong");
         }
 
     }
@@ -96,7 +104,7 @@ function AddArtistForm({onArtistAdded, onSuccess, onCancel}: AddArtistFormProps)
                 label = "Review"
                 value = {reviewText}
                 onChange={e => setReviewText(e.target.value)}
-                error = {Boolean(reviewTextError)}
+                error={Boolean(reviewTextError)}
                 slotProps={{
                     htmlInput: {
                         maxLength: MAX_REVIEW_LENGTH
@@ -113,6 +121,12 @@ function AddArtistForm({onArtistAdded, onSuccess, onCancel}: AddArtistFormProps)
             <Button onClick={onCancel}>
                 Cancel
             </Button>
+
+            {submitError && (
+                <Alert severity="error">
+                    {submitError}
+                </Alert>
+            )}
         </Box>
     )
 
