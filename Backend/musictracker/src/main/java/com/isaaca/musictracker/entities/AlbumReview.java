@@ -21,6 +21,16 @@ public class AlbumReview {
     @JoinColumn(name = "album_id")
     private Album album;
 
+    private String reviewText;
+
+    public String getReviewText() {
+        return reviewText;
+    }
+
+    public void setReviewText(String reviewText) {
+        this.reviewText = reviewText;
+    }
+
     public Integer getId() {
         return id;
     }

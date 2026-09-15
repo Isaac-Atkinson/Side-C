@@ -1,5 +1,5 @@
 import type {AlbumReview} from "../types/AlbumReview.ts";
-import {Button} from "@mui/material";
+import {Button, Dialog, DialogContent, DialogTitle} from "@mui/material";
 import {API_BASE_URL} from "../config/api.ts";
 import {useNavigate} from "react-router-dom";
 import {useState} from "react";
@@ -8,6 +8,7 @@ import EditAlbumForm from "./forms/EditAlbumForm.tsx";
 type DetailedAlbumCardProps = {
     albumReview: AlbumReview;
     onAlbumUpdated: (albumReview: AlbumReview) => void;
+
 }
 
 function DetailedAlbumCard({albumReview, onAlbumUpdated}: DetailedAlbumCardProps){
@@ -37,6 +38,7 @@ function DetailedAlbumCard({albumReview, onAlbumUpdated}: DetailedAlbumCardProps
             <h2>{albumReview.album.title}</h2>
             <p>{albumReview.album.artist.name}</p>
             <p>{albumReview.rating}</p>
+            <p>{albumReview.reviewText}</p>
 
             <Button onClick={handleDelete}>
                 Delete
@@ -48,12 +50,19 @@ function DetailedAlbumCard({albumReview, onAlbumUpdated}: DetailedAlbumCardProps
                     Edit
             </Button>
 
-            {editing && (
-                <EditAlbumForm albumReview={albumReview}
-                               onCancel={() => setEditing(false)}
-                               onAlbumUpdated={onAlbumUpdated}
-                               />
-            )}
+            <Dialog open = {editing} onClose = {() => setEditing(false)} >
+                <DialogTitle>Edit Review</DialogTitle>
+
+                <DialogContent>
+                    <EditAlbumForm albumReview={albumReview}
+                                   onCancel={() => setEditing(false)}
+                                   onAlbumUpdated={onAlbumUpdated}
+                                   onSuccess = {() => setEditing(false)}
+                    />
+                </DialogContent>
+
+
+            </Dialog>
         </div>
     )
 }

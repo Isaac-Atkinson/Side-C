@@ -113,6 +113,7 @@ public class AlbumReviewController {
         AlbumReview albumReview = new AlbumReview();
         albumReview.setAlbum(album);
         albumReview.setRating(albumRequest.getRating());
+        albumReview.setReviewText(albumRequest.getReviewText());
 
         return albumReviewRepository.save(albumReview);
     }

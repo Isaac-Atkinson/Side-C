@@ -3,6 +3,7 @@ import type {AlbumReview} from "../types/AlbumReview.ts";
 import {useEffect, useState} from "react";
 import {API_BASE_URL} from "../config/api.ts";
 import AddAlbumForm from "../components/forms/AddAlbumForm.tsx";
+import {Button, Dialog, DialogContent, DialogTitle} from "@mui/material";
 
 
 
@@ -10,6 +11,7 @@ import AddAlbumForm from "../components/forms/AddAlbumForm.tsx";
 
 function AlbumReviewsPage() {
     const [albumReviews, setAlbumReviews] = useState<AlbumReview[]>([]);
+    const [addingNew, setAddingNew] = useState(false);
 
     //Fetch all album reviews
     useEffect(() => {
@@ -28,9 +30,23 @@ function AlbumReviewsPage() {
             <AlbumList
                 albumReviews={albumReviews}
         />
-            <AddAlbumForm
-                onAlbumAdded={handleAlbumAdded}
-            />
+
+            <Button onClick = {() => setAddingNew(true)} >
+                Add New
+            </Button>
+
+            <Dialog open = {addingNew} onClose = {() => setAddingNew(false)} >
+                <DialogTitle>Add New Album Review</DialogTitle>
+
+                <DialogContent>
+                    <AddAlbumForm
+                        onAlbumAdded={handleAlbumAdded}
+                        onSuccess = {() => setAddingNew(false)}
+                        onCancel = {() => setAddingNew(false)}
+                    />
+                </DialogContent>
+            </Dialog>
+
         </div>
 
     );

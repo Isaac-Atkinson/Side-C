@@ -2,7 +2,7 @@ import {useNavigate} from "react-router-dom";
 import { useState} from "react";
 import {API_BASE_URL} from "../config/api.ts";
 import type {ArtistReview} from "../types/ArtistReview.ts";
-import {Button} from "@mui/material";
+import {Button, Dialog, DialogContent, DialogTitle} from "@mui/material";
 import EditArtistForm from "./forms/EditArtistForm.tsx";
 
 
@@ -45,12 +45,17 @@ function DetailedArtistCard({artistReview, onArtistUpdated}: DetailedArtistCardP
                 Edit
             </Button>
 
-            {editing && (
-                <EditArtistForm artistReview={artistReview}
-                               onCancel={() => setEditing(false)}
-                               onArtistUpdated={onArtistUpdated}
-                />
-            )}
+            <Dialog open={editing} onClose={() => {setEditing(false);}}>
+                <DialogTitle>Edit Review</DialogTitle>
+
+                <DialogContent>
+                    <EditArtistForm artistReview={artistReview}
+                            onCancel={() => setEditing(false)}
+                            onArtistUpdated={onArtistUpdated}
+                            onSuccess = {() => setEditing(false)}
+                    />
+                </DialogContent>
+            </Dialog>
         </div>
     )
 }

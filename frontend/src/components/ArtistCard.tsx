@@ -1,7 +1,5 @@
 
 import type {ArtistReview} from "../types/ArtistReview.ts";
-import {Button} from "@mui/material";
-import {API_BASE_URL} from "../config/api.ts";
 import {Link} from "react-router-dom";
 
 type ArtistDataProps = {
@@ -9,7 +7,7 @@ type ArtistDataProps = {
 };
 
 function ArtistCard({review}: ArtistDataProps) {
-    
+
     return (
         <div>
             <Link to={`/artists/${review.id}`}>
@@ -17,7 +15,7 @@ function ArtistCard({review}: ArtistDataProps) {
             </Link>
 
             <p>{review.rating}</p>
-            <p>{review.reviewText}</p>
+
 
         </div>
     );
