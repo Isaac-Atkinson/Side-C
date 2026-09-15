@@ -1,7 +1,7 @@
 import {useState} from "react";
 import { Box, Button, TextField } from "@mui/material";
-import {API_BASE_URL} from "../config/api.ts";
-import type {AlbumReview} from "../types/AlbumReview.ts";
+import {API_BASE_URL} from "../../config/api.ts";
+import type {AlbumReview} from "../../types/AlbumReview.ts";
 
 
 type AddAlbumFormProps = {

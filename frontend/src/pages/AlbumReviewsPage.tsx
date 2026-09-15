@@ -2,7 +2,7 @@ import AlbumList from "../components/AlbumList.tsx";
 import type {AlbumReview} from "../types/AlbumReview.ts";
 import {useEffect, useState} from "react";
 import {API_BASE_URL} from "../config/api.ts";
-import AddAlbumForm from "../components/AddAlbumForm.tsx";
+import AddAlbumForm from "../components/forms/AddAlbumForm.tsx";
 
 
 
@@ -18,9 +18,6 @@ function AlbumReviewsPage() {
             .then(data => setAlbumReviews(data));
     }, [])
 
-    const handleAlbumDeleted = (id: number) => {
-        setAlbumReviews(albumReviews.filter(albumReview => albumReview.id !== id));
-    };
 
     const handleAlbumAdded = (newAlbumReview : AlbumReview) => {
         setAlbumReviews([...albumReviews, newAlbumReview]);
@@ -30,7 +27,6 @@ function AlbumReviewsPage() {
         <div>
             <AlbumList
                 albumReviews={albumReviews}
-                onAlbumDeleted={handleAlbumDeleted}
         />
             <AddAlbumForm
                 onAlbumAdded={handleAlbumAdded}

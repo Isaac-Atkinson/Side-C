@@ -4,10 +4,9 @@ import type {AlbumReview} from "../types/AlbumReview.ts";
 
 type AlbumListProps = {
     albumReviews: AlbumReview[];
-    onAlbumDeleted: (id: number) => void;
 };
 
-function AlbumList({albumReviews, onAlbumDeleted}: AlbumListProps) {
+function AlbumList({albumReviews}: AlbumListProps) {
     return (
 
         <div>
@@ -15,7 +14,6 @@ function AlbumList({albumReviews, onAlbumDeleted}: AlbumListProps) {
                 <AlbumCard
                     key={review.id}
                     albumReview={review}
-                    onAlbumDeleted = {onAlbumDeleted}
                 />
             ))}
         </div>

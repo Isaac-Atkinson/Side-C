@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import type {ArtistReview} from "../types/ArtistReview.ts";
 import {API_BASE_URL} from "../config/api.ts";
 import ArtistList from "../components/ArtistList.tsx";
-import AddArtistForm from "../components/AddArtistForm.tsx";
+import AddArtistForm from "../components/forms/AddArtistForm.tsx";
 
 function ArtistReviewsPage(){
     const[artistReviews, setArtistReviews] = useState<ArtistReview[]>([]);

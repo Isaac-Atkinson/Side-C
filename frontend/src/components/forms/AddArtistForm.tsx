@@ -1,7 +1,7 @@
 import {useState} from "react";
-import {API_BASE_URL} from "../config/api.ts";
+import {API_BASE_URL} from "../../config/api.ts";
 import {Box, Button, TextField} from "@mui/material";
-import type {ArtistReview} from "../types/ArtistReview.ts";
+import type {ArtistReview} from "../../types/ArtistReview.ts";
 
 type AddArtistFormProps = {
     onArtistAdded : (newArtistReview : ArtistReview) => void;
