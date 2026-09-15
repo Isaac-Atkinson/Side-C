@@ -27,7 +27,7 @@ function EditAlbumForm({albumReview, onCancel, onAlbumUpdated}: EditAlbumFormPro
             const updatedAlbumReview: AlbumReview = await response.json();
             onAlbumUpdated(updatedAlbumReview);
 
-            console.log("Successfully added album");
+            console.log("Successfully updated album");
         }
     }
 

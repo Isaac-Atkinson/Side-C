@@ -14,11 +14,6 @@ function ArtistReviewsPage(){
             .then(data => setArtistReviews(data));
     }, [])
 
-    const handleArtistDeleted = (id: number) => {
-        setArtistReviews(artistReviews.filter(artistReview => artistReview.id !== id));
-    }
-
-
 
     const handleArtistAdded = (newArtistReview : ArtistReview) => {
         setArtistReviews([...artistReviews, newArtistReview]);
@@ -29,7 +24,6 @@ function ArtistReviewsPage(){
         <div>
           <ArtistList
               artistReviews={artistReviews}
-              onArtistDeleted={handleArtistDeleted}
           />
 
           <AddArtistForm
