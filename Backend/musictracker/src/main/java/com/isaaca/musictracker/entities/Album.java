@@ -19,6 +19,10 @@ public class Album {
     @JoinColumn(name = "artist_id")
     private Artist artist;
 
+    private String externalID;
+
+    private String imageURL;
+
     public Album() {}
 
     public Integer getId() {
