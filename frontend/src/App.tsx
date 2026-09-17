@@ -5,6 +5,7 @@ import {Route, Routes} from "react-router-dom";
 import { Link } from "react-router-dom";
 import AlbumReviewDetailPage from "./pages/AlbumReviewDetailPage.tsx";
 import ArtistReviewDetailPage from "./pages/ArtistReviewDetailPage.tsx";
+import SearchAlbumsPage from "./pages/SearchAlbumsPage.tsx";
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
               <Route path="/artists" element={<ArtistReviewsPage />} />
               <Route path={"albums/:id"} element={<AlbumReviewDetailPage />}/>
               <Route path={"artists/:id"} element={<ArtistReviewDetailPage />}/>
+              <Route path="/albums/search" element={<SearchAlbumsPage />} />
           </Routes>
       </>
   )

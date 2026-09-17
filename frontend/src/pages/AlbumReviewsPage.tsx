@@ -4,6 +4,7 @@ import {useEffect, useState} from "react";
 import {API_BASE_URL} from "../config/api.ts";
 import AddAlbumForm from "../components/forms/AddAlbumForm.tsx";
 import {Button, Dialog, DialogContent, DialogTitle} from "@mui/material";
+import {Link, useNavigate} from "react-router-dom";
 
 
 
@@ -11,7 +12,8 @@ import {Button, Dialog, DialogContent, DialogTitle} from "@mui/material";
 
 function AlbumReviewsPage() {
     const [albumReviews, setAlbumReviews] = useState<AlbumReview[]>([]);
-    const [addingNew, setAddingNew] = useState(false);
+
+    const navigate = useNavigate();
 
     //Fetch all album reviews
     useEffect(() => {
@@ -21,31 +23,27 @@ function AlbumReviewsPage() {
     }, [])
 
 
-    const handleAlbumAdded = (newAlbumReview : AlbumReview) => {
-        setAlbumReviews([...albumReviews, newAlbumReview]);
-    }
-
     return (
         <div>
             <AlbumList
                 albumReviews={albumReviews}
         />
 
-            <Button onClick = {() => setAddingNew(true)} >
+            <Button component={Link} to="/albums/search" >
                 Add New
             </Button>
 
-            <Dialog open = {addingNew} onClose = {() => setAddingNew(false)} >
-                <DialogTitle>Add New Album Review</DialogTitle>
+            {/*<Dialog open = {addingNew} onClose = {() => navigate("/albums/search")} >*/}
+            {/*    <DialogTitle>Add New Album Review</DialogTitle>*/}
 
-                <DialogContent>
-                    <AddAlbumForm
-                        onAlbumAdded={handleAlbumAdded}
-                        onSuccess = {() => setAddingNew(false)}
-                        onCancel = {() => setAddingNew(false)}
-                    />
-                </DialogContent>
-            </Dialog>
+            {/*    <DialogContent>*/}
+            {/*        <AddAlbumForm*/}
+            {/*            onAlbumAdded={handleAlbumAdded}*/}
+            {/*            onSuccess = {() => setAddingNew(false)}*/}
+            {/*            onCancel = {() => setAddingNew(false)}*/}
+            {/*        />*/}
+            {/*    </DialogContent>*/}
+            {/*</Dialog>*/}
 
         </div>
 
