@@ -41,11 +41,7 @@ public class AlbumController {
     @PostMapping
     public ResponseEntity<Album> addAlbum(@Valid @RequestBody AlbumRequest albumRequest) {
 
-        if(albumRepository.findByTitleIgnoreCaseAndArtist_NameIgnoreCase(
-                albumRequest.getTitle(),
-                albumRequest.getArtist())
-                .isPresent()) {
-
+        if(albumRepository.findByExternalId(albumRequest.getExternalId()).isPresent()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
 
@@ -73,7 +69,6 @@ public class AlbumController {
                 });
 
         album.setTitle(albumRequest.getTitle());
-        album.setYear(albumRequest.getYear());
         album.setArtist(artist);
         albumRepository.save(album);
 
@@ -111,7 +106,6 @@ public class AlbumController {
 
         Album album = new Album();
         album.setTitle(albumRequest.getTitle());
-        album.setYear(albumRequest.getYear());
         album.setArtist(artist);
 
         return albumRepository.save(album);

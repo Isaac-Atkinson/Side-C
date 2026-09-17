@@ -9,23 +9,31 @@ import jakarta.validation.constraints.NotNull;
 public class AlbumRequest {
 
     @NotBlank
+    private String externalId;
+
+    @NotBlank
     private String title;
 
-    @NotNull
-    private Integer year;
+    @NotBlank
+    private String artist;
 
     @NotNull
     @Min(0)
     @Max(10)
     private Integer rating;
 
-    @NotBlank
-    private String artist;
-
     private String reviewText;
 
     public String getReviewText() {
         return reviewText;
+    }
+
+    public void setExternalId(String externalID) {
+        this.externalId = externalID;
+    }
+
+    public String getExternalId() {
+        return externalId;
     }
 
     public void setReviewText(String reviewText) {
@@ -34,10 +42,6 @@ public class AlbumRequest {
 
     public String getTitle() {
         return title;
-    }
-
-    public Integer getYear() {
-        return year;
     }
 
     public Integer getRating() {
@@ -50,10 +54,6 @@ public class AlbumRequest {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public void setYear(Integer year) {
-        this.year = year;
     }
 
     public void setRating(Integer rating) {

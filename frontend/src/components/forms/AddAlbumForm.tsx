@@ -2,24 +2,19 @@ import {useState} from "react";
 import {Alert, Box, Button, TextField} from "@mui/material";
 import {API_BASE_URL, MAX_REVIEW_LENGTH} from "../../config/api.ts";
 import type {AlbumReview} from "../../types/AlbumReview.ts";
+import type {AlbumSearchResult} from "../../types/AlbumSearchResult.ts";
 
 
 type AddAlbumFormProps = {
-    onAlbumAdded : (newAlbumReview : AlbumReview) => void;
+    album : AlbumSearchResult
     onSuccess: () => void;
     onCancel: () => void;
 }
 
-function AddAlbumForm({onAlbumAdded, onSuccess, onCancel}: AddAlbumFormProps) {
-    const[title, setTitle] = useState("");
-    const[artist, setArtist] = useState("");
-    const[year, setYear] = useState("");
+function AddAlbumForm({album, onSuccess, onCancel}: AddAlbumFormProps) {
     const[rating, setRating] = useState("");
     const[reviewText, setReviewText] = useState("");
 
-    const [titleError, setTitleError] = useState("");
-    const [artistError, setArtistError] = useState("");
-    const [yearError, setYearError] = useState("");
     const [ratingError, setRatingError] = useState("");
     const [reviewTextError, setReviewTextError] = useState("");
     const [submitError, setSubmitError] = useState("");
@@ -27,26 +22,9 @@ function AddAlbumForm({onAlbumAdded, onSuccess, onCancel}: AddAlbumFormProps) {
     const validateForm= () => {
         let valid = true;
 
-        setTitleError("");
-        setArtistError("");
-        setYearError("");
+
         setRatingError("");
         setReviewTextError("");
-
-        if (!title.trim()) {
-            setTitleError("Title is required");
-            valid = false;
-        }
-
-        if (!artist.trim()) {
-            setArtistError("Artist is required");
-            valid = false;
-        }
-
-        if (!year) {
-            setYearError("Year is required");
-            valid = false;
-        }
 
         const ratingNumber = Number(rating);
 
@@ -71,17 +49,17 @@ function AddAlbumForm({onAlbumAdded, onSuccess, onCancel}: AddAlbumFormProps) {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({
-                title: title,
-                artist: artist,
-                year: Number (year),
+                externalId: album.externalId,
+                title: album.title,
+                artist: album.artist,
                 rating: Number (rating),
                 reviewText: reviewText,
             })
         });
 
         if(response.ok){
-            const newAlbumReview: AlbumReview = await response.json();
-            onAlbumAdded(newAlbumReview);
+            //const newAlbumReview: AlbumReview = await response.json();
+            // onAlbumAdded(newAlbumReview);
 
             onSuccess();
             console.log("Successfully added album");
@@ -104,31 +82,8 @@ function AddAlbumForm({onAlbumAdded, onSuccess, onCancel}: AddAlbumFormProps) {
             onSubmit={handleSubmit}
             sx={{ display: "flex", flexDirection: "column", gap: 2 }}
         >
-            <TextField
-                label = "Title"
-                value = {title}
-                onChange={e => setTitle(e.target.value)}
-                error={Boolean(titleError)}
-                helperText={titleError}
-            />
-
-            <TextField
-                label = "Artist"
-                value = {artist}
-                onChange={e => setArtist(e.target.value)}
-                error={Boolean(artistError)}
-                helperText={artistError}
-            />
-
-            <TextField
-                label = "Year"
-                type = "number"
-                value = {year}
-                onChange={e => setYear(e.target.value)}
-                error={Boolean(yearError)}
-                helperText={yearError}
-            />
-
+            <h3>{album.title}</h3>
+            <h4>{album.artist}</h4>
             <TextField
                 label = "Rating"
                 type = "number"

@@ -13,13 +13,21 @@ public class Album {
     private Integer id;
 
     private String title;
-    private Integer year;
 
     @ManyToOne
     @JoinColumn(name = "artist_id")
     private Artist artist;
 
-    private String externalID;
+    @Column(unique = true)
+    private String externalId;
+
+    public void setExternalId(String externalId) {
+        this.externalId = externalId;
+    }
+
+    public String getExternalId() {
+        return externalId;
+    }
 
     private String imageURL;
 
@@ -39,14 +47,6 @@ public class Album {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public Integer getYear() {
-        return year;
-    }
-
-    public void setYear(Integer year) {
-        this.year = year;
     }
 
     public Artist getArtist() {

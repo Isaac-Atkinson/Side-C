@@ -1,12 +1,15 @@
 import {useState} from "react";
-import {Box, Button, TextField} from "@mui/material";
+import {Box, Button, Dialog, DialogContent, DialogTitle, TextField} from "@mui/material";
 import {API_BASE_URL} from "../config/api.ts";
 import type {AlbumSearchResult} from "../types/AlbumSearchResult.ts";
+import AlbumSearchDisplayCard from "../components/AlbumSearchDisplayCard.tsx";
+import AddAlbumForm from "../components/forms/AddAlbumForm.tsx";
 
 
 function SearchAlbumsPage(){
     const[search, setSearch] = useState("");
     const[results, setResults] = useState<AlbumSearchResult[]>([]);
+    const[selectedAlbum, setSelectedAlbum] = useState<AlbumSearchResult | null>(null);
 
 
 
@@ -17,8 +20,6 @@ function SearchAlbumsPage(){
         if(response.ok){
             const data : AlbumSearchResult[] = await response.json();
             setResults(data);
-        } else if(response.status === 503){
-            console.log(response.statusText);
         }
 
 
@@ -37,11 +38,29 @@ function SearchAlbumsPage(){
                 </Button>
 
                 {results.map(album => (
-                    <div key={album.musicBrainzId}>
-                        <h3>{album.title}</h3>
-                        <p>{album.artist}</p>
+                    <div key={album.externalId}
+                         onClick={() => setSelectedAlbum(album)}
+                         style={{ cursor: "pointer" }}>
+                        <AlbumSearchDisplayCard searchResult={album}/>
                     </div>
                 ))}
+
+                <Dialog
+                    open={selectedAlbum !== null}
+                    onClose={() => setSelectedAlbum(null)}
+                >
+                    <DialogTitle>Add Review</DialogTitle>
+
+                    <DialogContent>
+                        {selectedAlbum && (
+                            <AddAlbumForm
+                                album={selectedAlbum}
+                                onSuccess={() => setSelectedAlbum(null)}
+                                onCancel={() => setSelectedAlbum(null)}
+                            />
+                        )}
+                    </DialogContent>
+                </Dialog>
             </Box>
         </div>
     )

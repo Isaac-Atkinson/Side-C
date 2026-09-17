@@ -45,16 +45,18 @@ public class AlbumReviewController {
 
     @PostMapping
     public ResponseEntity<AlbumReview> addAlbumReview(@Valid @RequestBody AlbumRequest albumRequest) {
-        Optional<AlbumReview> optionalAlbumReview = albumReviewRepository.findByAlbum_TitleIgnoreCase(albumRequest.getTitle());
+
+        //enforce unique id if album does not have a musicbrainz id
+        if(albumRequest.getExternalId().equalsIgnoreCase("")){
+            albumRequest.setExternalId(albumRequest.getTitle() + albumRequest.getArtist());
+        }
+
+        Optional<AlbumReview> optionalAlbumReview = albumReviewRepository.findByAlbum_ExternalId(albumRequest.getExternalId());
         if(optionalAlbumReview.isPresent()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(optionalAlbumReview.get());
         }
 
-        Optional<Album> optionalAlbum = albumRepository.findByTitleIgnoreCaseAndArtist_NameIgnoreCase(
-                albumRequest.getTitle(),
-                albumRequest.getArtist());
-
-
+        Optional<Album> optionalAlbum = albumRepository.findByExternalId(albumRequest.getExternalId());
 
         if (optionalAlbum.isEmpty()){
             Album album = buildAlbum(albumRequest);
@@ -111,8 +113,8 @@ public class AlbumReviewController {
 
         Album album = new Album();
         album.setTitle(albumRequest.getTitle());
-        album.setYear(albumRequest.getYear());
         album.setArtist(artist);
+        album.setExternalId(albumRequest.getExternalId());
 
         return albumRepository.save(album);
     }

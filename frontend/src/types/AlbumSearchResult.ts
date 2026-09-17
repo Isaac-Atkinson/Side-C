@@ -1,5 +1,5 @@
 export type AlbumSearchResult = {
-    musicBrainzId: string;
+    externalId: string;
     title: string,
     artist: string,
 }

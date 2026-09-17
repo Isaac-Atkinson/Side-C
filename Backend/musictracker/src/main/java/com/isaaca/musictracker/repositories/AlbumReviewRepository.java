@@ -8,5 +8,5 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.Optional;
 
 public interface AlbumReviewRepository extends JpaRepository<AlbumReview, Integer> {
-    Optional<AlbumReview> findByAlbum_TitleIgnoreCase(String name);
+    Optional<AlbumReview> findByAlbum_ExternalId(String id);
 }

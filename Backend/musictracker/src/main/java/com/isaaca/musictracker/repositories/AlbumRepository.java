@@ -8,5 +8,5 @@ import java.util.Optional;
 public interface AlbumRepository extends JpaRepository<Album, Integer> {
     boolean existsByArtistId(Integer artistId);
 
-    Optional<Album> findByTitleIgnoreCaseAndArtist_NameIgnoreCase(String title, String artistName);
+    Optional<Album> findByExternalId(String id);
 }
