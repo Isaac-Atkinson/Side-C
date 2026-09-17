@@ -40,7 +40,6 @@ function SearchAlbumsPage(){
                     <div key={album.musicBrainzId}>
                         <h3>{album.title}</h3>
                         <p>{album.artist}</p>
-                        <p>{album.year}</p>
                     </div>
                 ))}
             </Box>

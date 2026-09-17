@@ -1,7 +1,10 @@
 package com.isaaca.musictracker.controllers;
 
-import com.isaaca.musictracker.musicbrainz.AlbumSearchResult;
+import com.isaaca.musictracker.AlbumSearchResult;
+import com.isaaca.musictracker.lastfm.LastFMAlbum;
+import com.isaaca.musictracker.lastfm.LastFMResponse;
 import com.isaaca.musictracker.musicbrainz.MusicBrainzResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tools.jackson.databind.ObjectMapper;
@@ -21,18 +24,28 @@ import java.util.List;
 @RequestMapping("/api/search/albums")
 public class AlbumSearchController {
 
+    @Value("${API_KEY}")
+    private String API_KEY;
+
     @GetMapping
     public ResponseEntity<List<AlbumSearchResult>> getAlbums(@RequestParam String title) throws InterruptedException, IOException, InterruptedException, URISyntaxException {
         HttpClient client = HttpClient.newHttpClient();
         String query =
                 "releasegroup:\"" + title + "\" AND primarytype:album";
 
+//        String url =
+//                "https://musicbrainz.org/ws/2/release-group/" +
+//                        "?query=" +
+//                        URLEncoder.encode(query, StandardCharsets.UTF_8) +
+//                        "&fmt=json" +
+//                        "&limit=10";
+
         String url =
-                "https://musicbrainz.org/ws/2/release-group/" +
-                        "?query=" +
-                        URLEncoder.encode(query, StandardCharsets.UTF_8) +
-                        "&fmt=json" +
-                        "&limit=10";
+                "https://ws.audioscrobbler.com/2.0/" +
+                        "?method=album.search" +
+                        "&album=" + URLEncoder.encode(title, StandardCharsets.UTF_8) +
+                        "&api_key=" + API_KEY +
+                        "&format=json";
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(new URI(url))
                 .header(
@@ -44,17 +57,31 @@ public class AlbumSearchController {
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
+
         ObjectMapper mapper = new ObjectMapper();
-        MusicBrainzResponse parsedResponse = mapper.readValue(response.body(), MusicBrainzResponse.class);
+//        MusicBrainzResponse parsedResponse = mapper.readValue(response.body(), MusicBrainzResponse.class);
+//
+//        List<AlbumSearchResult> results = parsedResponse
+//                .getReleaseGroups()
+//                .stream()
+//                .map(album -> new AlbumSearchResult(
+//                        album.getId(),
+//                        album.getTitle(),
+//                        album.getArtistCredits().getFirst().getName(),
+//                        extractYear(album.getFirstReleaseDate())
+//                )).toList();
+
+        LastFMResponse parsedResponse = mapper.readValue(response.body(), LastFMResponse.class);
 
         List<AlbumSearchResult> results = parsedResponse
-                .getReleaseGroups()
+                .getLastFMResults()
+                .getAlbumMatches()
+                .getAlbums()
                 .stream()
                 .map(album -> new AlbumSearchResult(
-                        album.getId(),
-                        album.getTitle(),
-                        album.getArtistCredits().getFirst().getName(),
-                        extractYear(album.getFirstReleaseDate())
+                        album.getMbid(),
+                        album.getName(),
+                        album.getArtist()
                 )).toList();
 
 
