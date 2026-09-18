@@ -12,14 +12,16 @@ public class AlbumReview {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @OneToOne
+    @JoinColumn(name = "album_id")
+    private Album album;
+
     @NotNull
     @Min(0)
     @Max(10)
     private Integer rating;
 
-    @OneToOne
-    @JoinColumn(name = "album_id")
-    private Album album;
+
 
     private String reviewText;
 

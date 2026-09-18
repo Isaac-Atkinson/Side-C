@@ -14,8 +14,6 @@ public class Artist {
 
     private String name;
 
-    private String externalID;
-
     public Integer getId() {
         return id;
     }

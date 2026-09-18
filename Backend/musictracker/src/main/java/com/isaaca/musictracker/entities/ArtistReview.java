@@ -9,13 +9,13 @@ public class ArtistReview {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Integer rating;
-
-    private String reviewText;
-
     @OneToOne
     @JoinColumn(name = "artist_id")
     private Artist artist;
+
+    private Integer rating;
+
+    private String reviewText;
 
     public Long getId() {
         return id;

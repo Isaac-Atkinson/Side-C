@@ -2,6 +2,7 @@ package com.isaaca.musictracker.controllers;
 
 import com.isaaca.musictracker.AlbumSearchResult;
 import com.isaaca.musictracker.lastfm.albumsearch.LastFMAlbumSearchResponse;
+import com.isaaca.musictracker.services.LastFMService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,46 +23,16 @@ import java.util.List;
 @RequestMapping("/api/search/albums")
 public class AlbumSearchController {
 
-    @Value("${API_KEY}")
-    private String API_KEY;
+    private final LastFMService lastFMService;
+
+    public AlbumSearchController(LastFMService lastFMService) {
+        this.lastFMService = lastFMService;
+    }
 
     @GetMapping
     public ResponseEntity<List<AlbumSearchResult>> getAlbums(@RequestParam String title) throws IOException, InterruptedException, URISyntaxException {
-        HttpClient client = HttpClient.newHttpClient();
 
-        String url =
-                "https://ws.audioscrobbler.com/2.0/" +
-                        "?method=album.search" +
-                        "&album=" + URLEncoder.encode(title, StandardCharsets.UTF_8) +
-                        "&api_key=" + API_KEY +
-                        "&format=json";
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(new URI(url))
-                .header(
-                        "User-Agent",
-                        "MusicTracker/1.0 (iatkinson18@outlook.com)"
-                )
-                .GET()
-                .build();
-
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-
-        ObjectMapper mapper = new ObjectMapper();
-
-        LastFMAlbumSearchResponse parsedResponse = mapper.readValue(response.body(), LastFMAlbumSearchResponse.class);
-
-        List<AlbumSearchResult> results = parsedResponse
-                .getLastFMResults()
-                .getAlbumMatches()
-                .getAlbums()
-                .stream()
-                .map(album -> new AlbumSearchResult(
-                        album.getMbid(),
-                        album.getName(),
-                        album.getArtist(),
-                        album.getImages().getLast().getImageUrl()
-                )).toList();
+        List<AlbumSearchResult> results = lastFMService.lookUpAlbums(title);
 
         return ResponseEntity.ok(results);
     }

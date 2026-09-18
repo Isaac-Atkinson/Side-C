@@ -8,6 +8,7 @@ import com.isaaca.musictracker.repositories.AlbumRepository;
 import com.isaaca.musictracker.repositories.AlbumReviewRepository;
 import com.isaaca.musictracker.repositories.ArtistRepository;
 import com.isaaca.musictracker.requests.AlbumRequest;
+import com.isaaca.musictracker.services.AlbumService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -31,28 +32,21 @@ import java.util.Optional;
 @RequestMapping("/api/albums/reviews")
 public class AlbumReviewController {
 
-    @Value("${API_KEY}")
-    private String API_KEY;
+    private final AlbumService albumService;
 
-    private final AlbumRepository albumRepository;
-    private final ArtistRepository artistRepository;
-    private final AlbumReviewRepository albumReviewRepository;
 
-    public AlbumReviewController(AlbumRepository albumRepository, ArtistRepository artistRepository, AlbumReviewRepository albumReviewRepository) {
-        this.albumRepository = albumRepository;
-        this.artistRepository = artistRepository;
-        this.albumReviewRepository = albumReviewRepository;
-
+    public AlbumReviewController(AlbumRepository albumRepository, ArtistRepository artistRepository, AlbumReviewRepository albumReviewRepository, AlbumService albumService) {
+        this.albumService = albumService;
     }
 
     @GetMapping
     public ResponseEntity<List<AlbumReview>> getAllAlbumReviews() {
-        return ResponseEntity.ok(albumReviewRepository.findAll());
+        return ResponseEntity.ok(albumService.getAllAlbumReviews());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<AlbumReview> getAlbumReviewById(@PathVariable Integer id) {
-        return albumReviewRepository.findById(id)
+        return albumService.getAlbumReviewById(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -60,135 +54,22 @@ public class AlbumReviewController {
     @PostMapping
     public ResponseEntity<AlbumReview> addAlbumReview(@Valid @RequestBody AlbumRequest albumRequest) throws URISyntaxException, IOException, InterruptedException {
 
-        String uniqueId = "";
-        if(albumRequest.getMusicBrainzId().equals("")){
-            albumRequest.setMusicBrainzId(null);
-            uniqueId = albumRequest.getTitle() + albumRequest.getArtist();
-        } else {
-            uniqueId = albumRequest.getMusicBrainzId();
-        }
+        AlbumReview albumReview = albumService.addAlbumreview(albumRequest);
 
-        Optional<AlbumReview> optionalAlbumReview = albumReviewRepository.findByAlbum_UniqueIdentifier(uniqueId);
-        if(optionalAlbumReview.isPresent()) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(optionalAlbumReview.get());
-        }
-
-        Optional<Album> optionalAlbum = albumRepository.findByUniqueIdentifier(uniqueId);
-
-        if (optionalAlbum.isEmpty()){
-            Album album = buildAlbum(albumRequest, uniqueId);
-
-            AlbumReview albumReview = buildAlbumReview(albumRequest, album);
-
-            return ResponseEntity.status(HttpStatus.CREATED).body(albumReviewRepository.save(albumReview));
-        }
-
-        Album album = optionalAlbum.get();
-
-        AlbumReview albumReview = buildAlbumReview(albumRequest, album);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(albumReviewRepository.save(albumReview));
+        return ResponseEntity.status(HttpStatus.CREATED).body(albumReview);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AlbumReview> updateAlbumReview(@PathVariable Integer id, @Valid @RequestBody AlbumRequest albumRequest) {
-        Optional<AlbumReview> optionalAlbumReview = albumReviewRepository.findById(id);
+    public ResponseEntity<AlbumReview> updateAlbumReview(@PathVariable Integer id, @Valid @RequestBody AlbumRequest albumRequest) throws URISyntaxException, IOException, InterruptedException {
 
-
-        if (optionalAlbumReview.isEmpty()){
-            return ResponseEntity.notFound().build();
-        }
-
-        AlbumReview albumReview = optionalAlbumReview.get();
-        albumReview.setRating(albumRequest.getRating());
-        albumReview.setReviewText(albumRequest.getReviewText());
-
-        return ResponseEntity.ok(albumReviewRepository.save(albumReview));
+        return ResponseEntity.ok(albumService.updateAlbumReview(id, albumRequest));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void>  deleteAlbumReviewById(@PathVariable Integer id) {
-        Optional<AlbumReview> optionalAlbumReview = albumReviewRepository.findById(id);
+        albumService.deleteAlbumReviewById(id);
 
-        if (optionalAlbumReview.isEmpty()){
-            return ResponseEntity.notFound().build();
-        }
-
-        albumReviewRepository.deleteById(optionalAlbumReview.get().getId());
         return ResponseEntity.noContent().build();
     }
 
-    private Album buildAlbum(AlbumRequest albumRequest, String uniqueId) throws URISyntaxException, IOException, InterruptedException {
-        String artistName = albumRequest.getArtist();
-
-        Artist artist = artistRepository.findByNameIgnoreCase(artistName)
-                .orElseGet(() -> {
-                    Artist artist1 = new Artist();
-                    artist1.setName(artistName);
-                    return artistRepository.save(artist1);
-                });
-
-        Album album = new Album();
-
-        album.setTitle(albumRequest.getTitle());
-        album.setArtist(artist);
-        album.setMusicBrainzId(albumRequest.getMusicBrainzId());
-
-
-        String url = "";
-        HttpClient client = HttpClient.newHttpClient();
-        if(albumRequest.getMusicBrainzId().equals(uniqueId)){
-
-
-            url =
-                    "https://ws.audioscrobbler.com/2.0/" +
-                            "?method=album.getinfo" +
-                            "&mbid=" + URLEncoder.encode(albumRequest.getMusicBrainzId(), StandardCharsets.UTF_8) +
-                            "&api_key=" + API_KEY +
-                            "&format=json";
-
-        } else {
-            url =
-                    "https://ws.audioscrobbler.com/2.0/" +
-                            "?method=album.getinfo" +
-                            "&album=" + URLEncoder.encode(albumRequest.getTitle(), StandardCharsets.UTF_8) +
-                            "&artist=" + URLEncoder.encode(albumRequest.getArtist(), StandardCharsets.UTF_8) +
-                            "&api_key=" + API_KEY +
-                            "&format=json";
-        }
-
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(new URI(url))
-                .header(
-                        "User-Agent",
-                        "MusicTracker/1.0 (iatkinson18@outlook.com)"
-                )
-                .GET()
-                .build();
-
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-        ObjectMapper mapper = new ObjectMapper();
-
-        LastFMResponseAlbumInfo parsedResponse = mapper.readValue(response.body(), LastFMResponseAlbumInfo.class);
-
-        String imageUrl = parsedResponse
-                .getAlbum()
-                .getImages()
-                .getLast()
-                .getImageUrl();
-
-        album.setImageUrl(imageUrl);
-
-        return albumRepository.save(album);
-    }
-
-    private AlbumReview buildAlbumReview(AlbumRequest albumRequest, Album album) {
-        AlbumReview albumReview = new AlbumReview();
-        albumReview.setAlbum(album);
-        albumReview.setRating(albumRequest.getRating());
-        albumReview.setReviewText(albumRequest.getReviewText());
-
-        return albumReviewRepository.save(albumReview);
-    }
 }
