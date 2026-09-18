@@ -9,7 +9,10 @@ function AlbumSearchDisplayCard({searchResult}: AlbumSearchDisplayCardProps) {
         <div>
             <h3>{searchResult.title}</h3>
             <p>{searchResult.artist}</p>
-            <p>{searchResult.musicBrainzId}</p>
+            <img
+                src = {searchResult.imageUrl}
+                alt={`${searchResult.title} cover`}
+                width = {150}/>
         </div>
     )
 }

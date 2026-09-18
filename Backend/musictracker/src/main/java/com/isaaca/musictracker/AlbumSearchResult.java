@@ -1,7 +1,8 @@
 package com.isaaca.musictracker;
 
 public record AlbumSearchResult(
-        String externalId,
+        String musicBrainzId,
         String title,
-        String artist
+        String artist,
+        String imageUrl
 ) {}

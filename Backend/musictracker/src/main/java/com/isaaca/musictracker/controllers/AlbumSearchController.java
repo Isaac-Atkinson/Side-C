@@ -1,9 +1,7 @@
 package com.isaaca.musictracker.controllers;
 
 import com.isaaca.musictracker.AlbumSearchResult;
-import com.isaaca.musictracker.lastfm.LastFMAlbum;
-import com.isaaca.musictracker.lastfm.LastFMResponse;
-import com.isaaca.musictracker.musicbrainz.MusicBrainzResponse;
+import com.isaaca.musictracker.lastfm.albumsearch.LastFMAlbumSearchResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,17 +26,8 @@ public class AlbumSearchController {
     private String API_KEY;
 
     @GetMapping
-    public ResponseEntity<List<AlbumSearchResult>> getAlbums(@RequestParam String title) throws InterruptedException, IOException, InterruptedException, URISyntaxException {
+    public ResponseEntity<List<AlbumSearchResult>> getAlbums(@RequestParam String title) throws IOException, InterruptedException, URISyntaxException {
         HttpClient client = HttpClient.newHttpClient();
-        String query =
-                "releasegroup:\"" + title + "\" AND primarytype:album";
-
-//        String url =
-//                "https://musicbrainz.org/ws/2/release-group/" +
-//                        "?query=" +
-//                        URLEncoder.encode(query, StandardCharsets.UTF_8) +
-//                        "&fmt=json" +
-//                        "&limit=10";
 
         String url =
                 "https://ws.audioscrobbler.com/2.0/" +
@@ -59,19 +48,8 @@ public class AlbumSearchController {
 
 
         ObjectMapper mapper = new ObjectMapper();
-//        MusicBrainzResponse parsedResponse = mapper.readValue(response.body(), MusicBrainzResponse.class);
-//
-//        List<AlbumSearchResult> results = parsedResponse
-//                .getReleaseGroups()
-//                .stream()
-//                .map(album -> new AlbumSearchResult(
-//                        album.getId(),
-//                        album.getTitle(),
-//                        album.getArtistCredits().getFirst().getName(),
-//                        extractYear(album.getFirstReleaseDate())
-//                )).toList();
 
-        LastFMResponse parsedResponse = mapper.readValue(response.body(), LastFMResponse.class);
+        LastFMAlbumSearchResponse parsedResponse = mapper.readValue(response.body(), LastFMAlbumSearchResponse.class);
 
         List<AlbumSearchResult> results = parsedResponse
                 .getLastFMResults()
@@ -81,19 +59,13 @@ public class AlbumSearchController {
                 .map(album -> new AlbumSearchResult(
                         album.getMbid(),
                         album.getName(),
-                        album.getArtist()
+                        album.getArtist(),
+                        album.getImages().getLast().getImageUrl()
                 )).toList();
-
 
         return ResponseEntity.ok(results);
     }
 
-    private Integer extractYear(String date){
-        if(date == null || date.length() < 4){
-            return null;
-        }
-        return Integer.parseInt(date.substring(0, 4));
-    }
 
 
 }

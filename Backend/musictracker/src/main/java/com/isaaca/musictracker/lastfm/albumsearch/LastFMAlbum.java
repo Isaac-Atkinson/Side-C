@@ -1,4 +1,8 @@
-package com.isaaca.musictracker.lastfm;
+package com.isaaca.musictracker.lastfm.albumsearch;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.List;
 
 public class LastFMAlbum {
 
@@ -7,6 +11,17 @@ public class LastFMAlbum {
     private String artist;
 
     private String mbid;
+
+    @JsonProperty("image")
+    private List<LastFMImage> images;
+
+    public List<LastFMImage> getImages() {
+        return images;
+    }
+
+    public void setImages(List<LastFMImage> images) {
+        this.images = images;
+    }
 
     public String getName() {
         return name;

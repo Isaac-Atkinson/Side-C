@@ -38,7 +38,7 @@ function SearchAlbumsPage(){
                 </Button>
 
                 {results.map(album => (
-                    <div key={album.externalId}
+                    <div key={album.externalId || `${album.artist}-${album.title}`}
                          onClick={() => setSelectedAlbum(album)}
                          style={{ cursor: "pointer" }}>
                         <AlbumSearchDisplayCard searchResult={album}/>

@@ -1,6 +1,5 @@
 package com.isaaca.musictracker.requests;
 
-import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -9,7 +8,7 @@ import jakarta.validation.constraints.NotNull;
 public class AlbumRequest {
 
     @NotBlank
-    private String externalId;
+    private String musicBrainzId;
 
     @NotBlank
     private String title;
@@ -28,12 +27,12 @@ public class AlbumRequest {
         return reviewText;
     }
 
-    public void setExternalId(String externalID) {
-        this.externalId = externalID;
+    public void setMusicBrainzId(String externalID) {
+        this.musicBrainzId = externalID;
     }
 
-    public String getExternalId() {
-        return externalId;
+    public String getMusicBrainzId() {
+        return musicBrainzId;
     }
 
     public void setReviewText(String reviewText) {

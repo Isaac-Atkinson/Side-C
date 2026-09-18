@@ -15,6 +15,10 @@ function AlbumCard({albumReview }: AlbumDataProps){
 
     return (
         <div>
+            <img
+                src = {albumReview.album.imageUrl}
+                alt={`${albumReview.album.title} cover`}
+                width = {150}/>
             <Link to={`/albums/${albumReview.id}`}>
                 <h2>{albumReview.album.title}</h2>
             </Link>

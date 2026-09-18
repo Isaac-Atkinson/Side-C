@@ -1,9 +1,6 @@
 package com.isaaca.musictracker.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Album {
@@ -18,18 +15,36 @@ public class Album {
     @JoinColumn(name = "artist_id")
     private Artist artist;
 
+    private String musicBrainzId;
+
     @Column(unique = true)
-    private String externalId;
+    private String uniqueIdentifier;
 
-    public void setExternalId(String externalId) {
-        this.externalId = externalId;
+    public String getUniqueIdentifier() {
+        return uniqueIdentifier;
     }
 
-    public String getExternalId() {
-        return externalId;
+    public void setUniqueIdentifier(String uniqueIdentifier) {
+        this.uniqueIdentifier = uniqueIdentifier;
     }
 
-    private String imageURL;
+    private String imageUrl;
+
+    public void setMusicBrainzId(String musicBrainzId) {
+        this.musicBrainzId = musicBrainzId;
+    }
+
+    public String getMusicBrainzId() {
+        return musicBrainzId;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 
     public Album() {}
 

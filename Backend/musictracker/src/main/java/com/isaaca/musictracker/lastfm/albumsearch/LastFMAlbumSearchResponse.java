@@ -1,8 +1,8 @@
-package com.isaaca.musictracker.lastfm;
+package com.isaaca.musictracker.lastfm.albumsearch;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class LastFMResponse {
+public class LastFMAlbumSearchResponse {
 
     @JsonProperty("results")
     public LastFMResults lastFMResults;

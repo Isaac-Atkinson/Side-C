@@ -100,6 +100,15 @@ GET http://localhost:8080/api/search/albums?title=melodrama
 
 ###
 
+GET https://ws.audioscrobbler.com/2.0/?method=album.search&album=melodrama&api_key=&format=json
+
+###
+
+GET https://ws.audioscrobbler.com/2.0/?method=album.getinfo&album=melodrama&artist=lorde&api_key=&format=json
+
+###
+
+GET https://ws.audioscrobbler.com/2.0/?method=album.getinfo&mbid=0024c5d8-8b54-459f-ab43-afeab54030a8&api_key=&format=json
 
 
 

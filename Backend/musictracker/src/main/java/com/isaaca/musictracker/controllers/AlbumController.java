@@ -38,16 +38,16 @@ public class AlbumController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping
-    public ResponseEntity<Album> addAlbum(@Valid @RequestBody AlbumRequest albumRequest) {
-
-        if(albumRepository.findByExternalId(albumRequest.getExternalId()).isPresent()) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        }
-
-        Album album = buildAlbum(albumRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(album);
-    }
+//    @PostMapping
+//    public ResponseEntity<Album> addAlbum(@Valid @RequestBody AlbumRequest albumRequest) {
+//
+//        if(albumRepository.findByExternalId(albumRequest.getMusicBrainzId()).isPresent()) {
+//            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+//        }
+//
+//        Album album = buildAlbum(albumRequest);
+//        return ResponseEntity.status(HttpStatus.CREATED).body(album);
+//    }
 
     @PutMapping("/{id}")
     public ResponseEntity<Album> updateAlbum(@PathVariable Integer id, @Valid @RequestBody AlbumRequest albumRequest) {

@@ -1,7 +1,6 @@
 import {useState} from "react";
 import {Alert, Box, Button, TextField} from "@mui/material";
 import {API_BASE_URL, MAX_REVIEW_LENGTH} from "../../config/api.ts";
-import type {AlbumReview} from "../../types/AlbumReview.ts";
 import type {AlbumSearchResult} from "../../types/AlbumSearchResult.ts";
 
 
@@ -49,11 +48,11 @@ function AddAlbumForm({album, onSuccess, onCancel}: AddAlbumFormProps) {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({
-                externalId: album.externalId,
+                musicBrainzId: album.musicBrainzId,
                 title: album.title,
                 artist: album.artist,
                 rating: Number (rating),
-                reviewText: reviewText,
+                reviewText: reviewText
             })
         });
 

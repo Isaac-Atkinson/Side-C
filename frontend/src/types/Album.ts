@@ -4,4 +4,5 @@ export type Album = {
     id: number,
     title: string,
     artist: Artist
+    imageUrl : string
 };
