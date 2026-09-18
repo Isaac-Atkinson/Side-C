@@ -23,6 +23,7 @@ function AlbumReviewsPage() {
 
     return (
         <div>
+
             <AlbumList
                 albumReviews={albumReviews}
         />

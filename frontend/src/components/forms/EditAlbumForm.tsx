@@ -46,7 +46,6 @@ function EditAlbumForm({albumReview, onCancel, onAlbumUpdated, onSuccess}: EditA
             body: JSON.stringify({
                 title: albumReview.album.title,
                 artist: albumReview.album.artist.name,
-                year: Number(albumReview.album.year),
                 rating: Number(rating),
                 reviewText: reviewText
             })

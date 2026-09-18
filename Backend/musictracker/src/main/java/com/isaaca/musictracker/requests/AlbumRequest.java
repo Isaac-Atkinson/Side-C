@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull;
 
 public class AlbumRequest {
 
-    @NotBlank
+
     private String musicBrainzId;
 
     @NotBlank

@@ -1,9 +1,9 @@
 import {useNavigate} from "react-router-dom";
 import { useState} from "react";
-import {API_BASE_URL} from "../config/api.ts";
-import type {ArtistReview} from "../types/ArtistReview.ts";
+import {API_BASE_URL} from "../../config/api.ts";
+import type {ArtistReview} from "../../types/ArtistReview.ts";
 import {Button, Dialog, DialogContent, DialogTitle} from "@mui/material";
-import EditArtistForm from "./forms/EditArtistForm.tsx";
+import EditArtistForm from "../forms/EditArtistForm.tsx";
 
 
 type DetailedArtistCardProps = {

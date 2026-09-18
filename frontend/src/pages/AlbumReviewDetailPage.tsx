@@ -2,7 +2,7 @@ import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {API_BASE_URL} from "../config/api.ts";
 import type {AlbumReview} from "../types/AlbumReview.ts";
-import DetailedAlbumCard from "../components/DetailedAlbumCard.tsx";
+import DetailedAlbumCard from "../components/cards/DetailedAlbumCard.tsx";
 
 function AlbumReviewDetailPage(){
     const {id} = useParams();

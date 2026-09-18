@@ -1,5 +1,5 @@
 import type {ArtistReview} from "../types/ArtistReview.ts";
-import ArtistCard from "./ArtistCard.tsx";
+import ArtistCard from "./cards/ArtistCard.tsx";
 
 
 type ArtistListProps = {

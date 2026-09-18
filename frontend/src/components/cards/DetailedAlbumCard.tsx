@@ -1,9 +1,9 @@
-import type {AlbumReview} from "../types/AlbumReview.ts";
+import type {AlbumReview} from "../../types/AlbumReview.ts";
 import {Button, Dialog, DialogContent, DialogTitle} from "@mui/material";
-import {API_BASE_URL} from "../config/api.ts";
+import {API_BASE_URL} from "../../config/api.ts";
 import {useNavigate} from "react-router-dom";
 import {useState} from "react";
-import EditAlbumForm from "./forms/EditAlbumForm.tsx";
+import EditAlbumForm from "../forms/EditAlbumForm.tsx";
 
 type DetailedAlbumCardProps = {
     albumReview: AlbumReview;

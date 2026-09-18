@@ -2,7 +2,7 @@ import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {API_BASE_URL} from "../config/api.ts";
 import type {ArtistReview} from "../types/ArtistReview.ts";
-import DetailedArtistCard from "../components/DetailedArtistCard.tsx";
+import DetailedArtistCard from "../components/cards/DetailedArtistCard.tsx";
 
 function ArtistReviewDetailPage() {
 

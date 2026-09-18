@@ -5,4 +5,5 @@ export type Album = {
     title: string,
     artist: Artist
     imageUrl : string
+    uniqueIdentifier: string
 };

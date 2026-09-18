@@ -1,5 +1,5 @@
 
-import type {ArtistReview} from "../types/ArtistReview.ts";
+import type {ArtistReview} from "../../types/ArtistReview.ts";
 import {Link} from "react-router-dom";
 
 type ArtistDataProps = {
