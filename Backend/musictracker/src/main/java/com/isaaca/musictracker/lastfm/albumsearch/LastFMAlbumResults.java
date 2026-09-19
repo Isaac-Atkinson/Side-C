@@ -2,7 +2,7 @@ package com.isaaca.musictracker.lastfm.albumsearch;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class LastFMResults {
+public class LastFMAlbumResults {
 
     @JsonProperty("albummatches")
     public LastFMAlbumMatches albumMatches;

@@ -115,24 +115,7 @@ function DetailedAlbumReviewCard({albumReview, onAlbumUpdated}: DetailedAlbumCar
 
             </Dialog>
         </Box>
-        // <div>
-        //     <h2>{albumReview.album.title}</h2>
-        //     <p>{albumReview.album.artist.name}</p>
-        //     <p>{albumReview.rating}</p>
-        //     <p>{albumReview.reviewText}</p>
-        //
-        //     <Button onClick={handleDelete}>
-        //         Delete
-        //     </Button>
-        //
-        //     <Button onClick ={() => {
-        //         setEditing(true);
-        //         }}>
-        //             Edit
-        //     </Button>
-        //
 
-        // </div>
     )
 }
 

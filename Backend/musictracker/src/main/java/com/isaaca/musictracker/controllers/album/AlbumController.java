@@ -1,4 +1,4 @@
-package com.isaaca.musictracker.controllers;
+package com.isaaca.musictracker.controllers.album;
 
 import com.isaaca.musictracker.requests.AlbumRequest;
 import com.isaaca.musictracker.entities.Album;
@@ -6,7 +6,6 @@ import com.isaaca.musictracker.entities.Artist;
 import com.isaaca.musictracker.repositories.AlbumRepository;
 import com.isaaca.musictracker.repositories.ArtistRepository;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,4 +1,4 @@
-package com.isaaca.musictracker.controllers;
+package com.isaaca.musictracker.controllers.artist;
 
 import com.isaaca.musictracker.entities.Artist;
 import com.isaaca.musictracker.entities.ArtistReview;
@@ -7,7 +7,6 @@ import com.isaaca.musictracker.repositories.ArtistRepository;
 import com.isaaca.musictracker.repositories.ArtistReviewRepository;
 import com.isaaca.musictracker.requests.ArtistRequest;
 import jakarta.validation.Valid;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

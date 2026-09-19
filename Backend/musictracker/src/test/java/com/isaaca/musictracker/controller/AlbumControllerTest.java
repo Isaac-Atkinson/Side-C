@@ -1,12 +1,11 @@
 package com.isaaca.musictracker.controller;
 
 
-import com.isaaca.musictracker.controllers.AlbumController;
+import com.isaaca.musictracker.controllers.album.AlbumController;
 import com.isaaca.musictracker.entities.Album;
 import com.isaaca.musictracker.entities.Artist;
 import com.isaaca.musictracker.repositories.AlbumRepository;
 import com.isaaca.musictracker.repositories.ArtistRepository;
-import jakarta.validation.constraints.AssertTrue;
 import org.springframework.http.MediaType;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +22,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.Optional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(AlbumController.class)
 public class AlbumControllerTest {

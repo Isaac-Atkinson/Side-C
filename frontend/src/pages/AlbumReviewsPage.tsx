@@ -28,7 +28,7 @@ function AlbumReviewsPage() {
                 albumReviews={albumReviews}
         />
 
-            <Button component={Link} to="/albums/search" >
+            <Button component={Link} to="/search" >
                 Add New
             </Button>
 

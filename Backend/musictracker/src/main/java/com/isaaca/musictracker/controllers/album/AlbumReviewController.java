@@ -1,31 +1,19 @@
-package com.isaaca.musictracker.controllers;
+package com.isaaca.musictracker.controllers.album;
 
-import com.isaaca.musictracker.entities.Album;
 import com.isaaca.musictracker.entities.AlbumReview;
-import com.isaaca.musictracker.entities.Artist;
-import com.isaaca.musictracker.lastfm.albuminfo.LastFMResponseAlbumInfo;
 import com.isaaca.musictracker.repositories.AlbumRepository;
 import com.isaaca.musictracker.repositories.AlbumReviewRepository;
 import com.isaaca.musictracker.repositories.ArtistRepository;
 import com.isaaca.musictracker.requests.AlbumRequest;
 import com.isaaca.musictracker.services.AlbumService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URLEncoder;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController

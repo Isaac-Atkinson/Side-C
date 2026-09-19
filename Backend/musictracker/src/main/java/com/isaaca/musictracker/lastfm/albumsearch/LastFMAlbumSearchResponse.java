@@ -5,13 +5,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class LastFMAlbumSearchResponse {
 
     @JsonProperty("results")
-    public LastFMResults lastFMResults;
+    public LastFMAlbumResults lastFMResults;
 
-    public LastFMResults getLastFMResults() {
+    public LastFMAlbumResults getLastFMResults() {
         return lastFMResults;
     }
 
-    public void setLastFMResults(LastFMResults lastFMResults) {
+    public void setLastFMResults(LastFMAlbumResults lastFMResults) {
         this.lastFMResults = lastFMResults;
     }
 }

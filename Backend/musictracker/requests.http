@@ -112,7 +112,11 @@ GET https://ws.audioscrobbler.com/2.0/?method=album.getinfo&mbid=0024c5d8-8b54-4
 
 ###
 
-GET https://ws.audioscrobbler.com/2.0/?method=artist.getinfo&mbid=070d193a-845c-479f-980e-bef15710653e&api_key=&format=json
+GET https://ws.audioscrobbler.com/2.0/?method=artist.search&artist=dua+lipa&api_key=&format=json
+
+###
+
+GET http://localhost:8080/api/search/artists?name=dua+lipa
 
 
 
