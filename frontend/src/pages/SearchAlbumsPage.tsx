@@ -1,5 +1,5 @@
-import {useState} from "react";
-import {Box, Button, Dialog, DialogContent, DialogTitle, TextField} from "@mui/material";
+import {useEffect, useState} from "react";
+import {Box, Dialog, DialogContent, DialogTitle, TextField} from "@mui/material";
 import {API_BASE_URL} from "../config/api.ts";
 import type {AlbumSearchResult} from "../types/AlbumSearchResult.ts";
 import AlbumSearchDisplayCard from "../components/cards/AlbumSearchDisplayCard.tsx";
@@ -11,6 +11,7 @@ function SearchAlbumsPage(){
     const[results, setResults] = useState<AlbumSearchResult[]>([]);
     const[selectedAlbum, setSelectedAlbum] = useState<AlbumSearchResult | null>(null);
 
+    const SEARCH_DELAY = 500;
 
 
     const handleSearch = async () =>{
@@ -21,9 +22,17 @@ function SearchAlbumsPage(){
             const data : AlbumSearchResult[] = await response.json();
             setResults(data);
         }
-
-
     }
+
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            handleSearch();
+        }, SEARCH_DELAY);
+
+        return () => clearTimeout(timeout);
+    }, [search]);
+
+
     return(
         <div>
             <TextField
@@ -32,9 +41,6 @@ function SearchAlbumsPage(){
                 onChange={e => setSearch(e.target.value)}
             />
 
-            <Button variant="contained" onClick = {handleSearch}>
-                Search
-            </Button>
             <Box
                 sx={{
                     display: "grid",

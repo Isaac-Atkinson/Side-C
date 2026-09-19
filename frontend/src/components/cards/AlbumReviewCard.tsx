@@ -16,7 +16,7 @@ type AlbumDataProps = {
 
 
 
-function AlbumCard({albumReview }: AlbumDataProps){
+function AlbumReviewCard({albumReview }: AlbumDataProps){
 
 
     return (
@@ -84,4 +84,4 @@ function AlbumCard({albumReview }: AlbumDataProps){
     );
 }
 
-export default AlbumCard;
+export default AlbumReviewCard;

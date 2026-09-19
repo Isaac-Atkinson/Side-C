@@ -2,7 +2,7 @@ import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {API_BASE_URL} from "../config/api.ts";
 import type {AlbumReview} from "../types/AlbumReview.ts";
-import DetailedAlbumCard from "../components/cards/DetailedAlbumCard.tsx";
+import DetailedAlbumReviewCard from "../components/cards/DetailedAlbumReviewCard.tsx";
 
 function AlbumReviewDetailPage(){
     const {id} = useParams();
@@ -29,7 +29,7 @@ function AlbumReviewDetailPage(){
 
     return(
         <div>
-            <DetailedAlbumCard
+            <DetailedAlbumReviewCard
                 albumReview={albumReview}
                 onAlbumUpdated={handleAlbumUpdated}/>
         </div>

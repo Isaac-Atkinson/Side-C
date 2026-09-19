@@ -110,6 +110,10 @@ GET https://ws.audioscrobbler.com/2.0/?method=album.getinfo&album=melodrama&arti
 
 GET https://ws.audioscrobbler.com/2.0/?method=album.getinfo&mbid=0024c5d8-8b54-459f-ab43-afeab54030a8&api_key=&format=json
 
+###
+
+GET https://ws.audioscrobbler.com/2.0/?method=artist.getinfo&mbid=070d193a-845c-479f-980e-bef15710653e&api_key=&format=json
+
 
 
 

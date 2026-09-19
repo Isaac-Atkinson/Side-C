@@ -1,4 +1,4 @@
-import AlbumCard from "./cards/AlbumCard.tsx";
+import AlbumReviewCard from "./cards/AlbumReviewCard.tsx";
 import type {AlbumReview} from "../types/AlbumReview.ts";
 import {Box} from "@mui/material";
 
@@ -20,7 +20,7 @@ function AlbumList({albumReviews}: AlbumListProps) {
                 }}
             >
                 {albumReviews.map(review => (
-                    <AlbumCard
+                    <AlbumReviewCard
                         key={review.id}
                         albumReview={review}
                     />
