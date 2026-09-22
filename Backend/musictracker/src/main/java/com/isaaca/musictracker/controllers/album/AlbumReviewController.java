@@ -23,7 +23,7 @@ public class AlbumReviewController {
     private final AlbumService albumService;
 
 
-    public AlbumReviewController(AlbumRepository albumRepository, ArtistRepository artistRepository, AlbumReviewRepository albumReviewRepository, AlbumService albumService) {
+    public AlbumReviewController(AlbumService albumService) {
         this.albumService = albumService;
     }
 
