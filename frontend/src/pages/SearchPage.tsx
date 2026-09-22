@@ -6,6 +6,7 @@ import AlbumSearchDisplayCard from "../components/cards/AlbumSearchDisplayCard.t
 import AddAlbumForm from "../components/forms/AddAlbumForm.tsx";
 import type {ArtistSearchResult} from "../types/ArtistSearchResult.ts";
 import ArtistSearchDisplayCard from "../components/cards/ArtistSearchDisplayCard.tsx";
+import AddArtistForm from "../components/forms/AddArtistForm.tsx";
 
 
 function SearchPage(){
@@ -111,6 +112,25 @@ function SearchPage(){
                     </div>
                 ))}
             </Box>
+
+            <Dialog
+                open={selectedArtist !== null}
+                onClose={() => setSelectedArtist(null)}
+            >
+                <DialogTitle>Add Review</DialogTitle>
+
+                <DialogContent>
+                    {selectedArtist && (
+                        <AddArtistForm
+                            artist={selectedArtist}
+                            onSuccess={() => setSelectedArtist(null)}
+                            onCancel={() => setSelectedArtist(null)}
+                        />
+                    )}
+                </DialogContent>
+            </Dialog>
+
+
         </div>
     )
 }

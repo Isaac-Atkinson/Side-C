@@ -10,8 +10,12 @@ import jakarta.validation.constraints.NotNull;
 
 public class ArtistRequest {
 
+    private String musicBrainzId;
+
     @NotBlank
     private String name;
+
+    private String imageUrl;
 
     @NotNull
     @Min(0)
@@ -20,6 +24,9 @@ public class ArtistRequest {
 
     private String reviewText;
 
+    public String getMusicBrainzId() {
+        return musicBrainzId;
+    }
 
     public String getName() {
         return name;
@@ -27,6 +34,14 @@ public class ArtistRequest {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public Integer getRating() {

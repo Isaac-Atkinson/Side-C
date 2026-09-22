@@ -1,20 +1,18 @@
 import {useState} from "react";
 import {API_BASE_URL, MAX_REVIEW_LENGTH} from "../../config/api.ts";
 import {Alert, Box, Button, TextField} from "@mui/material";
-import type {ArtistReview} from "../../types/ArtistReview.ts";
+import type {ArtistSearchResult} from "../../types/ArtistSearchResult.ts";
 
 type AddArtistFormProps = {
-    onArtistAdded : (newArtistReview : ArtistReview) => void;
+    artist : ArtistSearchResult
     onSuccess: () => void;
     onCancel: () => void;
 }
 
-function AddArtistForm({onArtistAdded, onSuccess, onCancel}: AddArtistFormProps) {
-    const[name, setName] = useState("");
+function AddArtistForm({artist, onSuccess, onCancel}: AddArtistFormProps) {
     const[rating, setRating] = useState("");
     const[reviewText, setReviewText] = useState("");
 
-    const [nameError, setNameError] = useState("");
     const [ratingError, setRatingError] = useState("");
     const [reviewTextError, setReviewTextError] = useState("");
     const [submitError, setSubmitError] = useState("");
@@ -22,14 +20,8 @@ function AddArtistForm({onArtistAdded, onSuccess, onCancel}: AddArtistFormProps)
     const validateForm = () => {
         let valid = true;
 
-        setNameError("");
         setRatingError("");
         setReviewTextError("");
-
-        if (!name.trim()) {
-            setNameError("Title is required");
-            valid = false;
-        }
 
         const ratingNumber = Number(rating);
 
@@ -54,15 +46,16 @@ function AddArtistForm({onArtistAdded, onSuccess, onCancel}: AddArtistFormProps)
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({
-                name: name,
+                musicBrainzId : artist.musicBrainzId,
+                name: artist.name,
+                imageUrl: artist.imageUrl,
                 rating: Number (rating),
                 reviewText: reviewText,
             })
         });
 
         if(response.ok){
-            const newArtistReview: ArtistReview = await response.json();
-            onArtistAdded(newArtistReview);
+
 
             onSuccess();
 
@@ -83,13 +76,6 @@ function AddArtistForm({onArtistAdded, onSuccess, onCancel}: AddArtistFormProps)
             onSubmit={handleSubmit}
             sx={{ display: "flex", flexDirection: "column", gap: 2 }}
         >
-            <TextField
-                label = "Name"
-                value = {name}
-                onChange={e => setName(e.target.value)}
-                error = {Boolean(nameError)}
-                helperText={nameError}
-            />
 
             <TextField
                 label = "Rating"

@@ -1,4 +1,4 @@
-package com.isaaca.musictracker.lastfm.albumsearch;
+package com.isaaca.musictracker.externalapi.lastfm.albumsearch;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

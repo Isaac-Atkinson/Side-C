@@ -22,12 +22,12 @@ function ArtistSearchDisplayCard({searchResult}: ArtistSearchDisplayCardProps) {
                 }
             }}
         >
-            {/*<CardMedia*/}
-            {/*    component="img"*/}
-            {/*    height="220"*/}
-            {/*    image={searchResult.imageUrl}*/}
-            {/*    alt={`${searchResult.title} cover`}*/}
-            {/*/>*/}
+            <CardMedia
+                component="img"
+                height="220"
+                image={searchResult.imageUrl}
+                alt={`${searchResult.name} image`}
+            />
 
             <CardContent>
                 <Typography variant="h6" noWrap>

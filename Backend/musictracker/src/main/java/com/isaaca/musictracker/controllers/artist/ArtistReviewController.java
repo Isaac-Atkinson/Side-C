@@ -43,13 +43,13 @@ public class ArtistReviewController {
 
     @PostMapping
     public ResponseEntity<ArtistReview> addArtistReview(@Valid @RequestBody ArtistRequest artistRequest) {
-        Optional<ArtistReview> optionalArtistReview = artistReviewRepository.findArtistReviewByArtist_NameIgnoreCase(artistRequest.getName());
+//        Optional<ArtistReview> optionalArtistReview = artistReviewRepository.findArtistReviewByArtist_NameIgnoreCase(artistRequest.getName());
+//
+//        if (optionalArtistReview.isPresent()) {
+//            return ResponseEntity.status(HttpStatus.CONFLICT).body(optionalArtistReview.get());
+//        }
 
-        if (optionalArtistReview.isPresent()) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(optionalArtistReview.get());
-        }
-
-        Optional<Artist> existingArtist = artistRepository.findByNameIgnoreCase(artistRequest.getName());
+        Optional<Artist> existingArtist = artistRepository.findByMusicBrainzId(artistRequest.getMusicBrainzId());
 
         if(existingArtist.isEmpty()) {
             Artist artist = buildArtist(artistRequest);
@@ -92,6 +92,7 @@ public class ArtistReviewController {
     private Artist buildArtist(ArtistRequest artistRequest) {
         Artist artist = new Artist();
         artist.setName(artistRequest.getName());
+        artist.setImageUrl(artistRequest.getImageUrl());
         return artistRepository.save(artist);
     }
 

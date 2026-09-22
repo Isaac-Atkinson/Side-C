@@ -2,13 +2,13 @@ package com.isaaca.musictracker.services;
 
 import com.isaaca.musictracker.AlbumSearchResult;
 import com.isaaca.musictracker.ArtistSearchResult;
-import com.isaaca.musictracker.lastfm.albuminfo.LastFMAlbumInfo;
-import com.isaaca.musictracker.lastfm.albuminfo.LastFMResponseAlbumInfo;
-import com.isaaca.musictracker.lastfm.albumsearch.LastFMAlbumSearchResponse;
-import com.isaaca.musictracker.lastfm.artistsearch.LastFMArtistSearchResponse;
+import com.isaaca.musictracker.LastFMArtistResult;
+import com.isaaca.musictracker.externalapi.lastfm.albuminfo.LastFMAlbumInfo;
+import com.isaaca.musictracker.externalapi.lastfm.albuminfo.LastFMResponseAlbumInfo;
+import com.isaaca.musictracker.externalapi.lastfm.albumsearch.LastFMAlbumSearchResponse;
+import com.isaaca.musictracker.externalapi.lastfm.artistsearch.LastFMArtistSearchResponse;
 import com.isaaca.musictracker.requests.AlbumRequest;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import tools.jackson.databind.ObjectMapper;
 
@@ -20,7 +20,6 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -94,7 +93,7 @@ public class LastFMService {
         }
     }
 
-    public List<ArtistSearchResult> lookUpArtists(String name) throws IOException, URISyntaxException, InterruptedException {
+    public List<LastFMArtistResult> lookUpArtists(String name) throws IOException, URISyntaxException, InterruptedException {
         String url =
                 lastFMApiRoot +
                         "?method=artist.search" +
@@ -115,12 +114,12 @@ public class LastFMService {
 
         LastFMArtistSearchResponse parsedResponse = mapper.readValue(response.body(), LastFMArtistSearchResponse.class);
 
-        List<ArtistSearchResult> results = parsedResponse
+        List<LastFMArtistResult> results = parsedResponse
                 .getResults()
                 .getArtistMatches()
                 .getArtists()
                 .stream()
-                .map(artist -> new ArtistSearchResult(
+                .map(artist -> new LastFMArtistResult(
                         artist.getMbid(),
                         artist.getName()
                 )).toList();

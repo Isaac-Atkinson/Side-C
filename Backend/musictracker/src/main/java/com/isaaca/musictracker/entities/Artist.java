@@ -14,6 +14,26 @@ public class Artist {
 
     private String name;
 
+    private String musicBrainzId;
+
+    private String imageUrl;
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public String getMusicBrainzId() {
+        return musicBrainzId;
+    }
+
+    public void setMusicBrainzId(String musicBrainzId) {
+        this.musicBrainzId = musicBrainzId;
+    }
+
     public Integer getId() {
         return id;
     }

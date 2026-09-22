@@ -1,7 +1,7 @@
-package com.isaaca.musictracker.lastfm.albuminfo;
+package com.isaaca.musictracker.externalapi.lastfm.albuminfo;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.isaaca.musictracker.lastfm.albumsearch.LastFMImage;
+import com.isaaca.musictracker.externalapi.lastfm.albumsearch.LastFMImage;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.isaaca.musictracker.lastfm.artistsearch;
+package com.isaaca.musictracker.externalapi.lastfm.artistsearch;
 
 public class LastFMArtistSearchResponse {
 

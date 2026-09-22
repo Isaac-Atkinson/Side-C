@@ -1,4 +1,4 @@
-package com.isaaca.musictracker.lastfm.albuminfo;
+package com.isaaca.musictracker.externalapi.lastfm.albuminfo;
 
 public class LastFMResponseAlbumInfo {
 

@@ -2,7 +2,7 @@ import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {API_BASE_URL} from "../config/api.ts";
 import type {ArtistReview} from "../types/ArtistReview.ts";
-import DetailedArtistCard from "../components/cards/DetailedArtistCard.tsx";
+import DetailedArtistReviewCard from "../components/cards/DetailedArtistReviewCard.tsx";
 
 function ArtistReviewDetailPage() {
 
@@ -26,7 +26,7 @@ function ArtistReviewDetailPage() {
     }
     return(
         <div>
-            <DetailedArtistCard
+            <DetailedArtistReviewCard
                 artistReview={artistReview}
                 onArtistUpdated={handleArtistUpdated}
             />
