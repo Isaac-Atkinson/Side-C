@@ -1,6 +1,7 @@
 package com.isaaca.musictracker.requests;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 public class RegisterRequest {
 
@@ -8,6 +9,7 @@ public class RegisterRequest {
     private String username;
 
     @NotBlank
+    @Size(min = 8)
     private String password;
 
     public String getPassword() {
