@@ -1,8 +1,13 @@
-import {Box, Button, TextField} from "@mui/material";
 import {useState} from "react";
-import {API_BASE_URL} from "../../config/api.ts";
+import {Box, Button, TextField} from "@mui/material";
 
-function RegisterForm(){
+type AuthFormProps = {
+    onSubmit: (data: {
+        username: string,
+        password: string,
+    }) => void
+}
+function AuthForm({onSubmit}: AuthFormProps) {
     const[username, setUsername] = useState("");
     const[password, setPassword] = useState("");
 
@@ -23,9 +28,7 @@ function RegisterForm(){
         if(!password){
             setPasswordError("Password is required");
             valid = false;
-        }
-
-        if(password.length < 8){
+        } else if(password.length < 8){
             setPasswordError("Password must be at least 8 characters");
             valid = false;
         }
@@ -38,18 +41,7 @@ function RegisterForm(){
 
         if(!validateForm()) return;
 
-        const response = await fetch(`${API_BASE_URL}/auth/register`, {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({
-                username : username,
-                password: password,
-            })
-        });
-
-        if(response.ok){
-            console.log("User created");
-        }
+        onSubmit({username, password});
     }
     return (
         <div>
@@ -83,4 +75,4 @@ function RegisterForm(){
     )
 }
 
-export default RegisterForm;
+export default AuthForm;

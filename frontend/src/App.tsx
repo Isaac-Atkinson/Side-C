@@ -7,6 +7,7 @@ import AlbumReviewDetailPage from "./pages/AlbumReviewDetailPage.tsx";
 import ArtistReviewDetailPage from "./pages/ArtistReviewDetailPage.tsx";
 import SearchPage from "./pages/SearchPage.tsx";
 import RegisterPage from "./pages/RegisterPage.tsx";
+import LoginPage from "./pages/LoginPage.tsx";
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
               <Route path={"artists/:id"} element={<ArtistReviewDetailPage />}/>
               <Route path="/search" element={<SearchPage />} />
               <Route path = "/register" element={<RegisterPage />} />
+              <Route path = "/login" element={<LoginPage/>} />
           </Routes>
       </>
   )

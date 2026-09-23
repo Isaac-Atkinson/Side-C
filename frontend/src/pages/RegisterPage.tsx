@@ -1,5 +1,5 @@
 
-import RegisterForm from "../components/forms/RegisterForm.tsx";
+import RegisterForm from "../components/forms/authentification/RegisterForm.tsx";
 
 function registerPage() {
 

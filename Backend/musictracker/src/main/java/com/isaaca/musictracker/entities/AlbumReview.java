@@ -21,8 +21,6 @@ public class AlbumReview {
     @Max(10)
     private Integer rating;
 
-
-
     private String reviewText;
 
     public String getReviewText() {
