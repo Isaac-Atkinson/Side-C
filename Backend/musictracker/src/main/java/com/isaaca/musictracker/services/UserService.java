@@ -1,12 +1,9 @@
 package com.isaaca.musictracker.services;
 
 import com.isaaca.musictracker.entities.User;
-import com.isaaca.musictracker.exceptions.EmailAlreadyInUseException;
 import com.isaaca.musictracker.exceptions.UserAlreadyExistsException;
 import com.isaaca.musictracker.repositories.UserRepository;
 import com.isaaca.musictracker.requests.RegisterRequest;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -27,13 +24,8 @@ public class UserService {
             throw new UserAlreadyExistsException();
         }
 
-        if(userRepository.existsByEmail(registerRequest.getEmail())){
-            throw new EmailAlreadyInUseException();
-        }
-
         User user = new User();
         user.setUsername(registerRequest.getUsername());
-        user.setEmail(registerRequest.getEmail());
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
 
         return userRepository.save(user);
