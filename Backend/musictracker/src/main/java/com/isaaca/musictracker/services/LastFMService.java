@@ -31,7 +31,9 @@ public class LastFMService {
     @Value("${lastfm.api.root}")
     private String lastFMApiRoot;
 
-    private final int REQUEST_LIMIT = 16;
+    private final int ALBUM_REQUEST_LIMIT = 16;
+
+    private final int ARTIST_REQUEST_LIMIT = 4;
 
     private final HttpClient client =
             HttpClient.newHttpClient();
@@ -51,7 +53,7 @@ public class LastFMService {
                         "?method=album.search" +
                         "&album=" + URLEncoder.encode(title, StandardCharsets.UTF_8) +
                         "&api_key=" + API_KEY +
-                        "&limit=" + Integer.toString(REQUEST_LIMIT) +
+                        "&limit=" + Integer.toString(ALBUM_REQUEST_LIMIT) +
                         "&format=json";
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(new URI(url))
@@ -99,7 +101,7 @@ public class LastFMService {
                         "?method=artist.search" +
                         "&artist=" + URLEncoder.encode(name, StandardCharsets.UTF_8) +
                         "&api_key=" + API_KEY +
-                        "&limit=" + Integer.toString(REQUEST_LIMIT) +
+                        "&limit=" + Integer.toString(ARTIST_REQUEST_LIMIT) +
                         "&format=json";
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(new URI(url))

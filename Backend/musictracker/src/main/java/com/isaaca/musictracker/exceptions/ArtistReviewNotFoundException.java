@@ -2,7 +2,7 @@ package com.isaaca.musictracker.exceptions;
 
 public class ArtistReviewNotFoundException extends RuntimeException {
     public ArtistReviewNotFoundException() {
-        super();
+        super("Artist Review Not Found");
     }
 
     public ArtistReviewNotFoundException(String message) {

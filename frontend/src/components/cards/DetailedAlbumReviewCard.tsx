@@ -1,7 +1,7 @@
 import type {AlbumReview} from "../../types/AlbumReview.ts";
-import {Box, Button, Card, CardContent, CardMedia, Dialog, DialogContent, DialogTitle, Typography} from "@mui/material";
+import {Box, Button, Dialog, DialogContent, DialogTitle, Typography} from "@mui/material";
 import {API_BASE_URL} from "../../config/api.ts";
-import {Link, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {useState} from "react";
 import EditAlbumForm from "../forms/EditAlbumForm.tsx";
 

@@ -110,4 +110,6 @@ function DetailedArtistReviewCard({artistReview, onArtistUpdated}: DetailedArtis
     )
 }
 
+
+
 export default DetailedArtistReviewCard;

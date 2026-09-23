@@ -2,7 +2,7 @@ package com.isaaca.musictracker.exceptions;
 
 public class AlbumAlreadyReviewedException extends RuntimeException {
     public AlbumAlreadyReviewedException() {
-        super("Album already reviewed");
+        super("Album Already Reviewed");
     }
 
     public AlbumAlreadyReviewedException(String message) {
