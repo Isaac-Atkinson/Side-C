@@ -14,4 +14,11 @@ public interface AlbumReviewRepository extends JpaRepository<AlbumReview, Intege
     Optional<AlbumReview> findByAlbum_UniqueIdentifier(String musicBrainzId);
 
     List<AlbumReview> findByUser_Username(String username);
+
+    Optional<AlbumReview> findByIdAndUser_Username(
+            Integer id,
+            String username
+    );
+
+    Optional<AlbumReview> findByUser_UsernameAndAlbum_UniqueIdentifier(String username, String uniqueId);
 }

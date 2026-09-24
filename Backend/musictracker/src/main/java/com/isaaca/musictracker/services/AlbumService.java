@@ -56,8 +56,8 @@ public class AlbumService {
         return albumReviewRepository.findByUser_Username(username);
     }
 
-    public Optional<AlbumReview> getAlbumReviewById(Integer id) {
-        return albumReviewRepository.findById(id);
+    public Optional<AlbumReview> getAlbumReviewById(Integer id, String username)  {
+        return albumReviewRepository.findByIdAndUser_Username(id, username);
     }
 
     @Transactional
@@ -76,7 +76,11 @@ public class AlbumService {
             uniqueId = albumRequest.getMusicBrainzId();
         }
 
-        Optional<AlbumReview> optionalAlbumReview = albumReviewRepository.findByAlbum_UniqueIdentifier(uniqueId);
+        Optional<AlbumReview> optionalAlbumReview = albumReviewRepository
+                .findByUser_UsernameAndAlbum_UniqueIdentifier(
+                        username,
+                        uniqueId);
+
         if(optionalAlbumReview.isPresent()) {
             throw new AlbumAlreadyReviewedException();
         }
@@ -99,8 +103,8 @@ public class AlbumService {
         return albumReviewRepository.save(albumReview);
     }
 
-    public AlbumReview updateAlbumReview(Integer id, AlbumRequest albumRequest) throws URISyntaxException, IOException, InterruptedException {
-        Optional<AlbumReview> optionalAlbumReview = albumReviewRepository.findById(id);
+    public AlbumReview updateAlbumReview(Integer id, AlbumRequest albumRequest, String username) {
+        Optional<AlbumReview> optionalAlbumReview = albumReviewRepository.findByIdAndUser_Username(id, username);
 
         if (optionalAlbumReview.isEmpty()){
             throw new AlbumReviewNotFoundException();
@@ -114,8 +118,8 @@ public class AlbumService {
         return albumReviewRepository.save(albumReview);
     }
 
-    public void deleteAlbumReviewById(Integer id) {
-        Optional<AlbumReview> optionalAlbumReview = albumReviewRepository.findById(id);
+    public void deleteAlbumReviewById(Integer id, String username) {
+        Optional<AlbumReview> optionalAlbumReview = albumReviewRepository.findByIdAndUser_Username(id, username);
 
         if(optionalAlbumReview.isPresent()){
             albumReviewRepository.deleteById(id);

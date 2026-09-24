@@ -38,8 +38,11 @@ public class AlbumReviewController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AlbumReview> getAlbumReviewById(@PathVariable Integer id) {
-        return albumService.getAlbumReviewById(id)
+    public ResponseEntity<AlbumReview> getAlbumReviewById(
+            @PathVariable Integer id,
+            Authentication authentication) {
+
+        return albumService.getAlbumReviewById(id, authentication.getName())
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -63,12 +66,16 @@ public class AlbumReviewController {
 
         String username = authentication.getName();
 
-        return ResponseEntity.ok(albumService.updateAlbumReview(id, albumRequest));
+        return ResponseEntity.ok(albumService.updateAlbumReview(id, albumRequest, username));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void>  deleteAlbumReviewById(@PathVariable Integer id) {
-        albumService.deleteAlbumReviewById(id);
+    public ResponseEntity<Void>  deleteAlbumReviewById(@PathVariable Integer id,
+                                                       Authentication authentication) {
+
+        String username = authentication.getName();
+
+        albumService.deleteAlbumReviewById(id, username);
 
         return ResponseEntity.noContent().build();
     }
