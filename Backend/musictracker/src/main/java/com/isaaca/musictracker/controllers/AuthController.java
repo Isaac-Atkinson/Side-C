@@ -4,6 +4,7 @@ import com.isaaca.musictracker.requests.LoginRequest;
 import com.isaaca.musictracker.requests.RegisterRequest;
 import com.isaaca.musictracker.security.UserService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,8 +30,8 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Void> loginUser(@Valid @RequestBody LoginRequest loginRequest, HttpServletRequest request){
-        userService.loginUser(loginRequest, request);
+    public ResponseEntity<Void> loginUser(@Valid @RequestBody LoginRequest loginRequest, HttpServletRequest request, HttpServletResponse response){
+        userService.loginUser(loginRequest, request, response);
 
         return ResponseEntity.ok().build();
     }

@@ -112,7 +112,7 @@ GET https://ws.audioscrobbler.com/2.0/?method=album.getinfo&mbid=0024c5d8-8b54-4
 
 ###
 
-GET https://ws.audioscrobbler.com/2.0/?method=artist.search&artist=frank+ocean&api_key=
+GET https://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=frank+ocean&api_key=&format=json
 
 ###
 

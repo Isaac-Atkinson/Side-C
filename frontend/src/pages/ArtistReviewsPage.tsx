@@ -12,7 +12,9 @@ function ArtistReviewsPage(){
 
     //Fetch all artist reviews
     useEffect(() => {
-        fetch(`${API_BASE_URL}/artists/reviews`,)
+        fetch(`${API_BASE_URL}/artists/reviews`,{
+            credentials: "include",
+        })
             .then(response => response.json())
             .then(data => setArtistReviews(data));
     }, [])

@@ -10,7 +10,9 @@ function AlbumReviewDetailPage(){
     const [albumReview, setAlbumReview] = useState<AlbumReview | null>(null);
 
     useEffect(()=>{
-        fetch(`${API_BASE_URL}/albums/reviews/${id}`)
+        fetch(`${API_BASE_URL}/albums/reviews/${id}`,{
+            credentials: "include",
+        })
             .then(res => res.json())
             .then(data => setAlbumReview(data))
     }, [id])

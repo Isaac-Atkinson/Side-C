@@ -6,6 +6,9 @@ import com.isaaca.musictracker.LastFMArtistResult;
 import com.isaaca.musictracker.externalapi.lastfm.albuminfo.LastFMAlbumInfo;
 import com.isaaca.musictracker.externalapi.lastfm.albuminfo.LastFMResponseAlbumInfo;
 import com.isaaca.musictracker.externalapi.lastfm.albumsearch.LastFMAlbumSearchResponse;
+import com.isaaca.musictracker.externalapi.lastfm.artistinfo.LastFMArtistInfo;
+import com.isaaca.musictracker.externalapi.lastfm.artistinfo.LastFMResponseArtistInfo;
+import com.isaaca.musictracker.externalapi.lastfm.artistsearch.LastFMArtist;
 import com.isaaca.musictracker.externalapi.lastfm.artistsearch.LastFMArtistSearchResponse;
 import com.isaaca.musictracker.requests.AlbumRequest;
 import org.springframework.beans.factory.annotation.Value;
@@ -127,6 +130,29 @@ public class LastFMService {
                 )).toList();
 
         return results;
+    }
+
+    public LastFMArtistInfo getArtistInfo(String artistName) throws URISyntaxException, IOException, InterruptedException {
+        String url =
+                lastFMApiRoot +
+                        "?method=artist.getinfo" +
+                        "&artist=" + URLEncoder.encode(artistName, StandardCharsets.UTF_8) +
+                        "&api_key=" + API_KEY +
+                        "&format=json";
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(new URI(url))
+                .header(
+                        "User-Agent",
+                        "MusicTracker/1.0 (iatkinson18@outlook.com)"
+                )
+                .GET()
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        LastFMResponseArtistInfo parsedResponse = mapper.readValue(response.body(), LastFMResponseArtistInfo.class);
+
+        return parsedResponse.getArtist();
     }
 
     private LastFMAlbumInfo getAlbumInfoByMbid(String mbid) throws IOException, URISyntaxException, InterruptedException {

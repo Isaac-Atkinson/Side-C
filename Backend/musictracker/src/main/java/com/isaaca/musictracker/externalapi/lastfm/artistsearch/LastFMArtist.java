@@ -6,6 +6,8 @@ public class LastFMArtist {
 
     private String mbid;
 
+    private String lastFMUrl;
+
     public String getName() {
         return name;
     }
@@ -14,11 +16,20 @@ public class LastFMArtist {
         this.name = name;
     }
 
+
     public String getMbid() {
         return mbid;
     }
 
     public void setMbid(String mbid) {
         this.mbid = mbid;
+    }
+
+    public String getLastFMUrl() {
+        return lastFMUrl;
+    }
+
+    public void setLastFMUrl(String lastFMUrl) {
+        this.lastFMUrl = lastFMUrl;
     }
 }

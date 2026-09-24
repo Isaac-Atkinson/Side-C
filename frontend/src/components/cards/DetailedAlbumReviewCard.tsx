@@ -20,7 +20,8 @@ function DetailedAlbumReviewCard({albumReview, onAlbumUpdated}: DetailedAlbumCar
 
         const response = await fetch(`${API_BASE_URL}/albums/reviews/${albumReview.id}`,
             {
-                method : "DELETE"
+                method : "DELETE",
+                credentials: "include",
             }
         );
 

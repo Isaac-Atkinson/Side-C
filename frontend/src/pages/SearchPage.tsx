@@ -22,8 +22,12 @@ function SearchPage(){
 
     const handleSearch = async () =>{
         const [albumResponse, artistResponse] = await Promise.all([
-                fetch(`${API_BASE_URL}/search/albums?title=${encodeURIComponent(search)}`),
-                fetch(`${API_BASE_URL}/search/artists?name=${encodeURIComponent(search)}`)
+                fetch(`${API_BASE_URL}/search/albums?title=${encodeURIComponent(search)}`,{
+                    credentials: "include",
+                }),
+                fetch(`${API_BASE_URL}/search/artists?name=${encodeURIComponent(search)}`,{
+                    credentials: "include",
+                })
         ]
             )
 

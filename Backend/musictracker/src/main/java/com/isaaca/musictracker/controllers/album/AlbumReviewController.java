@@ -9,13 +9,15 @@ import com.isaaca.musictracker.services.AlbumService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "http://localhost:5173",
+        allowCredentials = "true")
 @RestController
 @RequestMapping("/api/albums/reviews")
 public class AlbumReviewController {
@@ -28,8 +30,11 @@ public class AlbumReviewController {
     }
 
     @GetMapping
-    public ResponseEntity<List<AlbumReview>> getAllAlbumReviews() {
-        return ResponseEntity.ok(albumService.getAllAlbumReviews());
+    public ResponseEntity<List<AlbumReview>> getAllAlbumReviews(Authentication authentication) {
+
+        String username = authentication.getName();
+
+        return ResponseEntity.ok(albumService.getAllAlbumReviewsByUser(username));
     }
 
     @GetMapping("/{id}")
@@ -40,15 +45,23 @@ public class AlbumReviewController {
     }
 
     @PostMapping
-    public ResponseEntity<AlbumReview> addAlbumReview(@Valid @RequestBody AlbumRequest albumRequest) throws URISyntaxException, IOException, InterruptedException {
+    public ResponseEntity<AlbumReview> addAlbumReview(@Valid @RequestBody AlbumRequest albumRequest, Authentication authentication)
+            throws URISyntaxException, IOException, InterruptedException {
 
-        AlbumReview albumReview = albumService.addAlbumreview(albumRequest);
+        String username = authentication.getName();
+
+        AlbumReview albumReview = albumService.addAlbumreview(albumRequest, username);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(albumReview);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AlbumReview> updateAlbumReview(@PathVariable Integer id, @Valid @RequestBody AlbumRequest albumRequest) throws URISyntaxException, IOException, InterruptedException {
+    public ResponseEntity<AlbumReview> updateAlbumReview(@PathVariable Integer id,
+                                                         @Valid @RequestBody AlbumRequest albumRequest,
+                                                         Authentication authentication)
+            throws URISyntaxException, IOException, InterruptedException {
+
+        String username = authentication.getName();
 
         return ResponseEntity.ok(albumService.updateAlbumReview(id, albumRequest));
     }

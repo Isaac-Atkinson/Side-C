@@ -47,6 +47,7 @@ function AddAlbumForm({album, onSuccess, onCancel}: AddAlbumFormProps) {
         const response = await fetch(`${API_BASE_URL}/albums/reviews`, {
             method: "POST",
             headers: {"Content-Type": "application/json"},
+            credentials: "include",
             body: JSON.stringify({
                 musicBrainzId: album.musicBrainzId,
                 title: album.title,

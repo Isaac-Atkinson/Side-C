@@ -12,4 +12,6 @@ public interface ArtistRepository extends JpaRepository<Artist, Integer> {
 
     Optional<Artist> findByMusicBrainzId(String musicBrainzId);
 
+    Optional<Artist> findByLastFMUrl(String lastFMUrl);
+
 }

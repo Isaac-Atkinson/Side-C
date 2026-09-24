@@ -15,7 +15,9 @@ function AlbumReviewsPage() {
 
     //Fetch all album reviews
     useEffect(() => {
-        fetch(`${API_BASE_URL}/albums/reviews`,)
+        fetch(`${API_BASE_URL}/albums/reviews`,{
+            credentials: "include",
+        })
             .then(response => response.json())
             .then(data => setAlbumReviews(data));
     }, [])

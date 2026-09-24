@@ -43,6 +43,7 @@ function EditAlbumForm({albumReview, onCancel, onAlbumUpdated, onSuccess}: EditA
         const response = await fetch(`${API_BASE_URL}/albums/reviews/${albumReview.id}`, {
             method: "PUT",
             headers: {"Content-Type": "application/json"},
+            credentials: "include",
             body: JSON.stringify({
                 title: albumReview.album.title,
                 artist: albumReview.album.artist.name,

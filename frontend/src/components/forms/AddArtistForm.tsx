@@ -45,6 +45,7 @@ function AddArtistForm({artist, onSuccess, onCancel}: AddArtistFormProps) {
         const response = await fetch(`${API_BASE_URL}/artists/reviews`, {
             method: "POST",
             headers: {"Content-Type": "application/json"},
+            credentials: "include",
             body: JSON.stringify({
                 musicBrainzId : artist.musicBrainzId,
                 name: artist.name,

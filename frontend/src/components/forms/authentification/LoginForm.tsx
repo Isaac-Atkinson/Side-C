@@ -8,7 +8,7 @@ function LoginForm(){
         email?: string;
         password: string;
     }) => {
-        await fetch(`${API_BASE_URL}/auth/login`, {
+        const response= await fetch(`${API_BASE_URL}/auth/login`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -16,6 +16,10 @@ function LoginForm(){
             credentials: "include",
             body: JSON.stringify(data)
         });
+
+        if(response.ok){
+            console.log("Successfully logged in!");
+        }
     };
 
     return(

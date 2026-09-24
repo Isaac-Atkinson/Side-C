@@ -44,6 +44,7 @@ function EditArtistForm({ artistReview, onCancel, onArtistUpdated, onSuccess }: 
         const response = await fetch(`${API_BASE_URL}/artists/reviews/${artistReview.id}`, {
             method: "PUT",
             headers: {"Content-Type": "application/json"},
+            credentials: "include",
             body: JSON.stringify({
                 name : artistReview.artist.name,
                 rating: Number(rating),

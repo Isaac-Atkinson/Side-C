@@ -12,7 +12,7 @@ public class AlbumReview {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "album_id")
     private Album album;
 
@@ -22,6 +22,10 @@ public class AlbumReview {
     private Integer rating;
 
     private String reviewText;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public String getReviewText() {
         return reviewText;
@@ -49,5 +53,13 @@ public class AlbumReview {
 
     public void setAlbum(Album album) {
         this.album = album;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

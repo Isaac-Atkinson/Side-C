@@ -3,12 +3,16 @@ package com.isaaca.musictracker.services;
 import com.isaaca.musictracker.entities.Album;
 import com.isaaca.musictracker.entities.AlbumReview;
 import com.isaaca.musictracker.entities.Artist;
+import com.isaaca.musictracker.entities.User;
 import com.isaaca.musictracker.exceptions.AlbumAlreadyReviewedException;
 import com.isaaca.musictracker.exceptions.AlbumReviewNotFoundException;
 import com.isaaca.musictracker.externalapi.lastfm.albuminfo.LastFMAlbumInfo;
+import com.isaaca.musictracker.externalapi.lastfm.artistinfo.LastFMArtistInfo;
+import com.isaaca.musictracker.externalapi.lastfm.artistsearch.LastFMArtist;
 import com.isaaca.musictracker.repositories.AlbumRepository;
 import com.isaaca.musictracker.repositories.AlbumReviewRepository;
 import com.isaaca.musictracker.repositories.ArtistRepository;
+import com.isaaca.musictracker.repositories.UserRepository;
 import com.isaaca.musictracker.requests.AlbumRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -22,6 +26,7 @@ import java.util.Optional;
 @Service
 public class AlbumService {
 
+    private final UserRepository userRepository;
     @Value("${API_KEY}")
     private String API_KEY;
 
@@ -37,16 +42,18 @@ public class AlbumService {
             AlbumRepository albumRepository,
             AlbumReviewRepository albumReviewRepository,
             ArtistRepository artistRepository,
-            LastFMService lastFMService
-    ) {
+            LastFMService lastFMService,
+            UserRepository userRepository) {
         this.albumRepository = albumRepository;
         this.albumReviewRepository = albumReviewRepository;
         this.artistRepository = artistRepository;
         this.lastFMService = lastFMService;
+        this.userRepository = userRepository;
     }
 
-    public List<AlbumReview> getAllAlbumReviews()  {
-        return albumReviewRepository.findAll();
+    public List<AlbumReview> getAllAlbumReviewsByUser(String username)  {
+
+        return albumReviewRepository.findByUser_Username(username);
     }
 
     public Optional<AlbumReview> getAlbumReviewById(Integer id) {
@@ -54,7 +61,13 @@ public class AlbumService {
     }
 
     @Transactional
-    public AlbumReview addAlbumreview(AlbumRequest albumRequest) throws URISyntaxException, IOException, InterruptedException {
+    public AlbumReview addAlbumreview(AlbumRequest albumRequest, String username)
+            throws URISyntaxException, IOException, InterruptedException {
+
+        User user = userRepository
+                .findUserByUsername(username)
+                .orElseThrow();
+
         String uniqueId = "";
         if(albumRequest.getMusicBrainzId() == null ||
                 albumRequest.getMusicBrainzId().isBlank()){
@@ -74,14 +87,14 @@ public class AlbumService {
             Album album = buildAlbum(albumRequest, uniqueId);
             albumRepository.save(album);
 
-            AlbumReview albumReview = buildAlbumReview(albumRequest, album);
+            AlbumReview albumReview = buildAlbumReview(albumRequest, album, user);
 
             return albumReviewRepository.save(albumReview);
         }
 
         Album album = optionalAlbum.get();
 
-        AlbumReview albumReview = buildAlbumReview(albumRequest, album);
+        AlbumReview albumReview = buildAlbumReview(albumRequest, album, user);
 
         return albumReviewRepository.save(albumReview);
     }
@@ -112,12 +125,12 @@ public class AlbumService {
     private Album buildAlbum(AlbumRequest albumRequest, String uniqueId) throws URISyntaxException, IOException, InterruptedException {
         String artistName = albumRequest.getArtist();
 
-        Artist artist = artistRepository.findByNameIgnoreCase(artistName)
-                .orElseGet(() -> {
-                    Artist artist1 = new Artist();
-                    artist1.setName(artistName);
-                    return artistRepository.save(artist1);
-                });
+        LastFMArtistInfo lastFMArtistInfo = lastFMService.getArtistInfo(albumRequest.getArtist());
+
+        Artist artist = artistRepository
+                .findByLastFMUrl(lastFMArtistInfo.getUrl())
+                .orElseGet(() ->
+                        createArtist(artistName, lastFMArtistInfo));
 
         Album album = new Album();
 
@@ -139,12 +152,23 @@ public class AlbumService {
         return album;
     }
 
-    private AlbumReview buildAlbumReview(AlbumRequest albumRequest, Album album) {
+    private AlbumReview buildAlbumReview(AlbumRequest albumRequest, Album album, User user) {
         AlbumReview albumReview = new AlbumReview();
         albumReview.setAlbum(album);
+        albumReview.setUser(user);
         albumReview.setRating(albumRequest.getRating());
         albumReview.setReviewText(albumRequest.getReviewText());
 
         return albumReview;
+    }
+
+    private Artist createArtist(String artistName, LastFMArtistInfo lastFMArtistInfo) {
+        Artist artist = new Artist();
+
+        artist.setName(artistName);
+        artist.setLastFMUrl(lastFMArtistInfo.getUrl());
+        artist.setMusicBrainzId(lastFMArtistInfo.getMbid());
+
+        return artistRepository.save(artist);
     }
 }

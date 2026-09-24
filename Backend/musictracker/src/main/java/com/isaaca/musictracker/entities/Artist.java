@@ -16,6 +16,8 @@ public class Artist {
 
     private String musicBrainzId;
 
+    private String lastFMUrl;
+
     private String imageUrl;
 
     public String getImageUrl() {
@@ -44,5 +46,13 @@ public class Artist {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getLastFMUrl() {
+        return lastFMUrl;
+    }
+
+    public void setLastFMUrl(String lastFMUrl) {
+        this.lastFMUrl = lastFMUrl;
     }
 }

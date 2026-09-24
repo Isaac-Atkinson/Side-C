@@ -9,13 +9,17 @@ public class ArtistReview {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "artist_id")
     private Artist artist;
 
     private Integer rating;
 
     private String reviewText;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public Long getId() {
         return id;
@@ -43,5 +47,13 @@ public class ArtistReview {
 
     public void setArtist(Artist artist) {
         this.artist = artist;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

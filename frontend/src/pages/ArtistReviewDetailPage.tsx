@@ -11,7 +11,8 @@ function ArtistReviewDetailPage() {
     const [artistReview, setArtistReview] = useState<ArtistReview | null>(null);
 
     useEffect(()=>{
-        fetch(`${API_BASE_URL}/artists/reviews/${id}`)
+        fetch(`${API_BASE_URL}/artists/reviews/${id}`,
+            {credentials: "include",})
             .then(res => res.json())
             .then(data => setArtistReview(data))
     }, [id])

@@ -5,10 +5,13 @@ import com.isaaca.musictracker.entities.AlbumReview;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface AlbumReviewRepository extends JpaRepository<AlbumReview, Integer> {
 
 
     Optional<AlbumReview> findByAlbum_UniqueIdentifier(String musicBrainzId);
+
+    List<AlbumReview> findByUser_Username(String username);
 }
