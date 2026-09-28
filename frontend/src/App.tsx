@@ -10,6 +10,7 @@ import RegisterPage from "./pages/RegisterPage.tsx";
 import LoginPage from "./pages/LoginPage.tsx";
 
 
+
 function App() {
 
   return(
@@ -18,6 +19,10 @@ function App() {
               <Link to="/albums">Albums</Link>
               {" | "}
               <Link to="/artists">Artists</Link>
+              {" | "}
+              <Link to="/register">Register</Link>
+              {" | "}
+              <Link to="/login">Login</Link>
           </nav>
 
           <Routes>

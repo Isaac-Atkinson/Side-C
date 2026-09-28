@@ -59,4 +59,8 @@ public class ArtistRequest {
     public void setReviewText(String reviewText) {
         this.reviewText = reviewText;
     }
+
+    public void setMusicBrainzId(String musicBrainzId) {
+        this.musicBrainzId = musicBrainzId;
+    }
 }

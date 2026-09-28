@@ -4,11 +4,10 @@ import com.isaaca.musictracker.ArtistSearchResult;
 import com.isaaca.musictracker.LastFMArtistResult;
 import com.isaaca.musictracker.entities.Artist;
 import com.isaaca.musictracker.entities.ArtistReview;
+import com.isaaca.musictracker.entities.User;
+import com.isaaca.musictracker.exceptions.ArtistAlreadyReviewedException;
 import com.isaaca.musictracker.exceptions.ArtistReviewNotFoundException;
-import com.isaaca.musictracker.repositories.AlbumRepository;
-import com.isaaca.musictracker.repositories.AlbumReviewRepository;
-import com.isaaca.musictracker.repositories.ArtistRepository;
-import com.isaaca.musictracker.repositories.ArtistReviewRepository;
+import com.isaaca.musictracker.repositories.*;
 import com.isaaca.musictracker.requests.ArtistRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -30,44 +29,60 @@ public class ArtistService {
     private final LastFMService lastFMService;
     private final FanartService fanartService;
     private final ArtistReviewRepository artistReviewRepository;
+    private final UserRepository userRepository;
 
     public ArtistService(
-            AlbumRepository albumRepository,
-            AlbumReviewRepository albumReviewRepository,
             ArtistRepository artistRepository,
             LastFMService lastFMService,
             FanartService fanartService,
-            ArtistReviewRepository artistReviewRepository) {
+            ArtistReviewRepository artistReviewRepository,
+            UserRepository userRepository) {
         this.artistRepository = artistRepository;
         this.lastFMService = lastFMService;
         this.fanartService = fanartService;
         this.artistReviewRepository = artistReviewRepository;
+        this.userRepository = userRepository;
     }
 
-    public List<ArtistReview> getAllArtistReviews(){
-        return artistReviewRepository.findAll();
+    public List<ArtistReview> getAllArtistReviews(String username){
+        return artistReviewRepository.findByUser_Username(username);
     }
 
-    public Optional<ArtistReview> getArtistReviewById(Integer id){
-        return  artistReviewRepository.findById(id);
+    public Optional<ArtistReview> getArtistReviewById(Integer id,
+                                                      String username){
+        return  artistReviewRepository.findByIdAndUser_Username(id, username);
     }
 
     @Transactional
-    public ArtistReview addArtistReview(ArtistRequest artistRequest) {
+    public ArtistReview addArtistReview(ArtistRequest artistRequest, String username) {
+
+        Optional<ArtistReview> existingArtistReview = artistReviewRepository
+                .findByUser_UsernameAndArtist_MusicBrainzId(username,
+                                                            artistRequest.getMusicBrainzId());
+
+        if(existingArtistReview.isPresent()){
+            throw new ArtistAlreadyReviewedException();
+        }
+
+        User user = userRepository
+                .findUserByUsername(username)
+                .orElseThrow();
+
+
         Optional<Artist> existingArtist = artistRepository.findByMusicBrainzId(artistRequest.getMusicBrainzId());
 
         if(existingArtist.isEmpty()) {
             Artist artist = buildArtist(artistRequest);
 
-            return buildArtistReview(artistRequest, artist);
+            return buildArtistReview(artistRequest, artist, user);
         }
         Artist artist = existingArtist.get();
 
-        return buildArtistReview(artistRequest, artist);
+        return buildArtistReview(artistRequest, artist, user);
     }
 
-    public ArtistReview updateArtistReview(Integer id, ArtistRequest artistRequest) {
-        Optional<ArtistReview> optionalArtistReview = artistReviewRepository.findById(id);
+    public ArtistReview updateArtistReview(Integer id, ArtistRequest artistRequest, String username) {
+        Optional<ArtistReview> optionalArtistReview = artistReviewRepository.findByIdAndUser_Username(id, username);
 
         if(optionalArtistReview.isEmpty()) {
             throw new ArtistReviewNotFoundException();
@@ -80,8 +95,8 @@ public class ArtistService {
         return artistReviewRepository.save(artistReview);
     }
 
-    public void deleteArtistReviewById(Integer id) {
-        Optional<ArtistReview> optionalArtistReview = artistReviewRepository.findById(id);
+    public void deleteArtistReviewById(Integer id, String username) {
+        Optional<ArtistReview> optionalArtistReview = artistReviewRepository.findByIdAndUser_Username(id, username);
 
         if(optionalArtistReview.isEmpty()) {
             throw new ArtistReviewNotFoundException();
@@ -129,9 +144,10 @@ public class ArtistService {
         return artistRepository.save(artist);
     }
 
-    private ArtistReview buildArtistReview(ArtistRequest artistRequest, Artist artist) {
+    private ArtistReview buildArtistReview(ArtistRequest artistRequest, Artist artist, User user) {
         ArtistReview artistReview = new ArtistReview();
         artistReview.setArtist(artist);
+        artistReview.setUser(user);
         artistReview.setRating(artistRequest.getRating());
         artistReview.setReviewText(artistRequest.getReviewText());
 

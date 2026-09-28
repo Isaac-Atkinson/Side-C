@@ -45,5 +45,14 @@ public class GlobalExceptionHandler {
                 .body(ex.getMessage());
     }
 
+    @ExceptionHandler
+    public ResponseEntity<String> handleArtistAlreadyReviewed(
+            ArtistAlreadyReviewedException ex
+    ) {
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(ex.getMessage());
+    }
+
 
 }

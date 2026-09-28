@@ -7,7 +7,7 @@ public class ArtistReview {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "artist_id")
@@ -21,7 +21,7 @@ public class ArtistReview {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 

@@ -10,6 +10,7 @@ import com.isaaca.musictracker.services.ArtistService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,33 +29,52 @@ public class ArtistReviewController {
     }
 
     @GetMapping
-    ResponseEntity<List<ArtistReview>> getAllArtistReviews() {
-        return ResponseEntity.ok(artistService.getAllArtistReviews());
+    public ResponseEntity<List<ArtistReview>> getAllArtistReviews(Authentication authentication) {
+
+        String username = authentication.getName();
+
+        return ResponseEntity.ok(artistService.getAllArtistReviews(username));
     }
 
     @GetMapping({"/{id}"})
-    public ResponseEntity<ArtistReview> getArtistReviewById(@PathVariable Integer id) {
-        return artistService.getArtistReviewById(id)
+    public ResponseEntity<ArtistReview> getArtistReviewById(@PathVariable Integer id,
+                                                            Authentication authentication) {
+
+        String username = authentication.getName();
+
+        return artistService.getArtistReviewById(id, username)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity<ArtistReview> addArtistReview(@Valid @RequestBody ArtistRequest artistRequest) {
-        ArtistReview artistReview = artistService.addArtistReview(artistRequest);
+    public ResponseEntity<ArtistReview> addArtistReview(@Valid @RequestBody ArtistRequest artistRequest,
+                                                        Authentication authentication) {
+
+        String username = authentication.getName();
+
+        ArtistReview artistReview = artistService.addArtistReview(artistRequest, username);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(artistReview);
     }
 
     @PutMapping({"/{id}"})
-    public ResponseEntity<ArtistReview> updateArtistReview(@PathVariable Integer id, @Valid @RequestBody ArtistRequest artistRequest) {
+    public ResponseEntity<ArtistReview> updateArtistReview(@PathVariable Integer id,
+                                                           @Valid @RequestBody ArtistRequest artistRequest,
+                                                           Authentication authentication) {
 
-        return ResponseEntity.ok(artistService.updateArtistReview(id, artistRequest));
+        String username = authentication.getName();
+
+        return ResponseEntity.ok(artistService.updateArtistReview(id, artistRequest, username));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteArtistReview(@PathVariable Integer id){
-        artistService.deleteArtistReviewById(id);
+    public ResponseEntity<Void> deleteArtistReview(@PathVariable Integer id,
+                                                   Authentication authentication){
+
+        String username = authentication.getName();
+
+        artistService.deleteArtistReviewById(id, username);
 
         return ResponseEntity.noContent().build();
     }

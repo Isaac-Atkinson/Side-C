@@ -26,7 +26,7 @@ import java.util.Optional;
 @Service
 public class AlbumService {
 
-    private final UserRepository userRepository;
+
     @Value("${API_KEY}")
     private String API_KEY;
 
@@ -37,6 +37,7 @@ public class AlbumService {
     private final AlbumReviewRepository albumReviewRepository;
     private final ArtistRepository artistRepository;
     private final LastFMService lastFMService;
+    private final UserRepository userRepository;
 
     public AlbumService(
             AlbumRepository albumRepository,
@@ -121,9 +122,11 @@ public class AlbumService {
     public void deleteAlbumReviewById(Integer id, String username) {
         Optional<AlbumReview> optionalAlbumReview = albumReviewRepository.findByIdAndUser_Username(id, username);
 
-        if(optionalAlbumReview.isPresent()){
-            albumReviewRepository.deleteById(id);
-        } else throw new AlbumReviewNotFoundException();
+        if(optionalAlbumReview.isEmpty()){
+            throw new AlbumReviewNotFoundException();
+        }
+
+        albumReviewRepository.deleteById(id);
     }
 
     private Album buildAlbum(AlbumRequest albumRequest, String uniqueId) throws URISyntaxException, IOException, InterruptedException {

@@ -61,8 +61,7 @@ public class AlbumReviewController {
     @PutMapping("/{id}")
     public ResponseEntity<AlbumReview> updateAlbumReview(@PathVariable Integer id,
                                                          @Valid @RequestBody AlbumRequest albumRequest,
-                                                         Authentication authentication)
-            throws URISyntaxException, IOException, InterruptedException {
+                                                         Authentication authentication) {
 
         String username = authentication.getName();
 
