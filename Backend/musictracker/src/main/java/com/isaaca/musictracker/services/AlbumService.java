@@ -1,5 +1,6 @@
 package com.isaaca.musictracker.services;
 
+import com.isaaca.musictracker.AlbumSearchResult;
 import com.isaaca.musictracker.entities.Album;
 import com.isaaca.musictracker.entities.AlbumReview;
 import com.isaaca.musictracker.entities.Artist;
@@ -127,6 +128,10 @@ public class AlbumService {
         }
 
         albumReviewRepository.deleteById(id);
+    }
+
+    public List<AlbumSearchResult> getAlbumSearchResults(String name) throws IOException, URISyntaxException, InterruptedException {
+        return lastFMService.lookUpAlbums(name);
     }
 
     private Album buildAlbum(AlbumRequest albumRequest, String uniqueId) throws URISyntaxException, IOException, InterruptedException {

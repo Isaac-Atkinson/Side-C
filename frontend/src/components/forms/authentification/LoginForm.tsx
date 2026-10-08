@@ -1,7 +1,9 @@
 import AuthForm from "./AuthForm.tsx";
 import {API_BASE_URL} from "../../../config/api.ts";
+import {useNavigate} from "react-router-dom";
 
 function LoginForm(){
+    const navigate = useNavigate();
 
     const handleLogin = async (data: {
         username: string;
@@ -18,7 +20,7 @@ function LoginForm(){
         });
 
         if(response.ok){
-            console.log("Successfully logged in!");
+            navigate("/albums")
         }
     };
 

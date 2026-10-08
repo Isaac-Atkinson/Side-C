@@ -2,8 +2,7 @@ import {useEffect, useState} from "react";
 import type {ArtistReview} from "../types/ArtistReview.ts";
 import {API_BASE_URL} from "../config/api.ts";
 import ArtistList from "../components/ArtistList.tsx";
-import {Button} from "@mui/material";
-import {Link} from "react-router-dom";
+
 
 
 function ArtistReviewsPage(){
@@ -24,11 +23,6 @@ function ArtistReviewsPage(){
           <ArtistList
               artistReviews={artistReviews}
           />
-
-          <Button component={Link} to="/search" >
-              Add New
-          </Button>
-
 
         </div>
     );

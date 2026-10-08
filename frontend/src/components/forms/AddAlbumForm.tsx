@@ -31,7 +31,7 @@ function AddAlbumForm({album, onSuccess, onCancel}: AddAlbumFormProps) {
             setRatingError("Rating is required");
             valid = false;
         } else if (ratingNumber < 1 || ratingNumber > 10) {
-            setRatingError("Rating must be between 0 and 10");
+            setRatingError("Rating must be between 1 and 10");
             valid = false;
         }
 

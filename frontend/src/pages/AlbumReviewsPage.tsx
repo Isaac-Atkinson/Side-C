@@ -2,9 +2,6 @@ import AlbumList from "../components/AlbumList.tsx";
 import type {AlbumReview} from "../types/AlbumReview.ts";
 import {useEffect, useState} from "react";
 import {API_BASE_URL} from "../config/api.ts";
-import {Button} from "@mui/material";
-import {Link} from "react-router-dom";
-
 
 
 
@@ -29,10 +26,6 @@ function AlbumReviewsPage() {
             <AlbumList
                 albumReviews={albumReviews}
         />
-
-            <Button component={Link} to="/search" >
-                Add New
-            </Button>
 
         </div>
 

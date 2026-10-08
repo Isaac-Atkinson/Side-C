@@ -2,12 +2,12 @@ import './App.css'
 import AlbumReviewsPage from "./pages/AlbumReviewsPage.tsx";
 import ArtistReviewsPage from "./pages/ArtistReviewsPage.tsx";
 import {Route, Routes} from "react-router-dom";
-import { Link } from "react-router-dom";
 import AlbumReviewDetailPage from "./pages/AlbumReviewDetailPage.tsx";
 import ArtistReviewDetailPage from "./pages/ArtistReviewDetailPage.tsx";
 import SearchPage from "./pages/SearchPage.tsx";
 import RegisterPage from "./pages/RegisterPage.tsx";
 import LoginPage from "./pages/LoginPage.tsx";
+import NavBar from "./components/NavBar.tsx";
 
 
 
@@ -15,15 +15,7 @@ function App() {
 
   return(
       <>
-          <nav>
-              <Link to="/albums">Albums</Link>
-              {" | "}
-              <Link to="/artists">Artists</Link>
-              {" | "}
-              <Link to="/register">Register</Link>
-              {" | "}
-              <Link to="/login">Login</Link>
-          </nav>
+          <NavBar/>
 
           <Routes>
               <Route path="/albums" element={<AlbumReviewsPage />} />

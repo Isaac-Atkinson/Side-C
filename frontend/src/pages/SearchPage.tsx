@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {Box, Dialog, DialogContent, DialogTitle, TextField} from "@mui/material";
+import {Box, Dialog, DialogContent, DialogTitle} from "@mui/material";
 import {API_BASE_URL} from "../config/api.ts";
 import type {AlbumSearchResult} from "../types/AlbumSearchResult.ts";
 import AlbumSearchDisplayCard from "../components/cards/AlbumSearchDisplayCard.tsx";
@@ -7,43 +7,44 @@ import AddAlbumForm from "../components/forms/AddAlbumForm.tsx";
 import type {ArtistSearchResult} from "../types/ArtistSearchResult.ts";
 import ArtistSearchDisplayCard from "../components/cards/ArtistSearchDisplayCard.tsx";
 import AddArtistForm from "../components/forms/AddArtistForm.tsx";
+import {useSearchParams} from "react-router-dom";
 
 
 function SearchPage(){
-    const[search, setSearch] = useState("");
+    const[searchParams] = useSearchParams();
     const[albumResults, setAlbumResults] = useState<AlbumSearchResult[]>([]);
     const[artistResults, setArtistResults] = useState<ArtistSearchResult[]>([]);
 
     const[selectedAlbum, setSelectedAlbum] = useState<AlbumSearchResult | null>(null);
     const[selectedArtist, setSelectedArtist] = useState<ArtistSearchResult | null>(null);
 
-    const SEARCH_DELAY = 500;
+    const SEARCH_DELAY = 300;
+
+    const search = searchParams.get("query") ?? "";
 
 
     const handleSearch = async () =>{
-        const [albumResponse, artistResponse] = await Promise.all([
-                fetch(`${API_BASE_URL}/search/albums?title=${encodeURIComponent(search)}`,{
+
+        if(!search.trim()){
+            setAlbumResults([]);
+            setArtistResults([]);
+            return;
+        }
+        const response = await fetch(
+                `${API_BASE_URL}/search?query=${encodeURIComponent(search)}`,{
                     credentials: "include",
-                }),
-                fetch(`${API_BASE_URL}/search/artists?name=${encodeURIComponent(search)}`,{
-                    credentials: "include",
-                })
-        ]
+                }
             )
 
-        if (albumResponse.ok) {
-            const albumData: AlbumSearchResult[] =
-                await albumResponse.json();
+        if (response.ok) {
+            const data = await response.json();
 
-            setAlbumResults(albumData);
+            setAlbumResults(data.albums);
+
+            setArtistResults(data.artists);
         }
 
-        if (artistResponse.ok) {
-            const artistData: ArtistSearchResult[] =
-                await artistResponse.json();
 
-            setArtistResults(artistData);
-        }
     }
 
     useEffect(() => {
@@ -57,11 +58,6 @@ function SearchPage(){
 
     return(
         <div>
-            <TextField
-                label="Search albums"
-                value={search}
-                onChange={e => setSearch(e.target.value)}
-            />
 
             <h1>Albums</h1>
 
