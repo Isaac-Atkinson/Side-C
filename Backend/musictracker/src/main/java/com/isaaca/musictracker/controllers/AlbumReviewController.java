@@ -1,9 +1,6 @@
-package com.isaaca.musictracker.controllers.album;
+package com.isaaca.musictracker.controllers;
 
 import com.isaaca.musictracker.entities.AlbumReview;
-import com.isaaca.musictracker.repositories.AlbumRepository;
-import com.isaaca.musictracker.repositories.AlbumReviewRepository;
-import com.isaaca.musictracker.repositories.ArtistRepository;
 import com.isaaca.musictracker.requests.AlbumRequest;
 import com.isaaca.musictracker.services.AlbumService;
 import jakarta.validation.Valid;

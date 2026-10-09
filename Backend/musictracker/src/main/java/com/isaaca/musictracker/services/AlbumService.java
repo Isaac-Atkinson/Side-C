@@ -1,6 +1,6 @@
 package com.isaaca.musictracker.services;
 
-import com.isaaca.musictracker.AlbumSearchResult;
+import com.isaaca.musictracker.dto.AlbumSearchResult;
 import com.isaaca.musictracker.entities.Album;
 import com.isaaca.musictracker.entities.AlbumReview;
 import com.isaaca.musictracker.entities.Artist;
@@ -9,7 +9,6 @@ import com.isaaca.musictracker.exceptions.AlbumAlreadyReviewedException;
 import com.isaaca.musictracker.exceptions.AlbumReviewNotFoundException;
 import com.isaaca.musictracker.externalapi.lastfm.albuminfo.LastFMAlbumInfo;
 import com.isaaca.musictracker.externalapi.lastfm.artistinfo.LastFMArtistInfo;
-import com.isaaca.musictracker.externalapi.lastfm.artistsearch.LastFMArtist;
 import com.isaaca.musictracker.repositories.AlbumRepository;
 import com.isaaca.musictracker.repositories.AlbumReviewRepository;
 import com.isaaca.musictracker.repositories.ArtistRepository;

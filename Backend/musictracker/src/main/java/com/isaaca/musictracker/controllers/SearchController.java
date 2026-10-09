@@ -1,10 +1,8 @@
-package com.isaaca.musictracker.controllers.search;
+package com.isaaca.musictracker.controllers;
 
-import com.isaaca.musictracker.AlbumSearchResult;
-import com.isaaca.musictracker.SearchResult;
+import com.isaaca.musictracker.dto.SearchResult;
 import com.isaaca.musictracker.services.AlbumService;
 import com.isaaca.musictracker.services.ArtistService;
-import com.isaaca.musictracker.services.LastFMService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,7 +1,6 @@
 package com.isaaca.musictracker.controller;
 
 
-import com.isaaca.musictracker.controllers.album.AlbumController;
 import com.isaaca.musictracker.entities.Album;
 import com.isaaca.musictracker.entities.Artist;
 import com.isaaca.musictracker.repositories.AlbumRepository;

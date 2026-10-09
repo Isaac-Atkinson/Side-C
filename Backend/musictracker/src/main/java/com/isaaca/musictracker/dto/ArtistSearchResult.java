@@ -1,4 +1,4 @@
-package com.isaaca.musictracker;
+package com.isaaca.musictracker.dto;
 
 public record ArtistSearchResult(
         String musicBrainzId,

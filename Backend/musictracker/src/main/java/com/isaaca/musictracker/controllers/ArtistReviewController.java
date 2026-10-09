@@ -1,10 +1,6 @@
-package com.isaaca.musictracker.controllers.artist;
+package com.isaaca.musictracker.controllers;
 
-import com.isaaca.musictracker.entities.Artist;
 import com.isaaca.musictracker.entities.ArtistReview;
-import com.isaaca.musictracker.repositories.AlbumRepository;
-import com.isaaca.musictracker.repositories.ArtistRepository;
-import com.isaaca.musictracker.repositories.ArtistReviewRepository;
 import com.isaaca.musictracker.requests.ArtistRequest;
 import com.isaaca.musictracker.services.ArtistService;
 import jakarta.validation.Valid;
@@ -14,7 +10,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:5173",
         allowCredentials = "true")

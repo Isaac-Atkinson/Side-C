@@ -1,23 +1,47 @@
 import AlbumList from "../components/AlbumList.tsx";
 import type {AlbumReview} from "../types/AlbumReview.ts";
-import {useEffect, useState} from "react";
 import {API_BASE_URL} from "../config/api.ts";
+import {Alert, CircularProgress} from "@mui/material";
+import useReviews from "../hooks/UseReviews.tsx";
 
 
 
 
 function AlbumReviewsPage() {
-    const [albumReviews, setAlbumReviews] = useState<AlbumReview[]>([]);
 
+    const {
+        reviews : albumReviews,
+        loading,
+        error
+    } = useReviews<AlbumReview>(
+        `${API_BASE_URL}/albums/reviews`,
+        "Could not load album reviews"
+    )
 
-    //Fetch all album reviews
-    useEffect(() => {
-        fetch(`${API_BASE_URL}/albums/reviews`,{
-            credentials: "include",
-        })
-            .then(response => response.json())
-            .then(data => setAlbumReviews(data));
-    }, [])
+    if(loading) {
+        return (
+            <div className="loading-container">
+                <CircularProgress/>
+            </div>
+
+        )
+    }
+
+    if (error) {
+        return (
+            <Alert severity="error">
+                {error}
+            </Alert>
+        )
+    }
+
+    if (albumReviews.length === 0) {
+        return (
+            <Alert severity="info">
+                You haven't reviewed any albums yet.
+            </Alert>
+        );
+    }
 
 
     return (

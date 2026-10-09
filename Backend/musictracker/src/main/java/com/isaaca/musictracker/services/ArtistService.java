@@ -1,7 +1,7 @@
 package com.isaaca.musictracker.services;
 
-import com.isaaca.musictracker.ArtistSearchResult;
-import com.isaaca.musictracker.LastFMArtistResult;
+import com.isaaca.musictracker.dto.ArtistSearchResult;
+import com.isaaca.musictracker.dto.LastFMArtistResult;
 import com.isaaca.musictracker.entities.Artist;
 import com.isaaca.musictracker.entities.ArtistReview;
 import com.isaaca.musictracker.entities.User;
@@ -9,12 +9,8 @@ import com.isaaca.musictracker.exceptions.ArtistAlreadyReviewedException;
 import com.isaaca.musictracker.exceptions.ArtistReviewNotFoundException;
 import com.isaaca.musictracker.repositories.*;
 import com.isaaca.musictracker.requests.ArtistRequest;
-import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.io.IOException;
 import java.net.URISyntaxException;

@@ -1,6 +1,5 @@
-package com.isaaca.musictracker;
+package com.isaaca.musictracker.dto;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public record SearchResult(

@@ -1,14 +1,12 @@
 package com.isaaca.musictracker.services;
 
-import com.isaaca.musictracker.AlbumSearchResult;
-import com.isaaca.musictracker.ArtistSearchResult;
-import com.isaaca.musictracker.LastFMArtistResult;
+import com.isaaca.musictracker.dto.AlbumSearchResult;
+import com.isaaca.musictracker.dto.LastFMArtistResult;
 import com.isaaca.musictracker.externalapi.lastfm.albuminfo.LastFMAlbumInfo;
 import com.isaaca.musictracker.externalapi.lastfm.albuminfo.LastFMResponseAlbumInfo;
 import com.isaaca.musictracker.externalapi.lastfm.albumsearch.LastFMAlbumSearchResponse;
 import com.isaaca.musictracker.externalapi.lastfm.artistinfo.LastFMArtistInfo;
 import com.isaaca.musictracker.externalapi.lastfm.artistinfo.LastFMResponseArtistInfo;
-import com.isaaca.musictracker.externalapi.lastfm.artistsearch.LastFMArtist;
 import com.isaaca.musictracker.externalapi.lastfm.artistsearch.LastFMArtistSearchResponse;
 import com.isaaca.musictracker.requests.AlbumRequest;
 import org.springframework.beans.factory.annotation.Value;

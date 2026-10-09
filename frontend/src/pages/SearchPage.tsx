@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {Box, Dialog, DialogContent, DialogTitle} from "@mui/material";
+import {Alert, Box, CircularProgress, Dialog, DialogContent, DialogTitle} from "@mui/material";
 import {API_BASE_URL} from "../config/api.ts";
 import type {AlbumSearchResult} from "../types/AlbumSearchResult.ts";
 import AlbumSearchDisplayCard from "../components/cards/AlbumSearchDisplayCard.tsx";
@@ -15,46 +15,59 @@ function SearchPage(){
     const[albumResults, setAlbumResults] = useState<AlbumSearchResult[]>([]);
     const[artistResults, setArtistResults] = useState<ArtistSearchResult[]>([]);
 
+    const[loading, setLoading] = useState<boolean>(true);
+    const[error, setError] = useState<string | null>(null);
+
     const[selectedAlbum, setSelectedAlbum] = useState<AlbumSearchResult | null>(null);
     const[selectedArtist, setSelectedArtist] = useState<ArtistSearchResult | null>(null);
-
-    const SEARCH_DELAY = 300;
 
     const search = searchParams.get("query") ?? "";
 
 
-    const handleSearch = async () =>{
-
-        if(!search.trim()){
-            setAlbumResults([]);
-            setArtistResults([]);
-            return;
-        }
-        const response = await fetch(
-                `${API_BASE_URL}/search?query=${encodeURIComponent(search)}`,{
-                    credentials: "include",
-                }
-            )
-
-        if (response.ok) {
-            const data = await response.json();
-
-            setAlbumResults(data.albums);
-
-            setArtistResults(data.artists);
-        }
-
-
-    }
-
     useEffect(() => {
-        const timeout = setTimeout(() => {
-            handleSearch();
-        }, SEARCH_DELAY);
+        const loadResults = async () => {
+            try{
+                const response = await fetch(
+                    `${API_BASE_URL}/search?query=${encodeURIComponent(search)}`,{
+                        credentials: "include",
+                    }
+                )
 
-        return () => clearTimeout(timeout);
+                if(!response.ok){
+                    throw new Error("Could not load results.");
+                }
+
+                const data = await response.json();
+
+                setAlbumResults(data.albums);
+
+                setArtistResults(data.artists);
+            } catch (err) {
+                setError(err instanceof Error ? err.message : "could not load results.");
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        loadResults();
     }, [search]);
 
+    if(loading) {
+        return (
+            <div className="loading-container">
+                <CircularProgress/>
+            </div>
+
+        )
+    }
+
+    if(error){
+        return (
+            <Alert severity="error">
+                {error}
+            </Alert>
+        )
+    }
 
     return(
         <div>

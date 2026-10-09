@@ -1,29 +1,50 @@
 import {useParams} from "react-router-dom";
-import {useEffect, useState} from "react";
 import {API_BASE_URL} from "../config/api.ts";
 import type {AlbumReview} from "../types/AlbumReview.ts";
 import DetailedAlbumReviewCard from "../components/cards/DetailedAlbumReviewCard.tsx";
+import useReview from "../hooks/UseReview.tsx";
+import {Alert, CircularProgress} from "@mui/material";
 
 function AlbumReviewDetailPage(){
     const {id} = useParams();
 
-    const [albumReview, setAlbumReview] = useState<AlbumReview | null>(null);
+    const {
+        review: albumReview,
+        updateReview,
+        loading,
+        error
+    } = useReview<AlbumReview>(
+        `${API_BASE_URL}/albums/reviews/${id}`,
+        "Error loading review",
+    )
 
-    useEffect(()=>{
-        fetch(`${API_BASE_URL}/albums/reviews/${id}`,{
-            credentials: "include",
-        })
-            .then(res => res.json())
-            .then(data => setAlbumReview(data))
-    }, [id])
+    if(loading) {
+        return (
+            <div className="loading-container">
+                <CircularProgress/>
+            </div>
 
-
-    if (!albumReview) {
-        return <p>Loading...</p>;
+        )
     }
 
-    const handleAlbumUpdated = (albumReview : AlbumReview) => {
-        setAlbumReview(albumReview);
+    if (error) {
+        return (
+            <Alert severity="error">
+                {error}
+            </Alert>
+        )
+    }
+
+    if (!albumReview) {
+        return (
+            <Alert severity="info">
+                Review not found.
+            </Alert>
+        );
+    }
+
+    const handleAlbumUpdated = (updatedReview : AlbumReview) => {
+        updateReview(updatedReview);
     }
 
 
