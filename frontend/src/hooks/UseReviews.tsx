@@ -20,7 +20,8 @@ function useReviews<T>(url : string, errMessage : string){
                 const data : T[] = await response.json();
                 setReviews(data);
             } catch (err) {
-                setError(err instanceof Error ? err.message : errMessage);
+                console.error(err);
+                setError(errMessage);
             } finally {
                 setLoading(false);
             }

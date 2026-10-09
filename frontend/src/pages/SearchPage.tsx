@@ -43,7 +43,8 @@ function SearchPage(){
 
                 setArtistResults(data.artists);
             } catch (err) {
-                setError(err instanceof Error ? err.message : "could not load results.");
+                console.error(err);
+                setError("Could not load search results");
             } finally {
                 setLoading(false);
             }

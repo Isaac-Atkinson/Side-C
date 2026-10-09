@@ -1,4 +1,15 @@
-import {Box, List, ListItemButton, ListItemText, ListSubheader, Paper, TextField} from "@mui/material";
+import {
+    Alert,
+    Box,
+    CircularProgress,
+    List,
+    ListItem,
+    ListItemButton,
+    ListItemText,
+    ListSubheader,
+    Paper,
+    TextField
+} from "@mui/material";
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {API_BASE_URL} from "../config/api.ts";
@@ -7,6 +18,9 @@ import type {ArtistSearchResult} from "../types/ArtistSearchResult.ts";
 
 function SearchBar() {
     const[search, setSearch] = useState("");
+
+    const[loading, setLoading] = useState(true);
+    const[error, setError] = useState<string | null>(null);
 
     const[albumResults, setAlbumResults] = useState<AlbumSearchResult[]>([]);
     const[artistResults, setArtistResults] = useState<ArtistSearchResult[]>([]);
@@ -27,22 +41,34 @@ function SearchBar() {
             return;
         }
 
-        const response = await fetch(
-            `${API_BASE_URL}/search?query=${encodeURIComponent(search)}`,{
-                credentials: "include",
-                signal : controller.signal,
+        setLoading(true);
+        setError(null);
+
+        try{
+            const response = await fetch(
+                `${API_BASE_URL}/search?query=${encodeURIComponent(search)}`,{
+                    credentials: "include",
+                    signal : controller.signal,
+                }
+            )
+
+            if(!response.ok){
+                throw new Error("Search failed");
             }
-        )
 
-
-
-        if (response.ok) {
             const data = await response.json();
 
             setAlbumResults(data.albums);
 
             setArtistResults(data.artists);
+        } catch(err) {
+            console.error(err);
+            setError("Could not load search results");
+        } finally {
+            setLoading(false);
         }
+
+
     }
 
     const handleViewAll = () => {
@@ -63,12 +89,15 @@ function SearchBar() {
         const controller = new AbortController();
 
         const timeout = setTimeout(async () => {
-            try{
-                handleSearch(controller);
+            try {
+                await handleSearch(controller);
             } catch (error) {
                 if (error instanceof DOMException && error.name === "AbortError") {
                     return;
                 }
+
+                console.error(error);
+                setError("Could not load search results");
             }
 
         }, SEARCH_DELAY);
@@ -101,34 +130,55 @@ function SearchBar() {
                 }}>
                     <List>
 
-                        <ListSubheader component="div">
-                            Albums
-                        </ListSubheader>
+                        {loading && (
+                            <ListItem>
+                                <CircularProgress/>
+                            </ListItem>
+                        )}
 
-                        {albumResults.slice(0, MAX_ALBUM_RESULTS).map((album) => (
-                            <ListItemButton
-                                key = {album.musicBrainzId}
-                            >
+                        {error && (
+                            <ListItem>
+                                <Alert severity="error" sx={{ width: "100%" }}>
+                                    {error}
+                                </Alert>
+                            </ListItem>
+                        )}
+
+                        {!loading && !error &&(
+                            <>
+
+                                <ListSubheader component="div">
+                                    Albums
+                                </ListSubheader>
+
+                                {albumResults.slice(0, MAX_ALBUM_RESULTS).map((album) => (
+                                <ListItemButton
+                                    key = {album.musicBrainzId}
+                                >
                                 <ListItemText
                                     primary = {album.title}
                                     secondary = {album.artist}
                                 />
-                            </ListItemButton>
-                            ))}
+                                </ListItemButton>
+                                ))}
 
-                        <ListSubheader component="div">
-                            Artists
-                        </ListSubheader>
+                                <ListSubheader component="div">
+                                    Artists
+                                </ListSubheader>
 
-                        {artistResults.slice(0, MAX_ARTIST_RESULTS).map((artist) => (
-                            <ListItemButton
-                                key = {artist.musicBrainzId}
-                            >
-                                <ListItemText
-                                    primary = {artist.name}
-                                />
-                            </ListItemButton>
-                        ))}
+                                {artistResults.slice(0, MAX_ARTIST_RESULTS).map((artist) => (
+                                <ListItemButton
+                                    key = {artist.musicBrainzId}
+                                >
+                                    <ListItemText
+                                        primary = {artist.name}
+                                    />
+                                </ListItemButton>
+                                ))}
+                            </>
+                        )}
+
+
                     </List>
                 </Paper>
             )}

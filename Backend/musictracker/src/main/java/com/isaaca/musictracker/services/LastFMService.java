@@ -26,7 +26,7 @@ import java.util.List;
 @Service
 public class LastFMService {
 
-    @Value("${API_KEY}")
+    @Value("${LASTFM_API_KEY}")
     private String API_KEY;
 
     @Value("${lastfm.api.root}")

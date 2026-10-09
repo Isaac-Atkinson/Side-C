@@ -27,8 +27,7 @@ import java.util.Optional;
 public class AlbumService {
 
 
-    @Value("${API_KEY}")
-    private String API_KEY;
+
 
     @Value("${lastfm.api.root}")
     private String lastFMApiRoot;
