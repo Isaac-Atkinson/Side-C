@@ -1,4 +1,4 @@
-package com.isaaca.musictracker.dto;
+package com.isaaca.musictracker.externalapi.lastfm;
 
 public record LastFMArtistResult(
         String musicBrainzId,

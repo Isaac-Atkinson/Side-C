@@ -1,7 +1,7 @@
 package com.isaaca.musictracker.services;
 
-import com.isaaca.musictracker.dto.AlbumSearchResult;
-import com.isaaca.musictracker.dto.LastFMArtistResult;
+import com.isaaca.musictracker.dto.search.AlbumSearchResult;
+import com.isaaca.musictracker.externalapi.lastfm.LastFMArtistResult;
 import com.isaaca.musictracker.externalapi.lastfm.albuminfo.LastFMAlbumInfo;
 import com.isaaca.musictracker.externalapi.lastfm.albuminfo.LastFMResponseAlbumInfo;
 import com.isaaca.musictracker.externalapi.lastfm.albumsearch.LastFMAlbumSearchResponse;

@@ -1,5 +1,6 @@
 package com.isaaca.musictracker.controllers;
 
+import com.isaaca.musictracker.dto.review.ArtistReviewResponse;
 import com.isaaca.musictracker.entities.ArtistReview;
 import com.isaaca.musictracker.requests.ArtistRequest;
 import com.isaaca.musictracker.services.ArtistService;
@@ -24,7 +25,7 @@ public class ArtistReviewController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ArtistReview>> getAllArtistReviews(Authentication authentication) {
+    public ResponseEntity<List<ArtistReviewResponse>> getAllArtistReviews(Authentication authentication) {
 
         String username = authentication.getName();
 
@@ -32,7 +33,7 @@ public class ArtistReviewController {
     }
 
     @GetMapping({"/{id}"})
-    public ResponseEntity<ArtistReview> getArtistReviewById(@PathVariable Integer id,
+    public ResponseEntity<ArtistReviewResponse> getArtistReviewById(@PathVariable Integer id,
                                                             Authentication authentication) {
 
         String username = authentication.getName();
@@ -43,18 +44,18 @@ public class ArtistReviewController {
     }
 
     @PostMapping
-    public ResponseEntity<ArtistReview> addArtistReview(@Valid @RequestBody ArtistRequest artistRequest,
+    public ResponseEntity<ArtistReviewResponse> addArtistReview(@Valid @RequestBody ArtistRequest artistRequest,
                                                         Authentication authentication) {
 
         String username = authentication.getName();
 
-        ArtistReview artistReview = artistService.addArtistReview(artistRequest, username);
+        ArtistReviewResponse artistReview = artistService.addArtistReview(artistRequest, username);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(artistReview);
     }
 
     @PutMapping({"/{id}"})
-    public ResponseEntity<ArtistReview> updateArtistReview(@PathVariable Integer id,
+    public ResponseEntity<ArtistReviewResponse> updateArtistReview(@PathVariable Integer id,
                                                            @Valid @RequestBody ArtistRequest artistRequest,
                                                            Authentication authentication) {
 

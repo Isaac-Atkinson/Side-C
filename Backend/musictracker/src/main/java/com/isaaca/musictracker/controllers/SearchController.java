@@ -1,6 +1,6 @@
 package com.isaaca.musictracker.controllers;
 
-import com.isaaca.musictracker.dto.SearchResult;
+import com.isaaca.musictracker.dto.search.SearchResult;
 import com.isaaca.musictracker.services.AlbumService;
 import com.isaaca.musictracker.services.ArtistService;
 import org.springframework.http.ResponseEntity;

@@ -1,6 +1,6 @@
 package com.isaaca.musictracker.controllers;
 
-import com.isaaca.musictracker.entities.AlbumReview;
+import com.isaaca.musictracker.dto.review.AlbumReviewResponse;
 import com.isaaca.musictracker.requests.AlbumRequest;
 import com.isaaca.musictracker.services.AlbumService;
 import jakarta.validation.Valid;
@@ -27,7 +27,7 @@ public class AlbumReviewController {
     }
 
     @GetMapping
-    public ResponseEntity<List<AlbumReview>> getAllAlbumReviews(Authentication authentication) {
+    public ResponseEntity<List<AlbumReviewResponse>> getAllAlbumReviews(Authentication authentication) {
 
         String username = authentication.getName();
 
@@ -35,7 +35,7 @@ public class AlbumReviewController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AlbumReview> getAlbumReviewById(
+    public ResponseEntity<AlbumReviewResponse> getAlbumReviewById(
             @PathVariable Integer id,
             Authentication authentication) {
 
@@ -45,18 +45,18 @@ public class AlbumReviewController {
     }
 
     @PostMapping
-    public ResponseEntity<AlbumReview> addAlbumReview(@Valid @RequestBody AlbumRequest albumRequest, Authentication authentication)
+    public ResponseEntity<AlbumReviewResponse> addAlbumReview(@Valid @RequestBody AlbumRequest albumRequest, Authentication authentication)
             throws URISyntaxException, IOException, InterruptedException {
 
         String username = authentication.getName();
 
-        AlbumReview albumReview = albumService.addAlbumreview(albumRequest, username);
+        AlbumReviewResponse albumReview = albumService.addAlbumreview(albumRequest, username);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(albumReview);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AlbumReview> updateAlbumReview(@PathVariable Integer id,
+    public ResponseEntity<AlbumReviewResponse> updateAlbumReview(@PathVariable Integer id,
                                                          @Valid @RequestBody AlbumRequest albumRequest,
                                                          Authentication authentication) {
 

@@ -19,7 +19,8 @@ function DetailedArtistReviewCard({artistReview, onArtistUpdated}: DetailedArtis
 
         const response = await fetch(`${API_BASE_URL}/artists/reviews/${artistReview.id}`,
             {
-                method : "DELETE"
+                method : "DELETE",
+                credentials: "include",
             }
         );
 

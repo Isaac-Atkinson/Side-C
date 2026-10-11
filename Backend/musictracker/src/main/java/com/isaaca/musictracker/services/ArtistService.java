@@ -1,7 +1,8 @@
 package com.isaaca.musictracker.services;
 
-import com.isaaca.musictracker.dto.ArtistSearchResult;
-import com.isaaca.musictracker.dto.LastFMArtistResult;
+import com.isaaca.musictracker.dto.review.ArtistReviewResponse;
+import com.isaaca.musictracker.dto.search.ArtistSearchResult;
+import com.isaaca.musictracker.externalapi.lastfm.LastFMArtistResult;
 import com.isaaca.musictracker.entities.Artist;
 import com.isaaca.musictracker.entities.ArtistReview;
 import com.isaaca.musictracker.entities.User;
@@ -40,17 +41,21 @@ public class ArtistService {
         this.userRepository = userRepository;
     }
 
-    public List<ArtistReview> getAllArtistReviews(String username){
-        return artistReviewRepository.findByUser_Username(username);
+    public List<ArtistReviewResponse> getAllArtistReviews(String username){
+        return artistReviewRepository.findByUser_Username(username)
+                .stream()
+                .map(ArtistReviewResponse::fromArtistReview)
+                .toList();
     }
 
-    public Optional<ArtistReview> getArtistReviewById(Integer id,
+    public Optional<ArtistReviewResponse> getArtistReviewById(Integer id,
                                                       String username){
-        return  artistReviewRepository.findByIdAndUser_Username(id, username);
+        return  artistReviewRepository.findByIdAndUser_Username(id, username)
+                .map(ArtistReviewResponse::fromArtistReview);
     }
 
     @Transactional
-    public ArtistReview addArtistReview(ArtistRequest artistRequest, String username) {
+    public ArtistReviewResponse addArtistReview(ArtistRequest artistRequest, String username) {
 
         Optional<ArtistReview> existingArtistReview = artistReviewRepository
                 .findByUser_UsernameAndArtist_MusicBrainzId(username,
@@ -70,14 +75,18 @@ public class ArtistService {
         if(existingArtist.isEmpty()) {
             Artist artist = buildArtist(artistRequest);
 
-            return buildArtistReview(artistRequest, artist, user);
+            ArtistReview review =  buildArtistReview(artistRequest, artist, user);
+
+            return ArtistReviewResponse.fromArtistReview(review);
         }
         Artist artist = existingArtist.get();
 
-        return buildArtistReview(artistRequest, artist, user);
+        ArtistReview review =  buildArtistReview(artistRequest, artist, user);
+
+        return ArtistReviewResponse.fromArtistReview(review);
     }
 
-    public ArtistReview updateArtistReview(Integer id, ArtistRequest artistRequest, String username) {
+    public ArtistReviewResponse updateArtistReview(Integer id, ArtistRequest artistRequest, String username) {
         Optional<ArtistReview> optionalArtistReview = artistReviewRepository.findByIdAndUser_Username(id, username);
 
         if(optionalArtistReview.isEmpty()) {
@@ -88,7 +97,9 @@ public class ArtistService {
 
         artistReview.setRating(artistRequest.getRating());
         artistReview.setReviewText(artistRequest.getReviewText());
-        return artistReviewRepository.save(artistReview);
+        artistReviewRepository.save(artistReview);
+
+        return ArtistReviewResponse.fromArtistReview(artistReview);
     }
 
     public void deleteArtistReviewById(Integer id, String username) {

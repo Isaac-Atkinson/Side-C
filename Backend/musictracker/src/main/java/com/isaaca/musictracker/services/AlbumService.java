@@ -1,6 +1,7 @@
 package com.isaaca.musictracker.services;
 
-import com.isaaca.musictracker.dto.AlbumSearchResult;
+import com.isaaca.musictracker.dto.review.AlbumReviewResponse;
+import com.isaaca.musictracker.dto.search.AlbumSearchResult;
 import com.isaaca.musictracker.entities.Album;
 import com.isaaca.musictracker.entities.AlbumReview;
 import com.isaaca.musictracker.entities.Artist;
@@ -51,17 +52,21 @@ public class AlbumService {
         this.userRepository = userRepository;
     }
 
-    public List<AlbumReview> getAllAlbumReviewsByUser(String username)  {
+    public List<AlbumReviewResponse> getAllAlbumReviewsByUser(String username)  {
 
-        return albumReviewRepository.findByUser_Username(username);
+        return albumReviewRepository.findByUser_Username(username)
+                .stream()
+                .map(AlbumReviewResponse::fromAlbumReview)
+                .toList();
     }
 
-    public Optional<AlbumReview> getAlbumReviewById(Integer id, String username)  {
-        return albumReviewRepository.findByIdAndUser_Username(id, username);
+    public Optional<AlbumReviewResponse> getAlbumReviewById(Integer id, String username)  {
+        return albumReviewRepository.findByIdAndUser_Username(id, username)
+                .map(AlbumReviewResponse::fromAlbumReview);
     }
 
     @Transactional
-    public AlbumReview addAlbumreview(AlbumRequest albumRequest, String username)
+    public AlbumReviewResponse addAlbumreview(AlbumRequest albumRequest, String username)
             throws URISyntaxException, IOException, InterruptedException {
 
         User user = userRepository
@@ -93,17 +98,21 @@ public class AlbumService {
 
             AlbumReview albumReview = buildAlbumReview(albumRequest, album, user);
 
-            return albumReviewRepository.save(albumReview);
+            albumReviewRepository.save(albumReview);
+
+            return AlbumReviewResponse.fromAlbumReview(albumReview);
         }
 
         Album album = optionalAlbum.get();
 
         AlbumReview albumReview = buildAlbumReview(albumRequest, album, user);
 
-        return albumReviewRepository.save(albumReview);
+        albumReviewRepository.save(albumReview);
+
+        return AlbumReviewResponse.fromAlbumReview(albumReview);
     }
 
-    public AlbumReview updateAlbumReview(Integer id, AlbumRequest albumRequest, String username) {
+    public AlbumReviewResponse updateAlbumReview(Integer id, AlbumRequest albumRequest, String username) {
         Optional<AlbumReview> optionalAlbumReview = albumReviewRepository.findByIdAndUser_Username(id, username);
 
         if (optionalAlbumReview.isEmpty()){
@@ -115,7 +124,9 @@ public class AlbumService {
         albumReview.setRating(albumRequest.getRating());
         albumReview.setReviewText(albumRequest.getReviewText());
 
-        return albumReviewRepository.save(albumReview);
+        albumReviewRepository.save(albumReview);
+
+        return AlbumReviewResponse.fromAlbumReview(albumReview);
     }
 
     public void deleteAlbumReviewById(Integer id, String username) {
