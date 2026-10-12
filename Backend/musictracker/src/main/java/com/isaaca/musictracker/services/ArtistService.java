@@ -1,7 +1,9 @@
 package com.isaaca.musictracker.services;
 
-import com.isaaca.musictracker.dto.review.ArtistReviewResponse;
-import com.isaaca.musictracker.dto.search.ArtistSearchResult;
+import com.isaaca.musictracker.dto.request.ArtistReviewRequest;
+import com.isaaca.musictracker.dto.request.UpdateArtistReviewRequest;
+import com.isaaca.musictracker.dto.response.review.ArtistReviewResponse;
+import com.isaaca.musictracker.dto.response.search.ArtistSearchResult;
 import com.isaaca.musictracker.externalapi.lastfm.LastFMArtistResult;
 import com.isaaca.musictracker.entities.Artist;
 import com.isaaca.musictracker.entities.ArtistReview;
@@ -9,7 +11,6 @@ import com.isaaca.musictracker.entities.User;
 import com.isaaca.musictracker.exceptions.ArtistAlreadyReviewedException;
 import com.isaaca.musictracker.exceptions.ArtistReviewNotFoundException;
 import com.isaaca.musictracker.repositories.*;
-import com.isaaca.musictracker.requests.ArtistRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,11 +56,11 @@ public class ArtistService {
     }
 
     @Transactional
-    public ArtistReviewResponse addArtistReview(ArtistRequest artistRequest, String username) {
+    public ArtistReviewResponse addArtistReview(ArtistReviewRequest artistRequest, String username) {
 
         Optional<ArtistReview> existingArtistReview = artistReviewRepository
                 .findByUser_UsernameAndArtist_MusicBrainzId(username,
-                                                            artistRequest.getMusicBrainzId());
+                                                            artistRequest.musicBrainzId());
 
         if(existingArtistReview.isPresent()){
             throw new ArtistAlreadyReviewedException();
@@ -69,24 +70,15 @@ public class ArtistService {
                 .findUserByUsername(username)
                 .orElseThrow();
 
-
-        Optional<Artist> existingArtist = artistRepository.findByMusicBrainzId(artistRequest.getMusicBrainzId());
-
-        if(existingArtist.isEmpty()) {
-            Artist artist = buildArtist(artistRequest);
-
-            ArtistReview review =  buildArtistReview(artistRequest, artist, user);
-
-            return ArtistReviewResponse.fromArtistReview(review);
-        }
-        Artist artist = existingArtist.get();
+        Artist artist = artistRepository.findByMusicBrainzId(artistRequest.musicBrainzId())
+                .orElseGet(() -> buildArtist(artistRequest));
 
         ArtistReview review =  buildArtistReview(artistRequest, artist, user);
 
         return ArtistReviewResponse.fromArtistReview(review);
     }
 
-    public ArtistReviewResponse updateArtistReview(Integer id, ArtistRequest artistRequest, String username) {
+    public ArtistReviewResponse updateArtistReview(Integer id, UpdateArtistReviewRequest artistRequest, String username) {
         Optional<ArtistReview> optionalArtistReview = artistReviewRepository.findByIdAndUser_Username(id, username);
 
         if(optionalArtistReview.isEmpty()) {
@@ -95,8 +87,8 @@ public class ArtistService {
 
         ArtistReview artistReview = optionalArtistReview.get();
 
-        artistReview.setRating(artistRequest.getRating());
-        artistReview.setReviewText(artistRequest.getReviewText());
+        artistReview.setRating(artistRequest.rating());
+        artistReview.setReviewText(artistRequest.reviewText());
         artistReviewRepository.save(artistReview);
 
         return ArtistReviewResponse.fromArtistReview(artistReview);
@@ -141,22 +133,22 @@ public class ArtistService {
                 .toList();
     }
 
-    private Artist buildArtist(ArtistRequest artistRequest) {
+    private Artist buildArtist(ArtistReviewRequest artistRequest) {
         Artist artist = new Artist();
 
-        artist.setName(artistRequest.getName());
-        artist.setMusicBrainzId(artistRequest.getMusicBrainzId());
-        artist.setImageUrl(artistRequest.getImageUrl());
+        artist.setName(artistRequest.name());
+        artist.setMusicBrainzId(artistRequest.musicBrainzId());
+        artist.setImageUrl(artistRequest.imageUrl());
 
         return artistRepository.save(artist);
     }
 
-    private ArtistReview buildArtistReview(ArtistRequest artistRequest, Artist artist, User user) {
+    private ArtistReview buildArtistReview(ArtistReviewRequest artistRequest, Artist artist, User user) {
         ArtistReview artistReview = new ArtistReview();
         artistReview.setArtist(artist);
         artistReview.setUser(user);
-        artistReview.setRating(artistRequest.getRating());
-        artistReview.setReviewText(artistRequest.getReviewText());
+        artistReview.setRating(artistRequest.rating());
+        artistReview.setReviewText(artistRequest.reviewText());
 
         return artistReviewRepository.save(artistReview);
     }

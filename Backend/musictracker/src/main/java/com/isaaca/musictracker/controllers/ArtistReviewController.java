@@ -1,8 +1,8 @@
 package com.isaaca.musictracker.controllers;
 
-import com.isaaca.musictracker.dto.review.ArtistReviewResponse;
-import com.isaaca.musictracker.entities.ArtistReview;
-import com.isaaca.musictracker.requests.ArtistRequest;
+import com.isaaca.musictracker.dto.request.ArtistReviewRequest;
+import com.isaaca.musictracker.dto.request.UpdateArtistReviewRequest;
+import com.isaaca.musictracker.dto.response.review.ArtistReviewResponse;
 import com.isaaca.musictracker.services.ArtistService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -44,7 +44,7 @@ public class ArtistReviewController {
     }
 
     @PostMapping
-    public ResponseEntity<ArtistReviewResponse> addArtistReview(@Valid @RequestBody ArtistRequest artistRequest,
+    public ResponseEntity<ArtistReviewResponse> addArtistReview(@Valid @RequestBody ArtistReviewRequest artistRequest,
                                                         Authentication authentication) {
 
         String username = authentication.getName();
@@ -56,7 +56,7 @@ public class ArtistReviewController {
 
     @PutMapping({"/{id}"})
     public ResponseEntity<ArtistReviewResponse> updateArtistReview(@PathVariable Integer id,
-                                                           @Valid @RequestBody ArtistRequest artistRequest,
+                                                           @Valid @RequestBody UpdateArtistReviewRequest artistRequest,
                                                            Authentication authentication) {
 
         String username = authentication.getName();

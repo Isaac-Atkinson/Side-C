@@ -1,6 +1,11 @@
 package com.isaaca.musictracker.entities;
 
+import com.isaaca.musictracker.constants.ReviewLimits;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 public class ArtistReview {
@@ -13,8 +18,12 @@ public class ArtistReview {
     @JoinColumn(name = "artist_id")
     private Artist artist;
 
+    @NotNull
+    @Min(1)
+    @Max(10)
     private Integer rating;
 
+    @Size(max = ReviewLimits.MAX_REVIEW_LENGTH)
     private String reviewText;
 
     @ManyToOne

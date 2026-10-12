@@ -1,7 +1,8 @@
 package com.isaaca.musictracker.controllers;
 
-import com.isaaca.musictracker.dto.review.AlbumReviewResponse;
-import com.isaaca.musictracker.requests.AlbumRequest;
+import com.isaaca.musictracker.dto.request.AlbumReviewRequest;
+import com.isaaca.musictracker.dto.request.UpdateAlbumReviewRequest;
+import com.isaaca.musictracker.dto.response.review.AlbumReviewResponse;
 import com.isaaca.musictracker.services.AlbumService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -45,7 +46,7 @@ public class AlbumReviewController {
     }
 
     @PostMapping
-    public ResponseEntity<AlbumReviewResponse> addAlbumReview(@Valid @RequestBody AlbumRequest albumRequest, Authentication authentication)
+    public ResponseEntity<AlbumReviewResponse> addAlbumReview(@Valid @RequestBody AlbumReviewRequest albumRequest, Authentication authentication)
             throws URISyntaxException, IOException, InterruptedException {
 
         String username = authentication.getName();
@@ -57,7 +58,7 @@ public class AlbumReviewController {
 
     @PutMapping("/{id}")
     public ResponseEntity<AlbumReviewResponse> updateAlbumReview(@PathVariable Integer id,
-                                                         @Valid @RequestBody AlbumRequest albumRequest,
+                                                         @Valid @RequestBody UpdateAlbumReviewRequest albumRequest,
                                                          Authentication authentication) {
 
         String username = authentication.getName();

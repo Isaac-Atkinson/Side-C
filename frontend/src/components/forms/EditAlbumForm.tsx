@@ -45,8 +45,6 @@ function EditAlbumForm({albumReview, onCancel, onAlbumUpdated, onSuccess}: EditA
             headers: {"Content-Type": "application/json"},
             credentials: "include",
             body: JSON.stringify({
-                title: albumReview.album.title,
-                artist: albumReview.album.artist.name,
                 rating: Number(rating),
                 reviewText: reviewText
             })

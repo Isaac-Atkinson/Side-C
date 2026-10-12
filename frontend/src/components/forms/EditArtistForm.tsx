@@ -46,7 +46,6 @@ function EditArtistForm({ artistReview, onCancel, onArtistUpdated, onSuccess }: 
             headers: {"Content-Type": "application/json"},
             credentials: "include",
             body: JSON.stringify({
-                name : artistReview.artist.name,
                 rating: Number(rating),
                 reviewText : reviewText
             })

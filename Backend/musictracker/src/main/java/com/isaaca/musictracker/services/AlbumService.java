@@ -1,7 +1,9 @@
 package com.isaaca.musictracker.services;
 
-import com.isaaca.musictracker.dto.review.AlbumReviewResponse;
-import com.isaaca.musictracker.dto.search.AlbumSearchResult;
+import com.isaaca.musictracker.dto.request.AlbumReviewRequest;
+import com.isaaca.musictracker.dto.request.UpdateAlbumReviewRequest;
+import com.isaaca.musictracker.dto.response.review.AlbumReviewResponse;
+import com.isaaca.musictracker.dto.response.search.AlbumSearchResult;
 import com.isaaca.musictracker.entities.Album;
 import com.isaaca.musictracker.entities.AlbumReview;
 import com.isaaca.musictracker.entities.Artist;
@@ -14,7 +16,6 @@ import com.isaaca.musictracker.repositories.AlbumRepository;
 import com.isaaca.musictracker.repositories.AlbumReviewRepository;
 import com.isaaca.musictracker.repositories.ArtistRepository;
 import com.isaaca.musictracker.repositories.UserRepository;
-import com.isaaca.musictracker.requests.AlbumRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -66,7 +67,7 @@ public class AlbumService {
     }
 
     @Transactional
-    public AlbumReviewResponse addAlbumreview(AlbumRequest albumRequest, String username)
+    public AlbumReviewResponse addAlbumreview(AlbumReviewRequest request, String username)
             throws URISyntaxException, IOException, InterruptedException {
 
         User user = userRepository
@@ -74,11 +75,11 @@ public class AlbumService {
                 .orElseThrow();
 
         String uniqueId = "";
-        if(albumRequest.getMusicBrainzId() == null ||
-                albumRequest.getMusicBrainzId().isBlank()){
-            uniqueId = albumRequest.getTitle() + albumRequest.getArtist();
+        if(request.musicBrainzId() == null ||
+                request.musicBrainzId().isBlank()){
+            uniqueId = request.title() + request.artist();
         } else {
-            uniqueId = albumRequest.getMusicBrainzId();
+            uniqueId = request.musicBrainzId();
         }
 
         Optional<AlbumReview> optionalAlbumReview = albumReviewRepository
@@ -93,10 +94,10 @@ public class AlbumService {
         Optional<Album> optionalAlbum = albumRepository.findByUniqueIdentifier(uniqueId);
 
         if (optionalAlbum.isEmpty()){
-            Album album = buildAlbum(albumRequest, uniqueId);
+            Album album = buildAlbum(request, uniqueId);
             albumRepository.save(album);
 
-            AlbumReview albumReview = buildAlbumReview(albumRequest, album, user);
+            AlbumReview albumReview = buildAlbumReview(request, album, user);
 
             albumReviewRepository.save(albumReview);
 
@@ -105,14 +106,14 @@ public class AlbumService {
 
         Album album = optionalAlbum.get();
 
-        AlbumReview albumReview = buildAlbumReview(albumRequest, album, user);
+        AlbumReview albumReview = buildAlbumReview(request, album, user);
 
         albumReviewRepository.save(albumReview);
 
         return AlbumReviewResponse.fromAlbumReview(albumReview);
     }
 
-    public AlbumReviewResponse updateAlbumReview(Integer id, AlbumRequest albumRequest, String username) {
+    public AlbumReviewResponse updateAlbumReview(Integer id, UpdateAlbumReviewRequest request, String username) {
         Optional<AlbumReview> optionalAlbumReview = albumReviewRepository.findByIdAndUser_Username(id, username);
 
         if (optionalAlbumReview.isEmpty()){
@@ -121,8 +122,8 @@ public class AlbumService {
 
         AlbumReview albumReview = optionalAlbumReview.get();
 
-        albumReview.setRating(albumRequest.getRating());
-        albumReview.setReviewText(albumRequest.getReviewText());
+        albumReview.setRating(request.rating());
+        albumReview.setReviewText(request.reviewText());
 
         albumReviewRepository.save(albumReview);
 
@@ -143,10 +144,10 @@ public class AlbumService {
         return lastFMService.lookUpAlbums(name);
     }
 
-    private Album buildAlbum(AlbumRequest albumRequest, String uniqueId) throws URISyntaxException, IOException, InterruptedException {
-        String artistName = albumRequest.getArtist();
+    private Album buildAlbum(AlbumReviewRequest request, String uniqueId) throws URISyntaxException, IOException, InterruptedException {
+        String artistName = request.artist();
 
-        LastFMArtistInfo lastFMArtistInfo = lastFMService.getArtistInfo(albumRequest.getArtist());
+        LastFMArtistInfo lastFMArtistInfo = lastFMService.getArtistInfo(request.artist());
 
         Artist artist = artistRepository
                 .findByLastFMUrl(lastFMArtistInfo.getUrl())
@@ -155,13 +156,13 @@ public class AlbumService {
 
         Album album = new Album();
 
-        album.setTitle(albumRequest.getTitle());
+        album.setTitle(request.title());
         album.setArtist(artist);
-        album.setMusicBrainzId(albumRequest.getMusicBrainzId());
+        album.setMusicBrainzId(request.musicBrainzId());
         album.setUniqueIdentifier(uniqueId);
 
 
-        LastFMAlbumInfo albumInfo = lastFMService.getAlbumInfo(albumRequest);
+        LastFMAlbumInfo albumInfo = lastFMService.getAlbumInfo(request);
 
         String imageUrl = albumInfo
                 .getImages()
@@ -173,12 +174,12 @@ public class AlbumService {
         return album;
     }
 
-    private AlbumReview buildAlbumReview(AlbumRequest albumRequest, Album album, User user) {
+    private AlbumReview buildAlbumReview(AlbumReviewRequest request, Album album, User user) {
         AlbumReview albumReview = new AlbumReview();
         albumReview.setAlbum(album);
         albumReview.setUser(user);
-        albumReview.setRating(albumRequest.getRating());
-        albumReview.setReviewText(albumRequest.getReviewText());
+        albumReview.setRating(request.rating());
+        albumReview.setReviewText(request.reviewText());
 
         return albumReview;
     }

@@ -1,4 +1,4 @@
-package com.isaaca.musictracker.dto.search;
+package com.isaaca.musictracker.dto.response.search;
 
 import java.util.List;
 

@@ -1,6 +1,7 @@
 package com.isaaca.musictracker.services;
 
-import com.isaaca.musictracker.dto.search.AlbumSearchResult;
+import com.isaaca.musictracker.dto.request.AlbumReviewRequest;
+import com.isaaca.musictracker.dto.response.search.AlbumSearchResult;
 import com.isaaca.musictracker.externalapi.lastfm.LastFMArtistResult;
 import com.isaaca.musictracker.externalapi.lastfm.albuminfo.LastFMAlbumInfo;
 import com.isaaca.musictracker.externalapi.lastfm.albuminfo.LastFMResponseAlbumInfo;
@@ -8,7 +9,6 @@ import com.isaaca.musictracker.externalapi.lastfm.albumsearch.LastFMAlbumSearchR
 import com.isaaca.musictracker.externalapi.lastfm.artistinfo.LastFMArtistInfo;
 import com.isaaca.musictracker.externalapi.lastfm.artistinfo.LastFMResponseArtistInfo;
 import com.isaaca.musictracker.externalapi.lastfm.artistsearch.LastFMArtistSearchResponse;
-import com.isaaca.musictracker.requests.AlbumRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import tools.jackson.databind.ObjectMapper;
@@ -84,15 +84,15 @@ public class LastFMService {
         return results;
     }
 
-    public LastFMAlbumInfo getAlbumInfo(AlbumRequest albumRequest) throws IOException, URISyntaxException, InterruptedException {
+    public LastFMAlbumInfo getAlbumInfo(AlbumReviewRequest albumRequest) throws IOException, URISyntaxException, InterruptedException {
 
 
-        if(albumRequest.getMusicBrainzId() != null && !albumRequest.getMusicBrainzId().isBlank()){
+        if(albumRequest.musicBrainzId() != null && !albumRequest.musicBrainzId().isBlank()){
 
-            return getAlbumInfoByMbid(albumRequest.getMusicBrainzId());
+            return getAlbumInfoByMbid(albumRequest.musicBrainzId());
         } else {
 
-            return getAlbumInfoByAlbumAndArtist(albumRequest.getTitle(), albumRequest.getArtist());
+            return getAlbumInfoByAlbumAndArtist(albumRequest.title(), albumRequest.artist());
         }
     }
 

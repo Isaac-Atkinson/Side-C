@@ -1,10 +1,10 @@
-package com.isaaca.musictracker.security;
+package com.isaaca.musictracker.services;
 
 import com.isaaca.musictracker.entities.User;
 import com.isaaca.musictracker.exceptions.UserAlreadyExistsException;
 import com.isaaca.musictracker.repositories.UserRepository;
-import com.isaaca.musictracker.requests.LoginRequest;
-import com.isaaca.musictracker.requests.RegisterRequest;
+import com.isaaca.musictracker.dto.request.LoginRequest;
+import com.isaaca.musictracker.dto.request.RegisterRequest;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,7 +13,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Service;
 
@@ -38,13 +37,13 @@ public class UserService {
     }
 
     public User registerUser(RegisterRequest registerRequest) {
-        if(userRepository.findUserByUsername(registerRequest.getUsername()).isPresent()){
+        if(userRepository.findUserByUsername(registerRequest.username()).isPresent()){
             throw new UserAlreadyExistsException();
         }
 
         User user = new User();
-        user.setUsername(registerRequest.getUsername());
-        user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+        user.setUsername(registerRequest.username());
+        user.setPassword(passwordEncoder.encode(registerRequest.password()));
 
         return userRepository.save(user);
     }
@@ -53,8 +52,8 @@ public class UserService {
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        loginRequest.getUsername(),
-                        loginRequest.getPassword()
+                        loginRequest.username(),
+                        loginRequest.password()
                 )
         );
 

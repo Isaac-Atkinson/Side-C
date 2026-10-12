@@ -1,8 +1,8 @@
 package com.isaaca.musictracker.controllers;
 
-import com.isaaca.musictracker.requests.LoginRequest;
-import com.isaaca.musictracker.requests.RegisterRequest;
-import com.isaaca.musictracker.security.UserService;
+import com.isaaca.musictracker.dto.request.LoginRequest;
+import com.isaaca.musictracker.dto.request.RegisterRequest;
+import com.isaaca.musictracker.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;

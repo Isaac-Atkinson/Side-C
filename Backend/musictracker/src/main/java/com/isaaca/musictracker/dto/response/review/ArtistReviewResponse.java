@@ -1,4 +1,4 @@
-package com.isaaca.musictracker.dto.review;
+package com.isaaca.musictracker.dto.response.review;
 
 import com.isaaca.musictracker.entities.Artist;
 import com.isaaca.musictracker.entities.ArtistReview;
