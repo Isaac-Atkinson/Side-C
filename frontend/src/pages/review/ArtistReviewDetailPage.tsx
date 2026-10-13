@@ -1,8 +1,8 @@
 import {useParams} from "react-router-dom";
-import {API_BASE_URL} from "../config/api.ts";
-import type {ArtistReview} from "../types/ArtistReview.ts";
-import DetailedArtistReviewCard from "../components/cards/DetailedArtistReviewCard.tsx";
-import useReview from "../hooks/UseReview.tsx";
+import {API_BASE_URL} from "../../config/api.ts";
+import type {ArtistReview} from "../../types/ArtistReview.ts";
+import DetailedArtistReviewCard from "../../components/cards/DetailedArtistReviewCard.tsx";
+import useReview from "../../hooks/UseReview.tsx";
 import {Alert, CircularProgress} from "@mui/material";
 
 function ArtistReviewDetailPage() {

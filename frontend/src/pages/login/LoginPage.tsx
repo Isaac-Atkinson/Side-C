@@ -1,4 +1,4 @@
-import LoginForm from "../components/forms/authentification/LoginForm.tsx";
+import LoginForm from "../../components/forms/authentification/LoginForm.tsx";
 import {Link} from "react-router-dom";
 
 function LoginPage(){

@@ -1,13 +1,13 @@
 import {useEffect, useState} from "react";
-import {Alert, Box, CircularProgress, Dialog, DialogContent, DialogTitle} from "@mui/material";
-import {API_BASE_URL} from "../config/api.ts";
-import type {AlbumSearchResult} from "../types/AlbumSearchResult.ts";
-import AlbumSearchDisplayCard from "../components/cards/AlbumSearchDisplayCard.tsx";
-import AddAlbumForm from "../components/forms/AddAlbumForm.tsx";
-import type {ArtistSearchResult} from "../types/ArtistSearchResult.ts";
-import ArtistSearchDisplayCard from "../components/cards/ArtistSearchDisplayCard.tsx";
-import AddArtistForm from "../components/forms/AddArtistForm.tsx";
+import {Alert, CircularProgress, Dialog, DialogContent, DialogTitle, Typography} from "@mui/material";
+import {API_BASE_URL} from "../../config/api.ts";
+import type {AlbumSearchResult} from "../../types/AlbumSearchResult.ts";
+import AddAlbumForm from "../../components/forms/AddAlbumForm.tsx";
+import type {ArtistSearchResult} from "../../types/ArtistSearchResult.ts";
+import AddArtistForm from "../../components/forms/AddArtistForm.tsx";
 import {useSearchParams} from "react-router-dom";
+import CardGrid from "../../components/CardGrid.tsx";
+import { AlbumSearchDisplayCard, ArtistSearchDisplayCard } from "../../components/cards/SearchCards.tsx";
 
 
 function SearchPage(){
@@ -73,24 +73,18 @@ function SearchPage(){
     return(
         <div>
 
-            <h1>Albums</h1>
+            <Typography variant="h4" component="h2" gutterBottom>Albums</Typography>
 
-            <Box
-                sx={{
-                    display: "grid",
-                    gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
-                    gap: 2,
-                    mt: 2
-                }}>
-
-
+            <CardGrid>
                 {albumResults.map(album => (
-                    <div key={album.musicBrainzId|| `${album.artist}-${album.title}`}
-                         onClick={() => setSelectedAlbum(album)}
-                         style={{ cursor: "pointer" }}>
-                        <AlbumSearchDisplayCard searchResult={album}/>
-                    </div>
+                    <AlbumSearchDisplayCard
+                        key={album.musicBrainzId|| `${album.artist}-${album.title}`}
+                        searchResult={album}
+                        onClick={() => setSelectedAlbum(album)}
+                    />
                 ))}
+            </CardGrid>
+
 
                 <Dialog
                     open={selectedAlbum !== null}
@@ -108,43 +102,37 @@ function SearchPage(){
                         )}
                     </DialogContent>
                 </Dialog>
-            </Box>
-
-            <h1>Artists</h1>
-            <Box
-                sx={{
-                    display: "grid",
-                    gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
-                    gap: 2,
-                    mt: 2
-                }}>
-                {artistResults.map(artist => (
-                    <div key={artist.musicBrainzId || `${artist.name}`}
-                         onClick={() => setSelectedArtist(artist)}
-                         style={{ cursor: "pointer" }}>
-                        <ArtistSearchDisplayCard searchResult={artist}/>
-                    </div>
-                ))}
-            </Box>
-
-            <Dialog
-                open={selectedArtist !== null}
-                onClose={() => setSelectedArtist(null)}
-            >
-                <DialogTitle>Add Review</DialogTitle>
-
-                <DialogContent>
-                    {selectedArtist && (
-                        <AddArtistForm
-                            artist={selectedArtist}
-                            onSuccess={() => setSelectedArtist(null)}
-                            onCancel={() => setSelectedArtist(null)}
-                        />
-                    )}
-                </DialogContent>
-            </Dialog>
 
 
+            <Typography variant="h4" component="h2" gutterBottom>Artists</Typography>
+
+
+                <CardGrid>
+                    {artistResults.map(artist => (
+                        <ArtistSearchDisplayCard
+                            key={artist.musicBrainzId || artist.name}
+                            searchResult={artist}
+                            onClick={() => setSelectedArtist(artist)}/>
+                    ))}
+                </CardGrid>
+
+
+                <Dialog
+                    open={selectedArtist !== null}
+                    onClose={() => setSelectedArtist(null)}
+                >
+                    <DialogTitle>Add Review</DialogTitle>
+
+                    <DialogContent>
+                        {selectedArtist && (
+                            <AddArtistForm
+                                artist={selectedArtist}
+                                onSuccess={() => setSelectedArtist(null)}
+                                onCancel={() => setSelectedArtist(null)}
+                            />
+                        )}
+                    </DialogContent>
+                </Dialog>
         </div>
     )
 }

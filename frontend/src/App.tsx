@@ -1,12 +1,12 @@
 import './App.css'
-import AlbumReviewsPage from "./pages/AlbumReviewsPage.tsx";
-import ArtistReviewsPage from "./pages/ArtistReviewsPage.tsx";
+import AlbumReviewsPage from "./pages/review/AlbumReviewsPage.tsx";
+import ArtistReviewsPage from "./pages/review/ArtistReviewsPage.tsx";
 import {Route, Routes} from "react-router-dom";
-import AlbumReviewDetailPage from "./pages/AlbumReviewDetailPage.tsx";
-import ArtistReviewDetailPage from "./pages/ArtistReviewDetailPage.tsx";
-import SearchPage from "./pages/SearchPage.tsx";
-import RegisterPage from "./pages/RegisterPage.tsx";
-import LoginPage from "./pages/LoginPage.tsx";
+import AlbumReviewDetailPage from "./pages/review/AlbumReviewDetailPage.tsx";
+import ArtistReviewDetailPage from "./pages/review/ArtistReviewDetailPage.tsx";
+import SearchPage from "./pages/search/SearchPage.tsx";
+import RegisterPage from "./pages/login/RegisterPage.tsx";
+import LoginPage from "./pages/login/LoginPage.tsx";
 import NavBar from "./components/NavBar.tsx";
 import {Box} from "@mui/material";
 
