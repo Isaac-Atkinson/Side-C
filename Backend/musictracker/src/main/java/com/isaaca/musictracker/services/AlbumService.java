@@ -29,8 +29,7 @@ import java.util.Optional;
 public class AlbumService {
 
 
-
-
+    private final FanartService fanartService;
     @Value("${lastfm.api.root}")
     private String lastFMApiRoot;
 
@@ -45,12 +44,13 @@ public class AlbumService {
             AlbumReviewRepository albumReviewRepository,
             ArtistRepository artistRepository,
             LastFMService lastFMService,
-            UserRepository userRepository) {
+            UserRepository userRepository, FanartService fanartService) {
         this.albumRepository = albumRepository;
         this.albumReviewRepository = albumReviewRepository;
         this.artistRepository = artistRepository;
         this.lastFMService = lastFMService;
         this.userRepository = userRepository;
+        this.fanartService = fanartService;
     }
 
     public List<AlbumReviewResponse> getAllAlbumReviewsByUser(String username)  {
@@ -190,6 +190,22 @@ public class AlbumService {
         artist.setName(artistName);
         artist.setLastFMUrl(lastFMArtistInfo.getUrl());
         artist.setMusicBrainzId(lastFMArtistInfo.getMbid());
+
+        String imageUrl = null;
+
+        if (lastFMArtistInfo.getMbid() != null &&
+                !lastFMArtistInfo.getMbid().isBlank()) {
+
+            try {
+                imageUrl = fanartService.getFanartImageUrl(
+                        lastFMArtistInfo.getMbid()
+                );
+            } catch (Exception e) {
+                imageUrl = null;
+            }
+        }
+
+        artist.setImageUrl(imageUrl);
 
         return artistRepository.save(artist);
     }

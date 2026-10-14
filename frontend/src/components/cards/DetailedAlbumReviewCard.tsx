@@ -1,9 +1,9 @@
 import type {AlbumReview} from "../../types/AlbumReview.ts";
-import {Box, Button, Dialog, DialogContent, DialogTitle, Typography} from "@mui/material";
+import {Box, Button, Dialog, DialogContent, DialogTitle, Rating, Typography} from "@mui/material";
 import {API_BASE_URL} from "../../config/api.ts";
 import {useNavigate} from "react-router-dom";
 import {useState} from "react";
-import EditAlbumForm from "../forms/EditAlbumForm.tsx";
+import {EditAlbumForm} from "../forms/ReviewFormVariants.tsx";
 
 type DetailedAlbumCardProps = {
     albumReview: AlbumReview;
@@ -73,12 +73,11 @@ function DetailedAlbumReviewCard({albumReview, onAlbumUpdated}: DetailedAlbumCar
                         {albumReview.album.artist.name}
                     </Typography>
 
-                    <Typography
-                        variant="h5"
-                        sx={{ mt: 2 }}
-                    >
-                        {albumReview.rating}/10
-                    </Typography>
+                    <Rating
+                        value={Number(albumReview.rating) / 2}
+                        precision={0.5}
+                        size= "large"
+                    />
 
                     <Typography
                         variant="body1"

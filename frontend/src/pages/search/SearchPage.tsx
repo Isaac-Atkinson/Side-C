@@ -1,10 +1,9 @@
 import {useEffect, useState} from "react";
-import {Alert, CircularProgress, Dialog, DialogContent, DialogTitle, Typography} from "@mui/material";
+import {Alert, CircularProgress, Dialog, DialogContent, DialogTitle, Snackbar, Typography} from "@mui/material";
 import {API_BASE_URL} from "../../config/api.ts";
 import type {AlbumSearchResult} from "../../types/AlbumSearchResult.ts";
-import AddAlbumForm from "../../components/forms/AddAlbumForm.tsx";
+import {AddAlbumForm, AddArtistForm} from "../../components/forms/ReviewFormVariants.tsx";
 import type {ArtistSearchResult} from "../../types/ArtistSearchResult.ts";
-import AddArtistForm from "../../components/forms/AddArtistForm.tsx";
 import {useSearchParams} from "react-router-dom";
 import CardGrid from "../../components/CardGrid.tsx";
 import { AlbumSearchDisplayCard, ArtistSearchDisplayCard } from "../../components/cards/SearchCards.tsx";
@@ -21,11 +20,17 @@ function SearchPage(){
     const[selectedAlbum, setSelectedAlbum] = useState<AlbumSearchResult | null>(null);
     const[selectedArtist, setSelectedArtist] = useState<ArtistSearchResult | null>(null);
 
+    const[snackBarOpen, setSnackBarOpen] = useState(false);
+    const[snackBarMessage, setSnackBarMessage] = useState("");
+
     const search = searchParams.get("query") ?? "";
 
 
     useEffect(() => {
         const loadResults = async () => {
+            setLoading(true);
+            setError(null);
+
             try{
                 const response = await fetch(
                     `${API_BASE_URL}/search?query=${encodeURIComponent(search)}`,{
@@ -96,7 +101,11 @@ function SearchPage(){
                         {selectedAlbum && (
                             <AddAlbumForm
                                 album={selectedAlbum}
-                                onSuccess={() => setSelectedAlbum(null)}
+                                onSuccess={() => {
+                                    setSelectedAlbum(null)
+                                    setSnackBarOpen(true)
+                                    setSnackBarMessage("Album review added")
+                                }}
                                 onCancel={() => setSelectedAlbum(null)}
                             />
                         )}
@@ -127,12 +136,30 @@ function SearchPage(){
                         {selectedArtist && (
                             <AddArtistForm
                                 artist={selectedArtist}
-                                onSuccess={() => setSelectedArtist(null)}
+                                onSuccess={() => {
+                                    setSelectedArtist(null)
+                                    setSnackBarOpen(true)
+                                    setSnackBarMessage("Artist review added")
+                                }}
                                 onCancel={() => setSelectedArtist(null)}
                             />
                         )}
                     </DialogContent>
                 </Dialog>
+
+            <Snackbar
+                open={snackBarOpen}
+                onClose={() => setSnackBarOpen(false)}
+                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+            >
+                <Alert
+                    severity="success"
+                    variant="filled"
+                    onClose={() => setSnackBarOpen(false)}
+                >
+                    {snackBarMessage}
+                </Alert>
+            </Snackbar>
         </div>
     )
 }

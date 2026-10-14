@@ -4,7 +4,7 @@ import {
     Box,
     Card, CardActionArea,
     CardContent,
-    CardMedia,
+    CardMedia, Rating,
     Typography
 } from "@mui/material";
 import type {ReactNode} from "react";
@@ -86,12 +86,15 @@ function MediaCard({title, subtitle, rating, imageUrl, imageAlt, link, onClick, 
                             </Typography>
                         )}
 
-                        <Typography
-                            variant="body1"
-                            sx={{ mt: 1 }}
-                        >
-                            {rating}
-                        </Typography>
+                        {rating != null && (
+                            <Rating
+                                value={rating / 2}
+                                precision={0.5}
+                                size="large"
+                                readOnly
+                            />
+                        )}
+
                     </CardContent>
                 </CardActionArea>
 

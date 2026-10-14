@@ -2,8 +2,8 @@ import {useNavigate} from "react-router-dom";
 import { useState} from "react";
 import {API_BASE_URL} from "../../config/api.ts";
 import type {ArtistReview} from "../../types/ArtistReview.ts";
-import {Box, Button, Dialog, DialogContent, DialogTitle, Typography} from "@mui/material";
-import EditArtistForm from "../forms/EditArtistForm.tsx";
+import {Box, Button, Dialog, DialogContent, DialogTitle, Rating, Typography} from "@mui/material";
+import {EditArtistForm} from "../forms/ReviewFormVariants.tsx";
 
 
 type DetailedArtistCardProps = {
@@ -64,12 +64,11 @@ function DetailedArtistReviewCard({artistReview, onArtistUpdated}: DetailedArtis
                     </Typography>
 
 
-                    <Typography
-                        variant="h5"
-                        sx={{ mt: 2 }}
-                    >
-                        {artistReview.rating}/10
-                    </Typography>
+                    <Rating
+                        value={Number(artistReview.rating) / 2}
+                        precision={0.5}
+                        size= "large"
+                    />
 
                     <Typography
                         variant="body1"
