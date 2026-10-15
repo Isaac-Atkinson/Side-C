@@ -59,8 +59,8 @@ public class ArtistService {
     public ArtistReviewResponse addArtistReview(ArtistReviewRequest artistRequest, String username) {
 
         Optional<ArtistReview> existingArtistReview = artistReviewRepository
-                .findByUser_UsernameAndArtist_MusicBrainzId(username,
-                                                            artistRequest.musicBrainzId());
+                .findByUser_UsernameAndArtist_LastFMUrl(username,
+                                                            artistRequest.lastFMUrl());
 
         if(existingArtistReview.isPresent()){
             throw new ArtistAlreadyReviewedException();
@@ -70,7 +70,7 @@ public class ArtistService {
                 .findUserByUsername(username)
                 .orElseThrow();
 
-        Artist artist = artistRepository.findByMusicBrainzId(artistRequest.musicBrainzId())
+        Artist artist = artistRepository.findByLastFMUrl(artistRequest.lastFMUrl())
                 .orElseGet(() -> buildArtist(artistRequest));
 
         ArtistReview review =  buildArtistReview(artistRequest, artist, user);
@@ -126,6 +126,7 @@ public class ArtistService {
 
                     return new ArtistSearchResult(
                             artist.musicBrainzId(),
+                            artist.lastFMUrl(),
                             artist.name(),
                             imageUrl
                     );
@@ -138,6 +139,7 @@ public class ArtistService {
 
         artist.setName(artistRequest.name());
         artist.setMusicBrainzId(artistRequest.musicBrainzId());
+        artist.setLastFMUrl(artistRequest.lastFMUrl());
         artist.setImageUrl(artistRequest.imageUrl());
 
         return artistRepository.save(artist);

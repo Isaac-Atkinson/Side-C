@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface ArtistRepository extends JpaRepository<Artist, Integer> {
 
-    Optional<Artist> findByNameIgnoreCase(String name);
+
 
     Optional<Artist> findByMusicBrainzId(String musicBrainzId);
 

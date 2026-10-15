@@ -10,9 +10,6 @@ import java.util.Optional;
 
 public interface AlbumReviewRepository extends JpaRepository<AlbumReview, Integer> {
 
-
-    Optional<AlbumReview> findByAlbum_UniqueIdentifier(String musicBrainzId);
-
     List<AlbumReview> findByUser_Username(String username);
 
     Optional<AlbumReview> findByIdAndUser_Username(
@@ -20,5 +17,5 @@ public interface AlbumReviewRepository extends JpaRepository<AlbumReview, Intege
             String username
     );
 
-    Optional<AlbumReview> findByUser_UsernameAndAlbum_UniqueIdentifier(String username, String uniqueId);
+    Optional<AlbumReview> findByUser_UsernameAndAlbum_LastFMUrl(String userUsername, String albumLastFMUrl);
 }

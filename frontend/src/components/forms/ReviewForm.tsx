@@ -45,6 +45,7 @@ function ReviewForm({title, subtitle, existingRating, existingReviewText, imageU
         }
     }
 
+
     return (
         <Box
             component="form"
@@ -84,7 +85,7 @@ function ReviewForm({title, subtitle, existingRating, existingReviewText, imageU
             <Rating
                 value={rating != null ? rating / 2 : null}
                 onChange={(_, value) => {
-                    setRating(value == null ? null : value* 2);
+                    setRating(value == null ? null : value * 2);
                 }}
                 precision={0.5}
                 size= "large"

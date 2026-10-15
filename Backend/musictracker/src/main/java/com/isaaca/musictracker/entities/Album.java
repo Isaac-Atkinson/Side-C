@@ -18,15 +18,7 @@ public class Album {
     private String musicBrainzId;
 
     @Column(unique = true)
-    private String uniqueIdentifier;
-
-    public String getUniqueIdentifier() {
-        return uniqueIdentifier;
-    }
-
-    public void setUniqueIdentifier(String uniqueIdentifier) {
-        this.uniqueIdentifier = uniqueIdentifier;
-    }
+    private String lastFMUrl;
 
     private String imageUrl;
 
@@ -72,5 +64,11 @@ public class Album {
         this.artist = artist;
     }
 
+    public String getLastFMUrl() {
+        return lastFMUrl;
+    }
 
+    public void setLastFMUrl(String lastFMUrl) {
+        this.lastFMUrl = lastFMUrl;
+    }
 }

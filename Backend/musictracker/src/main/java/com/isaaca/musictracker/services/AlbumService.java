@@ -67,34 +67,25 @@ public class AlbumService {
     }
 
     @Transactional
-    public AlbumReviewResponse addAlbumreview(AlbumReviewRequest request, String username)
+    public AlbumReviewResponse addAlbumReview(AlbumReviewRequest request, String username)
             throws URISyntaxException, IOException, InterruptedException {
 
         User user = userRepository
                 .findUserByUsername(username)
                 .orElseThrow();
 
-        String uniqueId = "";
-        if(request.musicBrainzId() == null ||
-                request.musicBrainzId().isBlank()){
-            uniqueId = request.title() + request.artist();
-        } else {
-            uniqueId = request.musicBrainzId();
-        }
 
         Optional<AlbumReview> optionalAlbumReview = albumReviewRepository
-                .findByUser_UsernameAndAlbum_UniqueIdentifier(
-                        username,
-                        uniqueId);
+                .findByUser_UsernameAndAlbum_LastFMUrl(username, request.lastFMUrl());
 
         if(optionalAlbumReview.isPresent()) {
             throw new AlbumAlreadyReviewedException();
         }
 
-        Optional<Album> optionalAlbum = albumRepository.findByUniqueIdentifier(uniqueId);
+        Optional<Album> optionalAlbum = albumRepository.findByLastFMUrl(request.lastFMUrl());
 
         if (optionalAlbum.isEmpty()){
-            Album album = buildAlbum(request, uniqueId);
+            Album album = buildAlbum(request);
             albumRepository.save(album);
 
             AlbumReview albumReview = buildAlbumReview(request, album, user);
@@ -144,7 +135,7 @@ public class AlbumService {
         return lastFMService.lookUpAlbums(name);
     }
 
-    private Album buildAlbum(AlbumReviewRequest request, String uniqueId) throws URISyntaxException, IOException, InterruptedException {
+    private Album buildAlbum(AlbumReviewRequest request) throws URISyntaxException, IOException, InterruptedException {
         String artistName = request.artist();
 
         LastFMArtistInfo lastFMArtistInfo = lastFMService.getArtistInfo(request.artist());
@@ -159,7 +150,7 @@ public class AlbumService {
         album.setTitle(request.title());
         album.setArtist(artist);
         album.setMusicBrainzId(request.musicBrainzId());
-        album.setUniqueIdentifier(uniqueId);
+        album.setLastFMUrl(request.lastFMUrl());
 
 
         LastFMAlbumInfo albumInfo = lastFMService.getAlbumInfo(request);

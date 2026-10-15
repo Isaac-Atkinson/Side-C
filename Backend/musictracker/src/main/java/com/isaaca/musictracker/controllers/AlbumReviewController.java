@@ -51,7 +51,7 @@ public class AlbumReviewController {
 
         String username = authentication.getName();
 
-        AlbumReviewResponse albumReview = albumService.addAlbumreview(albumRequest, username);
+        AlbumReviewResponse albumReview = albumService.addAlbumReview(albumRequest, username);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(albumReview);
     }

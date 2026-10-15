@@ -7,6 +7,9 @@ public record AlbumReviewRequest(
         String musicBrainzId,
 
         @NotBlank
+        String lastFMUrl,
+
+        @NotBlank
         String title,
 
         @NotBlank

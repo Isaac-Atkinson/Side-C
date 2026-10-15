@@ -6,6 +6,7 @@ import com.isaaca.musictracker.externalapi.lastfm.LastFMArtistResult;
 import com.isaaca.musictracker.externalapi.lastfm.albuminfo.LastFMAlbumInfo;
 import com.isaaca.musictracker.externalapi.lastfm.albuminfo.LastFMResponseAlbumInfo;
 import com.isaaca.musictracker.externalapi.lastfm.albumsearch.LastFMAlbumSearchResponse;
+import com.isaaca.musictracker.externalapi.lastfm.albumsearch.LastFMImage;
 import com.isaaca.musictracker.externalapi.lastfm.artistinfo.LastFMArtistInfo;
 import com.isaaca.musictracker.externalapi.lastfm.artistinfo.LastFMResponseArtistInfo;
 import com.isaaca.musictracker.externalapi.lastfm.artistsearch.LastFMArtistSearchResponse;
@@ -76,9 +77,10 @@ public class LastFMService {
                 .stream()
                 .map(album -> new AlbumSearchResult(
                         album.getMbid(),
+                        album.getLastFMUrl(),
                         album.getName(),
                         album.getArtist(),
-                        album.getImages().getLast().getImageUrl()
+                        getAlbumImageUrl(album.getImages())
                 )).toList();
 
         return results;
@@ -124,6 +126,7 @@ public class LastFMService {
                 .stream()
                 .map(artist -> new LastFMArtistResult(
                         artist.getMbid(),
+                        artist.getLastFMUrl(),
                         artist.getName()
                 )).toList();
 
@@ -197,6 +200,13 @@ public class LastFMService {
         LastFMResponseAlbumInfo parsedResponse = mapper.readValue(response.body(), LastFMResponseAlbumInfo.class);
 
         return parsedResponse.getAlbum();
+    }
+
+    private String getAlbumImageUrl(List<LastFMImage> images){
+        if (images == null || images.isEmpty()) return null;
+
+        String url = images.getLast().getImageUrl();
+        return (url == null || url.isBlank()) ? null : url;
     }
 
 }

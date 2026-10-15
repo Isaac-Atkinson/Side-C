@@ -13,6 +13,6 @@ public interface ArtistReviewRepository extends JpaRepository<ArtistReview, Inte
             Integer id,
             String username);
 
-    Optional<ArtistReview> findByUser_UsernameAndArtist_MusicBrainzId(
-            String username, String lastFMId);
+    Optional<ArtistReview> findByUser_UsernameAndArtist_LastFMUrl(
+            String username, String lastFMUrl);
 }

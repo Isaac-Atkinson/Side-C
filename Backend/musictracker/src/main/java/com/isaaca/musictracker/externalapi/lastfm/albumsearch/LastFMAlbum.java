@@ -12,6 +12,17 @@ public class LastFMAlbum {
 
     private String mbid;
 
+    @JsonProperty("url")
+    private String lastFMUrl;
+
+    public String getLastFMUrl() {
+        return lastFMUrl;
+    }
+
+    public void setLastFMUrl(String lastFMUrl) {
+        this.lastFMUrl = lastFMUrl;
+    }
+
     @JsonProperty("image")
     private List<LastFMImage> images;
 

@@ -1,11 +1,14 @@
 package com.isaaca.musictracker.externalapi.lastfm.artistsearch;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class LastFMArtist {
 
     private String name;
 
     private String mbid;
 
+    @JsonProperty("url")
     private String lastFMUrl;
 
     public String getName() {

@@ -21,6 +21,7 @@ export function AddAlbumForm({album, onSuccess, onCancel} : AddAlbumFormProps) {
             credentials: "include",
             body: JSON.stringify({
                 musicBrainzId: album.musicBrainzId,
+                lastFMUrl: album.lastFMUrl,
                 title: album.title,
                 artist: album.artist,
                 rating: Number (rating),
@@ -68,6 +69,7 @@ export function AddArtistForm({artist, onSuccess, onCancel} : AddArtistFormProps
             credentials: "include",
             body: JSON.stringify({
                 musicBrainzId : artist.musicBrainzId,
+                lastFMUrl: artist.lastFMUrl,
                 name: artist.name,
                 imageUrl: artist.imageUrl,
                 rating: Number (rating),

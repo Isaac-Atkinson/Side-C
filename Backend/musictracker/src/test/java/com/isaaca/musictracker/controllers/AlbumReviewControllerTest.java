@@ -123,7 +123,7 @@ class AlbumReviewControllerTest {
                 "great album"
         );
 
-        when(albumService.addAlbumreview(reviewRequest, "username"))
+        when(albumService.addAlbumReview(reviewRequest, "username"))
                 .thenReturn(review);
 
         mockMvc.perform(post("/api/albums/reviews")
@@ -149,7 +149,7 @@ class AlbumReviewControllerTest {
 
         doThrow(new AlbumAlreadyReviewedException())
                 .when(albumService)
-                .addAlbumreview(reviewRequest, "username");
+                .addAlbumReview(reviewRequest, "username");
 
         mockMvc.perform(post("/api/albums/reviews")
                 .principal(authentication)
