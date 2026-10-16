@@ -29,7 +29,7 @@ public class ArtistReviewController {
 
         String username = authentication.getName();
 
-        return ResponseEntity.ok(artistService.getAllArtistReviews(username));
+        return ResponseEntity.ok(artistService.getAllArtistReviewsByUser(username));
     }
 
     @GetMapping({"/{id}"})
@@ -70,7 +70,7 @@ public class ArtistReviewController {
 
         String username = authentication.getName();
 
-        artistService.deleteArtistReviewById(id, username);
+        artistService.deleteArtistReview(id, username);
 
         return ResponseEntity.noContent().build();
     }

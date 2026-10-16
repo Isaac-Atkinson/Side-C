@@ -1,19 +1,12 @@
 package com.isaaca.musictracker.controllers;
 
 import com.isaaca.musictracker.constants.ReviewLimits;
-import com.isaaca.musictracker.dto.request.AlbumReviewRequest;
 import com.isaaca.musictracker.dto.request.ArtistReviewRequest;
-import com.isaaca.musictracker.dto.request.UpdateAlbumReviewRequest;
 import com.isaaca.musictracker.dto.request.UpdateArtistReviewRequest;
-import com.isaaca.musictracker.dto.response.review.AlbumReviewResponse;
 import com.isaaca.musictracker.dto.response.review.ArtistReviewResponse;
-import com.isaaca.musictracker.entities.Album;
 import com.isaaca.musictracker.entities.Artist;
-import com.isaaca.musictracker.exceptions.AlbumAlreadyReviewedException;
-import com.isaaca.musictracker.exceptions.AlbumReviewNotFoundException;
 import com.isaaca.musictracker.exceptions.ArtistAlreadyReviewedException;
 import com.isaaca.musictracker.exceptions.ArtistReviewNotFoundException;
-import com.isaaca.musictracker.services.AlbumService;
 import com.isaaca.musictracker.services.ArtistService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +21,6 @@ import tools.jackson.databind.ObjectMapper;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -71,7 +63,7 @@ class ArtistReviewControllerTest {
                 "Fantastic"
         );
 
-        when(artistService.getAllArtistReviews("username"))
+        when(artistService.getAllArtistReviewsByUser("username"))
                 .thenReturn(List.of(review1, review2));
 
         mockMvc.perform(get("/api/artists/reviews")
@@ -126,6 +118,7 @@ class ArtistReviewControllerTest {
 
         ArtistReviewRequest reviewRequest = new ArtistReviewRequest(
                 "1",
+                "url",
                 "Frank Ocean",
                 "img",
                 10,
@@ -150,6 +143,7 @@ class ArtistReviewControllerTest {
     void addArtistReviewReturnsConflictForDuplicateReview() throws Exception {
         ArtistReviewRequest reviewRequest = new ArtistReviewRequest(
                 "1",
+                "url",
                 "Frank Ocean",
                 "img",
                 10,
@@ -172,6 +166,26 @@ class ArtistReviewControllerTest {
     void addArtistReviewReturnsBadRequestForMissingName() throws Exception {
         ArtistReviewRequest invalidRequest = new ArtistReviewRequest(
                 "1",
+                "url",
+                "",
+                "img",
+                10,
+                "Come back"
+        );
+
+        mockMvc.perform(post("/api/artists/reviews")
+                        .principal(authentication)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(invalidRequest))
+                )
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void addArtistReviewReturnsBadRequestForMissingNLastFMUrl() throws Exception {
+        ArtistReviewRequest invalidRequest = new ArtistReviewRequest(
+                "1",
+                null,
                 "",
                 "img",
                 10,
@@ -192,6 +206,7 @@ class ArtistReviewControllerTest {
     void addArtistReviewReturnsBadRequestForMissingRating() throws Exception {
         ArtistReviewRequest invalidRequest = new ArtistReviewRequest(
                 "1",
+                "url",
                 "Frank Ocean",
                 "img",
                 null,
@@ -210,6 +225,7 @@ class ArtistReviewControllerTest {
     void addArtistReviewReturnsBadRequestForRatingOverLimit() throws Exception {
         ArtistReviewRequest invalidRequest = new ArtistReviewRequest(
                 "1",
+                "url",
                 "Frank Ocean",
                 "img",
                 ReviewLimits.MAX_RATING + 1,
@@ -228,6 +244,7 @@ class ArtistReviewControllerTest {
     void addArtistReviewReturnsBadRequestForRatingBelowLimit() throws Exception {
         ArtistReviewRequest invalidRequest = new ArtistReviewRequest(
                 "1",
+                "url",
                 "Frank Ocean",
                 "img",
                 ReviewLimits.MIN_RATING - 1,
@@ -246,6 +263,7 @@ class ArtistReviewControllerTest {
     void addArtistReviewReturnsBadRequestForReviewTextLengthOverLimit() throws Exception {
         ArtistReviewRequest invalidRequest = new ArtistReviewRequest(
                 "1",
+                "url",
                 "Frank Ocean",
                 "img",
                 10,
@@ -374,14 +392,14 @@ class ArtistReviewControllerTest {
                 .andExpect(status().isNoContent());
 
         verify(artistService)
-                .deleteArtistReviewById(1, "username");
+                .deleteArtistReview(1, "username");
     }
 
     @Test
     void deleteArtistReviewReturnsNotFoundIfReviewDoesNotExist() throws Exception {
         doThrow(new ArtistReviewNotFoundException())
                 .when(artistService)
-                .deleteArtistReviewById(1, "username");
+                .deleteArtistReview(1, "username");
 
         mockMvc.perform(delete("/api/artists/reviews/1")
                         .principal(authentication))

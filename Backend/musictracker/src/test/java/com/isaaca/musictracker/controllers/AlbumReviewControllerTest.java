@@ -117,6 +117,7 @@ class AlbumReviewControllerTest {
 
         AlbumReviewRequest reviewRequest = new AlbumReviewRequest(
                 "1",
+                "url",
                 "Melodrama",
                 "Lorde",
                 10,
@@ -141,6 +142,7 @@ class AlbumReviewControllerTest {
     void addAlbumReviewReturnsConflictForDuplicateReview() throws Exception {
         AlbumReviewRequest reviewRequest = new AlbumReviewRequest(
                 "1",
+                "url",
                 "Melodrama",
                 "Lorde",
                 10,
@@ -163,6 +165,7 @@ class AlbumReviewControllerTest {
     void addAlbumReviewReturnsBadRequestForMissingTitle() throws Exception {
         AlbumReviewRequest invalidRequest = new AlbumReviewRequest(
                 "1",
+                "url",
                 "",
                 "Lorde",
                 10,
@@ -181,6 +184,26 @@ class AlbumReviewControllerTest {
     void addAlbumReviewReturnsBadRequestForMissingArtist() throws Exception {
         AlbumReviewRequest invalidRequest = new AlbumReviewRequest(
                 "1",
+                "url",
+                "Melodrama",
+                "",
+                10,
+                "great album"
+        );
+
+        mockMvc.perform(post("/api/albums/reviews")
+                        .principal(authentication)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(invalidRequest))
+                )
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void addAlbumReviewReturnsBadRequestForMissingLastFMUrl() throws Exception {
+        AlbumReviewRequest invalidRequest = new AlbumReviewRequest(
+                "1",
+                null,
                 "Melodrama",
                 "",
                 10,
@@ -199,6 +222,7 @@ class AlbumReviewControllerTest {
     void addAlbumReviewReturnsBadRequestForMissingRating() throws Exception {
         AlbumReviewRequest invalidRequest = new AlbumReviewRequest(
                 "1",
+                "url",
                 "Melodrama",
                 "Lorde",
                 null,
@@ -217,6 +241,7 @@ class AlbumReviewControllerTest {
     void addAlbumReviewReturnsBadRequestForRatingOverLimit() throws Exception {
         AlbumReviewRequest invalidRequest = new AlbumReviewRequest(
                 "1",
+                "url",
                 "Melodrama",
                 "Lorde",
                 ReviewLimits.MAX_RATING + 1,
@@ -235,6 +260,7 @@ class AlbumReviewControllerTest {
     void addAlbumReviewReturnsBadRequestForRatingBelowLimit() throws Exception {
         AlbumReviewRequest invalidRequest = new AlbumReviewRequest(
                 "1",
+                "url",
                 "Melodrama",
                 "Lorde",
                 ReviewLimits.MIN_RATING - 1,
@@ -253,6 +279,7 @@ class AlbumReviewControllerTest {
     void addAlbumReviewReturnsBadRequestForReviewTextLengthOverLimit() throws Exception {
         AlbumReviewRequest invalidRequest = new AlbumReviewRequest(
                 "1",
+                "url",
                 "Melodrama",
                 "Lorde",
                 0,
@@ -382,14 +409,14 @@ class AlbumReviewControllerTest {
                 .andExpect(status().isNoContent());
 
         verify(albumService)
-                .deleteAlbumReviewById(1, "username");
+                .deleteAlbumReview(1, "username");
     }
 
     @Test
     void deleteAlbumReviewReturnsNotFoundIfReviewDoesNotExist() throws Exception {
         doThrow(new AlbumReviewNotFoundException())
                 .when(albumService)
-                .deleteAlbumReviewById(1, "username");
+                .deleteAlbumReview(1, "username");
 
         mockMvc.perform(delete("/api/albums/reviews/1")
                         .principal(authentication))

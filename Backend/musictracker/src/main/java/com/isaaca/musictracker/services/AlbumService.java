@@ -16,7 +16,6 @@ import com.isaaca.musictracker.repositories.AlbumRepository;
 import com.isaaca.musictracker.repositories.AlbumReviewRepository;
 import com.isaaca.musictracker.repositories.ArtistRepository;
 import com.isaaca.musictracker.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,9 +29,6 @@ public class AlbumService {
 
 
     private final FanartService fanartService;
-    @Value("${lastfm.api.root}")
-    private String lastFMApiRoot;
-
     private final AlbumRepository albumRepository;
     private final AlbumReviewRepository albumReviewRepository;
     private final ArtistRepository artistRepository;
@@ -75,10 +71,10 @@ public class AlbumService {
                 .orElseThrow();
 
 
-        Optional<AlbumReview> optionalAlbumReview = albumReviewRepository
+        Optional<AlbumReview> existingAlbumReview = albumReviewRepository
                 .findByUser_UsernameAndAlbum_LastFMUrl(username, request.lastFMUrl());
 
-        if(optionalAlbumReview.isPresent()) {
+        if(existingAlbumReview.isPresent()) {
             throw new AlbumAlreadyReviewedException();
         }
 
@@ -121,7 +117,7 @@ public class AlbumService {
         return AlbumReviewResponse.fromAlbumReview(albumReview);
     }
 
-    public void deleteAlbumReviewById(Integer id, String username) {
+    public void deleteAlbumReview(Integer id, String username) {
         Optional<AlbumReview> optionalAlbumReview = albumReviewRepository.findByIdAndUser_Username(id, username);
 
         if(optionalAlbumReview.isEmpty()){

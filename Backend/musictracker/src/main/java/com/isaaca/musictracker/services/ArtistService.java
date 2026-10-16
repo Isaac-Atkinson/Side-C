@@ -42,7 +42,7 @@ public class ArtistService {
         this.userRepository = userRepository;
     }
 
-    public List<ArtistReviewResponse> getAllArtistReviews(String username){
+    public List<ArtistReviewResponse> getAllArtistReviewsByUser(String username){
         return artistReviewRepository.findByUser_Username(username)
                 .stream()
                 .map(ArtistReviewResponse::fromArtistReview)
@@ -58,6 +58,10 @@ public class ArtistService {
     @Transactional
     public ArtistReviewResponse addArtistReview(ArtistReviewRequest artistRequest, String username) {
 
+        User user = userRepository
+                .findUserByUsername(username)
+                .orElseThrow();
+
         Optional<ArtistReview> existingArtistReview = artistReviewRepository
                 .findByUser_UsernameAndArtist_LastFMUrl(username,
                                                             artistRequest.lastFMUrl());
@@ -66,9 +70,7 @@ public class ArtistService {
             throw new ArtistAlreadyReviewedException();
         }
 
-        User user = userRepository
-                .findUserByUsername(username)
-                .orElseThrow();
+
 
         Artist artist = artistRepository.findByLastFMUrl(artistRequest.lastFMUrl())
                 .orElseGet(() -> buildArtist(artistRequest));
@@ -94,7 +96,7 @@ public class ArtistService {
         return ArtistReviewResponse.fromArtistReview(artistReview);
     }
 
-    public void deleteArtistReviewById(Integer id, String username) {
+    public void deleteArtistReview(Integer id, String username) {
         Optional<ArtistReview> optionalArtistReview = artistReviewRepository.findByIdAndUser_Username(id, username);
 
         if(optionalArtistReview.isEmpty()) {

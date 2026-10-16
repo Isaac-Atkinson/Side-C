@@ -72,7 +72,7 @@ public class AlbumReviewController {
 
         String username = authentication.getName();
 
-        albumService.deleteAlbumReviewById(id, username);
+        albumService.deleteAlbumReview(id, username);
 
         return ResponseEntity.noContent().build();
     }

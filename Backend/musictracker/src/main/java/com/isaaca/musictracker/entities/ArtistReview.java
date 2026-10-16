@@ -34,6 +34,10 @@ public class ArtistReview {
         return id;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public Integer getRating() {
         return rating;
     }

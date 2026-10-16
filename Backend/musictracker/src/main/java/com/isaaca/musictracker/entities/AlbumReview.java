@@ -65,4 +65,8 @@ public class AlbumReview {
     public void setUser(User user) {
         this.user = user;
     }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 }
