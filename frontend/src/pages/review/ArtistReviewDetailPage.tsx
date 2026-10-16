@@ -5,6 +5,7 @@ import DetailedArtistReviewCard from "../../components/cards/DetailedArtistRevie
 import useReview from "../../hooks/UseReview.tsx";
 import {Alert, CircularProgress, Snackbar} from "@mui/material";
 import {useState} from "react";
+import PageContainer from "../../components/layout/pageContainer.tsx";
 
 function ArtistReviewDetailPage() {
     const[snackBarOpen, setSnackBarOpen] = useState(false);
@@ -53,7 +54,7 @@ function ArtistReviewDetailPage() {
         setSnackBarMessage("Review updated.");
     }
     return(
-        <div>
+        <PageContainer>
             <DetailedArtistReviewCard
                 artistReview={artistReview}
                 onArtistUpdated={handleArtistUpdated}
@@ -72,7 +73,7 @@ function ArtistReviewDetailPage() {
                     {snackBarMessage}
                 </Alert>
             </Snackbar>
-        </div>
+        </PageContainer>
     )
 }
 

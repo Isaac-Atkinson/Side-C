@@ -1,18 +1,20 @@
 import {useState} from "react";
-import {Box, Button, TextField} from "@mui/material";
+import {Alert, Box, Button, TextField} from "@mui/material";
 
 type AuthFormProps = {
     onSubmit: (data: {
         username: string,
         password: string,
-    }) => void
+    }) => Promise<string | null>;
+    buttonMsg : string;
 }
-function AuthForm({onSubmit}: AuthFormProps) {
+function AuthForm({onSubmit, buttonMsg}: AuthFormProps) {
     const[username, setUsername] = useState("");
     const[password, setPassword] = useState("");
 
     const [usernameError, setUsernameError] = useState("");
     const [passwordError, setPasswordError] = useState("");
+    const [submitError, setSubmitError] = useState("");
 
     const validateForm = () => {
         let valid = true;
@@ -41,14 +43,26 @@ function AuthForm({onSubmit}: AuthFormProps) {
 
         if(!validateForm()) return;
 
-        onSubmit({username, password});
+        const error = await onSubmit({username, password});
+
+        if(error){
+            setSubmitError(error);
+        }
     }
     return (
         <div>
             <Box
                 component="form"
                 onSubmit={handleSubmit}
-                sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+                sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 2,
+                    bgcolor: "background.paper",
+                    p: 3,
+                    border: "1px solid",
+                    borderColor: "divider",
+            }}
             >
                 <TextField
                     label = "Username"
@@ -66,8 +80,17 @@ function AuthForm({onSubmit}: AuthFormProps) {
                     helperText={passwordError}
                 />
 
-                <Button type="submit">
-                    Submit
+                {submitError && (
+                    <Alert severity="error">
+                        {submitError}
+                    </Alert>
+                )}
+
+                <Button
+                    type="submit"
+                    variant="contained"
+                >
+                    {buttonMsg}
                 </Button>
 
             </Box>

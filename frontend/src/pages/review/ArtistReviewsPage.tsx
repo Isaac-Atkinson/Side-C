@@ -2,8 +2,9 @@ import type {ArtistReview} from "../../types/ArtistReview.ts";
 import {API_BASE_URL} from "../../config/api.ts";
 import useReviews from "../../hooks/UseReviews.tsx";
 import {Alert, CircularProgress} from "@mui/material";
-import CardGrid from "../../components/CardGrid.tsx";
+import CardGrid from "../../components/layout/CardGrid.tsx";
 import {ArtistReviewCard} from "../../components/cards/ReviewCards.tsx";
+import PageContainer from "../../components/layout/pageContainer.tsx";
 
 
 
@@ -44,17 +45,16 @@ function ArtistReviewsPage(){
     }
 
     return (
-        <div>
-          <CardGrid>
-              {artistReviews.map(review => (
-                  <ArtistReviewCard
-                      key = {review.id}
-                      artistReview={review}
-                  />
-              ))}
-          </CardGrid>
-
-        </div>
+        <PageContainer>
+            <CardGrid>
+                {artistReviews.map(review => (
+                    <ArtistReviewCard
+                        key = {review.id}
+                        artistReview={review}
+                    />
+                ))}
+            </CardGrid>
+        </PageContainer>
     );
 }
 

@@ -1,9 +1,9 @@
-import {API_BASE_URL} from "../../config/api.ts";
+import {API_BASE_URL} from "../../../config/api.ts";
 import ReviewForm from "./ReviewForm.tsx";
-import type {AlbumSearchResult} from "../../types/AlbumSearchResult.ts";
-import type {ArtistSearchResult} from "../../types/ArtistSearchResult.ts";
-import type {AlbumReview} from "../../types/AlbumReview.ts";
-import type {ArtistReview} from "../../types/ArtistReview.ts";
+import type {AlbumSearchResult} from "../../../types/AlbumSearchResult.ts";
+import type {ArtistSearchResult} from "../../../types/ArtistSearchResult.ts";
+import type {AlbumReview} from "../../../types/AlbumReview.ts";
+import type {ArtistReview} from "../../../types/ArtistReview.ts";
 
 
 type AddAlbumFormProps = {

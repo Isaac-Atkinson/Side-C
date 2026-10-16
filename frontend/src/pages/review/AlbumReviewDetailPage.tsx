@@ -5,6 +5,7 @@ import DetailedAlbumReviewCard from "../../components/cards/DetailedAlbumReviewC
 import useReview from "../../hooks/UseReview.tsx";
 import {Alert, CircularProgress, Snackbar} from "@mui/material";
 import {useState} from "react";
+import PageContainer from "../../components/layout/pageContainer.tsx";
 
 function AlbumReviewDetailPage(){
     const[snackBarOpen, setSnackBarOpen] = useState(false);
@@ -57,7 +58,7 @@ function AlbumReviewDetailPage(){
 
 
     return(
-        <div>
+        <PageContainer>
             <DetailedAlbumReviewCard
                 albumReview={albumReview}
                 onAlbumUpdated={handleAlbumUpdated}/>
@@ -75,7 +76,7 @@ function AlbumReviewDetailPage(){
                     {snackBarMessage}
                 </Alert>
             </Snackbar>
-        </div>
+        </PageContainer>
     )
 }
 

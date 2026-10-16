@@ -1,12 +1,13 @@
 import {useEffect, useState} from "react";
-import {Alert, CircularProgress, Dialog, DialogContent, DialogTitle, Snackbar, Typography} from "@mui/material";
+import {Alert, Box, CircularProgress, Dialog, DialogContent, DialogTitle, Snackbar, Typography} from "@mui/material";
 import {API_BASE_URL} from "../../config/api.ts";
 import type {AlbumSearchResult} from "../../types/AlbumSearchResult.ts";
-import {AddAlbumForm, AddArtistForm} from "../../components/forms/ReviewFormVariants.tsx";
+import {AddAlbumForm, AddArtistForm} from "../../components/forms/review/ReviewFormVariants.tsx";
 import type {ArtistSearchResult} from "../../types/ArtistSearchResult.ts";
 import {useSearchParams} from "react-router-dom";
-import CardGrid from "../../components/CardGrid.tsx";
+import CardGrid from "../../components/layout/CardGrid.tsx";
 import { AlbumSearchDisplayCard, ArtistSearchDisplayCard } from "../../components/cards/SearchCards.tsx";
+import PageContainer from "../../components/layout/pageContainer.tsx";
 
 
 function SearchPage(){
@@ -76,45 +77,22 @@ function SearchPage(){
     }
 
     return(
-        <div>
+        <PageContainer>
 
-            <Typography variant="h4" component="h2" gutterBottom>Albums</Typography>
+            <Box>
+                <Typography variant="h4" component="h2" gutterBottom>Albums</Typography>
 
-            <CardGrid>
-                {albumResults.map(album => (
-                    <AlbumSearchDisplayCard
-                        key={album.musicBrainzId|| `${album.artist}-${album.title}`}
-                        searchResult={album}
-                        onClick={() => setSelectedAlbum(album)}
-                    />
-                ))}
-            </CardGrid>
+                <CardGrid>
+                    {albumResults.map(album => (
+                        <AlbumSearchDisplayCard
+                            key={album.musicBrainzId|| `${album.artist}-${album.title}`}
+                            searchResult={album}
+                            onClick={() => setSelectedAlbum(album)}
+                        />
+                    ))}
+                </CardGrid>
 
-
-                <Dialog
-                    open={selectedAlbum !== null}
-                    onClose={() => setSelectedAlbum(null)}
-                >
-                    <DialogTitle>Add Review</DialogTitle>
-
-                    <DialogContent>
-                        {selectedAlbum && (
-                            <AddAlbumForm
-                                album={selectedAlbum}
-                                onSuccess={() => {
-                                    setSelectedAlbum(null)
-                                    setSnackBarOpen(true)
-                                    setSnackBarMessage("Album review added")
-                                }}
-                                onCancel={() => setSelectedAlbum(null)}
-                            />
-                        )}
-                    </DialogContent>
-                </Dialog>
-
-
-            <Typography variant="h4" component="h2" gutterBottom>Artists</Typography>
-
+                <Typography variant="h4" component="h2" gutterBottom>Artists</Typography>
 
                 <CardGrid>
                     {artistResults.map(artist => (
@@ -124,6 +102,30 @@ function SearchPage(){
                             onClick={() => setSelectedArtist(artist)}/>
                     ))}
                 </CardGrid>
+            </Box>
+
+
+
+            <Dialog
+                open={selectedAlbum !== null}
+                onClose={() => setSelectedAlbum(null)}
+            >
+                <DialogTitle>Add Review</DialogTitle>
+
+                <DialogContent>
+                    {selectedAlbum && (
+                        <AddAlbumForm
+                            album={selectedAlbum}
+                            onSuccess={() => {
+                                setSelectedAlbum(null)
+                                setSnackBarOpen(true)
+                                setSnackBarMessage("Album review added")
+                            }}
+                            onCancel={() => setSelectedAlbum(null)}
+                        />
+                    )}
+                </DialogContent>
+            </Dialog>
 
 
                 <Dialog
@@ -160,7 +162,7 @@ function SearchPage(){
                     {snackBarMessage}
                 </Alert>
             </Snackbar>
-        </div>
+        </PageContainer>
     )
 }
 

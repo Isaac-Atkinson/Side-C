@@ -1,6 +1,6 @@
 import {useState} from "react";
 import {Alert, Box, Button, Rating, TextField, Typography} from "@mui/material";
-import {MAX_REVIEW_LENGTH} from "../../config/api.ts";
+import {MAX_REVIEW_LENGTH} from "../../../config/api.ts";
 
 type ReviewFormProps = {
     title: string;
@@ -50,7 +50,11 @@ function ReviewForm({title, subtitle, existingRating, existingReviewText, imageU
         <Box
             component="form"
             onSubmit={handleSubmit}
-            sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+            sx={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 2
+        }}
         >
             <Box
                 component="img"

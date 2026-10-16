@@ -3,7 +3,8 @@ import {API_BASE_URL} from "../../config/api.ts";
 import {Alert, CircularProgress} from "@mui/material";
 import useReviews from "../../hooks/UseReviews.tsx";
 import {AlbumReviewCard} from "../../components/cards/ReviewCards.tsx";
-import CardGrid from "../../components/CardGrid.tsx";
+import CardGrid from "../../components/layout/CardGrid.tsx";
+import PageContainer from "../../components/layout/pageContainer.tsx";
 
 
 
@@ -46,7 +47,7 @@ function AlbumReviewsPage() {
 
 
     return (
-        <div>
+        <PageContainer>
             <CardGrid>
                 {albumReviews.map(review => (
                     <AlbumReviewCard
@@ -55,7 +56,7 @@ function AlbumReviewsPage() {
                     />
                 ))}
             </CardGrid>
-        </div>
+        </PageContainer>
 
     );
 }

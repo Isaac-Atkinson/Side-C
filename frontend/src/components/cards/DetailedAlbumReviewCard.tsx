@@ -3,7 +3,7 @@ import {Box, Button, Dialog, DialogContent, DialogTitle, Rating, Typography} fro
 import {API_BASE_URL} from "../../config/api.ts";
 import {useNavigate} from "react-router-dom";
 import {useState} from "react";
-import {EditAlbumForm} from "../forms/ReviewFormVariants.tsx";
+import {EditAlbumForm} from "../forms/review/ReviewFormVariants.tsx";
 
 type DetailedAlbumCardProps = {
     albumReview: AlbumReview;

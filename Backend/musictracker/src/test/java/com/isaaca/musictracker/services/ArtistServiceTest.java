@@ -171,7 +171,7 @@ class ArtistServiceTest {
         when(artistRepository.findByLastFMUrl(request.lastFMUrl()))
                 .thenReturn(Optional.empty());
 
-        
+
         when(artistReviewRepository.save(any(ArtistReview.class)))
                 .thenAnswer(invocation -> invocation.getArgument(0));
 

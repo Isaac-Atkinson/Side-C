@@ -3,7 +3,7 @@ import { useState} from "react";
 import {API_BASE_URL} from "../../config/api.ts";
 import type {ArtistReview} from "../../types/ArtistReview.ts";
 import {Box, Button, Dialog, DialogContent, DialogTitle, Rating, Typography} from "@mui/material";
-import {EditArtistForm} from "../forms/ReviewFormVariants.tsx";
+import {EditArtistForm} from "../forms/review/ReviewFormVariants.tsx";
 
 
 type DetailedArtistCardProps = {

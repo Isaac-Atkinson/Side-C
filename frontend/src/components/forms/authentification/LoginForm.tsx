@@ -7,7 +7,6 @@ function LoginForm(){
 
     const handleLogin = async (data: {
         username: string;
-        email?: string;
         password: string;
     }) => {
         const response= await fetch(`${API_BASE_URL}/auth/login`, {
@@ -21,11 +20,19 @@ function LoginForm(){
 
         if(response.ok){
             navigate("/albums")
+            return null;
+        } else if (response.status === 403){
+            return "Wrong username or password";
+        } else {
+            return "Something went wrong";
         }
     };
 
     return(
-        <AuthForm onSubmit={handleLogin}/>
+        <AuthForm
+            onSubmit={handleLogin}
+            buttonMsg="Login"
+        />
     )
 }
 
