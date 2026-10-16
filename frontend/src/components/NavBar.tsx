@@ -9,22 +9,32 @@ function NavBar() {
         <AppBar position="static">
             <Toolbar>
                 <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-                    <Button color="inherit" component={Link} to="/albums">
-                        Albums
+                    <SearchBar />
+
+                    <Button
+                        color="inherit"
+                        component={Link} to="/reviews/albums"
+                        variant="contained"
+
+                    >
+                        Reviews
                     </Button>
 
-                    <Button color="inherit" component={Link} to="/artists">
-                        Artists
-                    </Button>
-
-                    <Button color="inherit" component={Link} to="/login">
-                        Login
-                    </Button>
                 </Box>
 
 
                 <Box sx={{ ml: "auto" }}>
-                    <SearchBar />
+
+
+                    <Button
+                        variant="contained"
+                        component={Link} to="/login"
+                        sx = {{
+                            bgcolor: "navSelected.main"
+                        }}
+                    >
+                        Login
+                    </Button>
                 </Box>
 
             </Toolbar>

@@ -10,9 +10,9 @@ function CardGrid({children} : CardGridProps){
         <Box
             sx={{
                 display: "grid",
-                gridTemplateColumns: `repeat(auto-fill, minmax(220px, 1fr))`,
+                gridTemplateColumns: `repeat(auto-fill, minmax(160px, 1fr))`,
                 gap: 2,
-                mt: 2,
+                mt: 4,
             }}
         >
             {children}

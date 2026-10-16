@@ -9,6 +9,7 @@ import RegisterPage from "./pages/login/RegisterPage.tsx";
 import LoginPage from "./pages/login/LoginPage.tsx";
 import NavBar from "./components/NavBar.tsx";
 import {Box} from "@mui/material";
+import ReviewsLayout from "./components/layout/ReviewsLayout.tsx";
 
 
 
@@ -34,8 +35,11 @@ function App() {
                   }}
               >
                   <Routes>
-                      <Route path="/albums" element={<AlbumReviewsPage />} />
-                      <Route path="/artists" element={<ArtistReviewsPage />} />
+                      <Route path = "/reviews" element={<ReviewsLayout/>} >
+                          <Route path="albums" element={<AlbumReviewsPage />} />
+                          <Route path="artists" element={<ArtistReviewsPage />} />
+                      </Route>
+
                       <Route path={"albums/:id"} element={<AlbumReviewDetailPage />}/>
                       <Route path={"artists/:id"} element={<ArtistReviewDetailPage />}/>
                       <Route path="/search" element={<SearchPage />} />

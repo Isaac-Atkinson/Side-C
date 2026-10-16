@@ -26,6 +26,8 @@ function SearchBar() {
                 label="Search"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
+                size="small"
+                sx={{ width: "20vw" }}
             />
         </form>
     )

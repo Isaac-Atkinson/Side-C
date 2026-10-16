@@ -35,7 +35,8 @@ function MediaCard({title, subtitle, rating, imageUrl, imageAlt, link, onClick, 
                     "&:hover": {
                         transform: "translateY(-3px)",
                         boxShadow: 6
-                    }
+                    },
+                    bgcolor : "background.default"
                 }}
             >
                 <CardActionArea
@@ -48,9 +49,12 @@ function MediaCard({title, subtitle, rating, imageUrl, imageAlt, link, onClick, 
                         <CardMedia
 
                             component="img"
-                            height="220"
                             image={imageUrl}
                             alt={imageAlt}
+                            sx = {{
+                                aspectRatio: "1 / 1",
+                                objectFit: "cover"
+                            }}
                         />
                     ) : (
                         <Box
@@ -68,10 +72,21 @@ function MediaCard({title, subtitle, rating, imageUrl, imageAlt, link, onClick, 
                     )}
 
 
-                    <CardContent>
+                    <CardContent
+                        sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                            textAlign: "center",
+                            width: "100%",
+                        }}
+                    >
                         <Typography
-                            variant="h6"
+                            variant="body1"
                             noWrap
+                            sx={{
+                                width: "100%",
+                            }}
                         >
                             {title}
                         </Typography>
@@ -79,8 +94,11 @@ function MediaCard({title, subtitle, rating, imageUrl, imageAlt, link, onClick, 
                         {subtitle && (
                             <Typography
                                 variant="body2"
-                                color="text.secondary"
                                 noWrap
+                                sx={{
+                                    width: "100%",
+                                    color: "text.secondary"
+                                }}
                             >
                                 {subtitle}
                             </Typography>
@@ -90,7 +108,7 @@ function MediaCard({title, subtitle, rating, imageUrl, imageAlt, link, onClick, 
                             <Rating
                                 value={rating / 2}
                                 precision={0.5}
-                                size="large"
+                                size="medium"
                                 readOnly
                             />
                         )}
