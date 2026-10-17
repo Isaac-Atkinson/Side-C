@@ -12,7 +12,7 @@ function CardGrid({children} : CardGridProps){
                 display: "grid",
                 gridTemplateColumns: `repeat(auto-fill, minmax(160px, 1fr))`,
                 gap: 2,
-                mt: 4,
+                my: 4,
             }}
         >
             {children}

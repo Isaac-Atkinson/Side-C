@@ -5,6 +5,7 @@ import './index.css'
 import App from './App.tsx'
 import {CssBaseline, ThemeProvider} from "@mui/material";
 import {theme} from "./theme.ts";
+import {SnackBarProvider} from "./context/SnackBarContext.tsx";
 
 
 createRoot(document.getElementById("root")!).render(
@@ -12,7 +13,9 @@ createRoot(document.getElementById("root")!).render(
         <ThemeProvider theme={theme}>
             <CssBaseline />
             <BrowserRouter>
-                <App />
+                <SnackBarProvider>
+                    <App />
+                </SnackBarProvider>
             </BrowserRouter>
         </ThemeProvider>
     </StrictMode>,

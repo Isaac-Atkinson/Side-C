@@ -4,6 +4,7 @@ import {Link} from "react-router-dom";
 import {Box, Typography} from "@mui/material";
 import PageContainer from "../../components/layout/pageContainer.tsx";
 
+
 function registerPage() {
 
 
@@ -30,6 +31,7 @@ function registerPage() {
                     Login
                 </Link>
             </Box>
+
         </PageContainer>
 
     )

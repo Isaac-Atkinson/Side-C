@@ -1,9 +1,13 @@
 import {API_BASE_URL} from "../../../config/api.ts";
 import AuthForm from "./AuthForm.tsx";
 import {useNavigate} from "react-router-dom";
+import {useSnackbar} from "../../../context/SnackBarContext.tsx";
 
-function RegisterForm(){
+
+function RegisterForm() {
     const navigate = useNavigate();
+
+    const {showSnackbar} = useSnackbar();
 
     const handleRegister = async (data: {
         username: string;
@@ -18,6 +22,8 @@ function RegisterForm(){
         });
 
         if(response.ok){
+
+            showSnackbar("Account created")
             navigate("/login")
             return null;
         } else if (response.status === 409){

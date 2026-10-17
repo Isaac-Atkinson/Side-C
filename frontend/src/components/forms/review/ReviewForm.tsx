@@ -143,6 +143,9 @@ function ReviewForm({title, subtitle, existingRating, existingReviewText, imageU
                 <Button
                     type="submit"
                     variant="contained"
+                    sx = {{
+                        bgcolor: "actionButton.main"
+                    }}
                 >
                     Submit
                 </Button>

@@ -3,13 +3,12 @@ import {API_BASE_URL} from "../../config/api.ts";
 import type {ArtistReview} from "../../types/ArtistReview.ts";
 import DetailedArtistReviewCard from "../../components/cards/DetailedArtistReviewCard.tsx";
 import useReview from "../../hooks/UseReview.tsx";
-import {Alert, CircularProgress, Snackbar} from "@mui/material";
-import {useState} from "react";
+import {Alert, CircularProgress} from "@mui/material";
 import PageContainer from "../../components/layout/pageContainer.tsx";
+import {useSnackbar} from "../../context/SnackBarContext.tsx";
 
 function ArtistReviewDetailPage() {
-    const[snackBarOpen, setSnackBarOpen] = useState(false);
-    const[snackBarMessage, setSnackBarMessage] = useState("");
+    const {showSnackbar} = useSnackbar();
 
     const {id} = useParams();
 
@@ -50,8 +49,7 @@ function ArtistReviewDetailPage() {
 
     const handleArtistUpdated = (updatedReview : ArtistReview) => {
         updateReview(updatedReview);
-        setSnackBarOpen(true);
-        setSnackBarMessage("Review updated.");
+        showSnackbar("Review updated");
     }
     return(
         <PageContainer>
@@ -59,20 +57,6 @@ function ArtistReviewDetailPage() {
                 artistReview={artistReview}
                 onArtistUpdated={handleArtistUpdated}
             />
-
-            <Snackbar
-                open={snackBarOpen}
-                onClose={() => setSnackBarOpen(false)}
-                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-            >
-                <Alert
-                    severity="success"
-                    variant="filled"
-                    onClose={() => setSnackBarOpen(false)}
-                >
-                    {snackBarMessage}
-                </Alert>
-            </Snackbar>
         </PageContainer>
     )
 }

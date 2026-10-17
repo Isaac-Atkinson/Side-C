@@ -89,6 +89,9 @@ function AuthForm({onSubmit, buttonMsg}: AuthFormProps) {
                 <Button
                     type="submit"
                     variant="contained"
+                    sx = {{
+                        bgcolor: "actionButton.main",
+                    }}
                 >
                     {buttonMsg}
                 </Button>

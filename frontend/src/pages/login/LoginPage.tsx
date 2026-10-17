@@ -5,16 +5,6 @@ import PageContainer from "../../components/layout/pageContainer.tsx";
 
 function LoginPage(){
     return(
-        // <div  className="login-page">
-        //     <Typography variant="h1" >
-        //         Log in
-        //     </Typography>
-        //     <LoginForm/>
-        //
-        //     <Link to="/register">
-        //         Create an account
-        //     </Link>
-        // </div>
 
         <PageContainer>
 

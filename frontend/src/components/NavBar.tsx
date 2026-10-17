@@ -6,13 +6,14 @@ import SearchBar from "./SearchBar.tsx";
 function NavBar() {
 
     return (
-        <AppBar position="static">
+        <AppBar
+            position="static"
+        >
             <Toolbar>
                 <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                     <SearchBar />
 
                     <Button
-                        color="inherit"
                         component={Link} to="/reviews/albums"
                         variant="contained"
 
@@ -30,7 +31,7 @@ function NavBar() {
                         variant="contained"
                         component={Link} to="/login"
                         sx = {{
-                            bgcolor: "navSelected.main"
+                            bgcolor: "actionButton.main"
                         }}
                     >
                         Login

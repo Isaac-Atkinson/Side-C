@@ -19,7 +19,7 @@ function LoginForm(){
         });
 
         if(response.ok){
-            navigate("/albums")
+            navigate("/reviews/albums")
             return null;
         } else if (response.status === 403){
             return "Wrong username or password";

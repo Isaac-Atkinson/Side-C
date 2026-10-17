@@ -3,11 +3,11 @@ import { createTheme } from "@mui/material/styles";
 
 declare module "@mui/material/styles" {
     interface Palette {
-        navSelected: Palette["primary"];
+        actionButton: Palette["primary"];
     }
 
     interface PaletteOptions {
-        navSelected?: PaletteOptions["primary"];
+        actionButton?: PaletteOptions["primary"];
     }
 }
 
@@ -27,7 +27,7 @@ export const theme = createTheme({
         error: {
             main: "#f44336",
         },
-        navSelected: {
+        actionButton: {
             main: "#1619cc",
         }
     },
@@ -41,4 +41,26 @@ export const theme = createTheme({
         borderRadius: 12,
     },
     spacing: 8,
+    components: {
+        // MuiTab: {
+        //     styleOverrides: {
+        //         root: ({ theme }) => ({
+        //             textTransform: "none",
+        //             borderRadius: theme.shape.borderRadius,
+        //             minHeight: 40,
+        //             "&.Mui-selected": {
+        //                 backgroundColor: theme.palette.primary.main,
+        //                 color: theme.palette.primary.contrastText,
+        //             },
+        //         }),
+        //     },
+        // },
+        // MuiTabs: {
+        //     styleOverrides: {
+        //         indicator: {
+        //             display: "none",
+        //         },
+        //     },
+        // },
+    },
 });
