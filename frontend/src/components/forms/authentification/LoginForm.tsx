@@ -1,9 +1,11 @@
 import AuthForm from "./AuthForm.tsx";
 import {API_BASE_URL} from "../../../config/api.ts";
 import {useNavigate} from "react-router-dom";
+import {useUserContext} from "../../../context/UserContext.tsx";
 
 function LoginForm(){
     const navigate = useNavigate();
+    const {getUser} = useUserContext();
 
     const handleLogin = async (data: {
         username: string;
@@ -19,6 +21,7 @@ function LoginForm(){
         });
 
         if(response.ok){
+            await getUser()
             navigate("/reviews/albums")
             return null;
         } else if (response.status === 403){

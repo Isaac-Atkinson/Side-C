@@ -1,0 +1,56 @@
+import {createContext, type ReactNode, useContext, useState} from "react";
+import {API_BASE_URL} from "../config/api.ts";
+
+type UserContextType = {
+    username : string | null;
+    getUser: () => Promise<void>;
+    logout: () => Promise<void>;
+}
+
+const UserContext = createContext<UserContextType | null>(null);
+
+export function UserProvider({ children }: { children: ReactNode }) {
+   const[username, setUsername] = useState<string | null>(null)
+
+   const getUser = async () => {
+       try{
+           const response = await fetch(`${API_BASE_URL}/auth/user`, {
+               credentials: "include",
+           });
+
+           if(response.ok){
+               const data = await response.json();
+               setUsername(data.username);
+           } else {
+               setUsername(null);
+           }
+       } catch {
+           setUsername(null);
+       }
+   }
+
+    const logout = async () => {
+        await fetch(`${API_BASE_URL}/auth/logout`, {
+            method: "POST",
+            credentials: "include",
+        });
+        setUsername(null);
+    };
+
+   return (
+       <UserContext.Provider value = {{username, getUser, logout}}>
+           {children}
+       </UserContext.Provider>
+   )
+
+
+
+}
+
+export function useUserContext(): UserContextType {
+    const context = useContext(UserContext);
+    if (!context) {
+        throw new Error("useUserContext must be used inside UserProvider");
+    }
+    return context;
+}

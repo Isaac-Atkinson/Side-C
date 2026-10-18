@@ -2,12 +2,16 @@ package com.isaaca.musictracker.controllers;
 
 import com.isaaca.musictracker.dto.request.LoginRequest;
 import com.isaaca.musictracker.dto.request.RegisterRequest;
+import com.isaaca.musictracker.dto.response.auth.CurrentUserResponse;
 import com.isaaca.musictracker.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "http://localhost:5173",
@@ -20,6 +24,23 @@ public class AuthController {
 
     public AuthController(UserService userService) {
         this.userService = userService;
+    }
+
+    @GetMapping("/user")
+    public ResponseEntity<CurrentUserResponse> getCurrentUser(Authentication authentication) {
+        return ResponseEntity.ok(new CurrentUserResponse(authentication.getName()));
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+
+        if(session != null) {
+            session.invalidate();
+        }
+
+        SecurityContextHolder.clearContext();
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/register")
