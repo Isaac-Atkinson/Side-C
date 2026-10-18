@@ -19,8 +19,8 @@ public class ArtistReview {
     private Artist artist;
 
     @NotNull
-    @Min(1)
-    @Max(10)
+    @Min(ReviewLimits.MIN_RATING)
+    @Max(ReviewLimits.MAX_RATING)
     private Integer rating;
 
     @Size(max = ReviewLimits.MAX_REVIEW_LENGTH)

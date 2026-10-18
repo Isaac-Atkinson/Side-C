@@ -26,8 +26,7 @@ function DetailedAlbumReviewCard({albumReview, onAlbumUpdated}: DetailedAlbumCar
         );
 
         if(response.ok){
-            console.log("Successfully deleted album");
-           navigate("/albums");
+           navigate("/reviews/albums");
         } else if (response.status === 404) {
             console.log("Album not found");
         } else {
@@ -77,6 +76,7 @@ function DetailedAlbumReviewCard({albumReview, onAlbumUpdated}: DetailedAlbumCar
                         value={Number(albumReview.rating) / 2}
                         precision={0.5}
                         size= "large"
+                        readOnly
                     />
 
                     <Typography
@@ -101,7 +101,11 @@ function DetailedAlbumReviewCard({albumReview, onAlbumUpdated}: DetailedAlbumCar
                     </Box>
                 </Box>
             </Box>
-            <Dialog open = {editing} onClose = {() => setEditing(false)} >
+            <Dialog
+                open = {editing}
+                onClose = {() => setEditing(false)}
+                fullWidth
+            >
                 <DialogTitle>Edit Review</DialogTitle>
 
                 <DialogContent>

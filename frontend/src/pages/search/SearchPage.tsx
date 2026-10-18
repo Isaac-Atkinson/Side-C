@@ -109,6 +109,7 @@ function SearchPage(){
             <Dialog
                 open={selectedAlbum !== null}
                 onClose={() => setSelectedAlbum(null)}
+                fullWidth
             >
                 <DialogTitle>Add Review</DialogTitle>
 
@@ -130,6 +131,7 @@ function SearchPage(){
                 <Dialog
                     open={selectedArtist !== null}
                     onClose={() => setSelectedArtist(null)}
+                    fullWidth
                 >
                     <DialogTitle>Add Review</DialogTitle>
 

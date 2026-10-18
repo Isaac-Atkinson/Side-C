@@ -9,8 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
-@CrossOrigin(origins = "http://localhost:5173",
-        allowCredentials = "true")
+
 @RestController
 @RequestMapping("/api/search")
 public class SearchController {

@@ -14,8 +14,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:5173",
-        allowCredentials = "true")
+
 @RestController
 @RequestMapping("/api/albums/reviews")
 public class AlbumReviewController {

@@ -1,4 +1,3 @@
-import './App.css'
 import AlbumReviewsPage from "./pages/review/AlbumReviewsPage.tsx";
 import ArtistReviewsPage from "./pages/review/ArtistReviewsPage.tsx";
 import {Route, Routes} from "react-router-dom";

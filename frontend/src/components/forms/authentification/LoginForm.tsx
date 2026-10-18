@@ -21,8 +21,8 @@ function LoginForm(){
         });
 
         if(response.ok){
-            await getUser()
-            navigate("/reviews/albums")
+            await getUser();
+            navigate("/reviews/albums");
             return null;
         } else if (response.status === 403){
             return "Wrong username or password";

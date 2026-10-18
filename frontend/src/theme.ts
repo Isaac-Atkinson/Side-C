@@ -34,7 +34,6 @@ export const theme = createTheme({
     typography: {
         fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
         h4: { fontWeight: 700 },
-        body1: { fontWeight: "bold" },
         button: { textTransform: "none", fontWeight: 600 },
     },
     shape: {
@@ -42,25 +41,6 @@ export const theme = createTheme({
     },
     spacing: 8,
     components: {
-        // MuiTab: {
-        //     styleOverrides: {
-        //         root: ({ theme }) => ({
-        //             textTransform: "none",
-        //             borderRadius: theme.shape.borderRadius,
-        //             minHeight: 40,
-        //             "&.Mui-selected": {
-        //                 backgroundColor: theme.palette.primary.main,
-        //                 color: theme.palette.primary.contrastText,
-        //             },
-        //         }),
-        //     },
-        // },
-        // MuiTabs: {
-        //     styleOverrides: {
-        //         indicator: {
-        //             display: "none",
-        //         },
-        //     },
-        // },
+
     },
 });

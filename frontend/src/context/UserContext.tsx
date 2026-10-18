@@ -1,8 +1,9 @@
-import {createContext, type ReactNode, useContext, useState} from "react";
+import {createContext, type ReactNode, useContext, useEffect, useState} from "react";
 import {API_BASE_URL} from "../config/api.ts";
 
 type UserContextType = {
     username : string | null;
+    loading: boolean;
     getUser: () => Promise<void>;
     logout: () => Promise<void>;
 }
@@ -11,6 +12,7 @@ const UserContext = createContext<UserContextType | null>(null);
 
 export function UserProvider({ children }: { children: ReactNode }) {
    const[username, setUsername] = useState<string | null>(null)
+    const [loading, setLoading] = useState(true)
 
    const getUser = async () => {
        try{
@@ -26,6 +28,8 @@ export function UserProvider({ children }: { children: ReactNode }) {
            }
        } catch {
            setUsername(null);
+       } finally {
+           setLoading(false);
        }
    }
 
@@ -37,8 +41,13 @@ export function UserProvider({ children }: { children: ReactNode }) {
         setUsername(null);
     };
 
+   useEffect(() => {
+       getUser();
+   }, [])
+
+
    return (
-       <UserContext.Provider value = {{username, getUser, logout}}>
+       <UserContext.Provider value = {{username, loading, getUser, logout}}>
            {children}
        </UserContext.Provider>
    )

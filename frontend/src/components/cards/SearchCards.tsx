@@ -1,6 +1,8 @@
 import type {AlbumSearchResult} from "../../types/AlbumSearchResult.ts";
 import MediaCard from "./MediaCard.tsx";
 import AlbumIcon from "@mui/icons-material/Album";
+import type {ArtistSearchResult} from "../../types/ArtistSearchResult.ts";
+import PersonIcon from "@mui/icons-material/Person";
 
 type AlbumSearchDisplayCardProps = {
     searchResult : AlbumSearchResult;
@@ -33,7 +35,7 @@ export function ArtistSearchDisplayCard({searchResult, onClick}: ArtistSearchDis
             imageUrl = {searchResult.imageUrl}
             imageAlt={`${searchResult.name}`}
             onClick = {onClick}
-            placeholder={<AlbumIcon fontSize="large" />}
+            placeholder={<PersonIcon fontSize="large" />}
         />
     )
 }

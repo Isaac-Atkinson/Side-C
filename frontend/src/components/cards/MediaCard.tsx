@@ -13,10 +13,10 @@ import type {ReactNode} from "react";
 type ReviewCardDataProps = {
     title: string;
     subtitle?: string;
-    rating: number;
-    imageUrl: string;
+    rating?: number;
+    imageUrl?: string;
     imageAlt : string;
-    link : string;
+    link? : string;
     onClick?: () => void;
     placeholder : ReactNode;
 };

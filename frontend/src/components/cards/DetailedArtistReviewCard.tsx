@@ -25,8 +25,7 @@ function DetailedArtistReviewCard({artistReview, onArtistUpdated}: DetailedArtis
         );
 
         if(response.ok){
-            console.log("Successfully deleted artist");
-            navigate("/artists");
+            navigate("/reviews/artists");
         } else if(response.status === 404){
             console.log("Artist not found");
         } else {
@@ -68,6 +67,7 @@ function DetailedArtistReviewCard({artistReview, onArtistUpdated}: DetailedArtis
                         value={Number(artistReview.rating) / 2}
                         precision={0.5}
                         size= "large"
+                        readOnly
                     />
 
                     <Typography
@@ -92,7 +92,11 @@ function DetailedArtistReviewCard({artistReview, onArtistUpdated}: DetailedArtis
                     </Box>
                 </Box>
             </Box>
-            <Dialog open = {editing} onClose = {() => setEditing(false)} >
+            <Dialog
+                open = {editing}
+                onClose = {() => setEditing(false)}
+                fullWidth
+            >
                 <DialogTitle>Edit Review</DialogTitle>
 
                 <DialogContent>

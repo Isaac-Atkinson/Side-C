@@ -5,7 +5,7 @@ import {useUserContext} from "../context/UserContext.tsx";
 
 
 function NavBar() {
-    const {username, logout} = useUserContext();
+    const {username, loading, logout} = useUserContext();
     const navigate = useNavigate();
 
     const handleLogout = async () => {
@@ -24,6 +24,7 @@ function NavBar() {
                     <Button
                         component={Link} to="/reviews/albums"
                         variant="contained"
+                        color="inherit"
 
                     >
                         Reviews
@@ -34,7 +35,7 @@ function NavBar() {
 
                 <Box sx={{ ml: "auto" }}>
 
-                    {username ? (
+                    {!loading && ( username ? (
                         <Button
                             variant="contained"
                             onClick={handleLogout}
@@ -51,7 +52,7 @@ function NavBar() {
                         >
                             Login
                         </Button>
-                    )}
+                    ))}
 
                 </Box>
 

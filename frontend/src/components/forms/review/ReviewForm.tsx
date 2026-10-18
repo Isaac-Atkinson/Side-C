@@ -53,72 +53,120 @@ function ReviewForm({title, subtitle, existingRating, existingReviewText, imageU
             sx={{
                 display: "flex",
                 flexDirection: "column",
-                gap: 2
-        }}
+                gap: 2,
+            }}
         >
             <Box
-                component="img"
-                src={imageUrl}
-                alt={`${title}`}
-                sx={{
-                    width: 110,
-                    height: 110,
-                    borderRadius: 1,
-                    objectFit: "cover",
-                    flexShrink: 0,
+                sx = {{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 2
                 }}
-            />
-
-            <Typography
-                variant="h5"
-                noWrap
             >
-                {title}
-            </Typography>
+                <Box
+                    component="img"
+                    src={imageUrl}
+                    alt={`${title}`}
+                    sx={{
+                        width: "30%",
+                        height: "30%",
+                        borderRadius: 1,
+                        objectFit: "cover",
+                        flexShrink: 0,
+                    }}
+                />
 
-            {subtitle && (
+                <Box
+                    sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 0,
+                    }}
+                >
+                    <Typography
+                        variant="h4"
+                        noWrap
+                    >
+                        {title}
+                    </Typography>
+
+                    {subtitle && (
+                        <Typography
+                            variant="h5"
+                            noWrap
+                        >
+                            {subtitle}
+                        </Typography>
+                    )}
+
+                </Box>
+            </Box>
+
+
+
+
+            <Box
+                sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 0.5,
+                }}
+            >
                 <Typography
                     variant="body1"
-                    noWrap
                 >
-                    {subtitle}
+                    Rating
                 </Typography>
-            )}
+
+                <Rating
+                    value={rating != null ? rating / 2 : null}
+                    onChange={(_, value) => {
+                        setRating(value == null ? null : value * 2);
+                    }}
+                    precision={0.5}
+                    size= "large"
+                />
+
+                {ratingError && (
+                    <Typography
+                        variant="caption"
+                        color="error"
+                    >
+                        {ratingError}
+                    </Typography>
+                )}
+            </Box>
 
 
-            <Rating
-                value={rating != null ? rating / 2 : null}
-                onChange={(_, value) => {
-                    setRating(value == null ? null : value * 2);
+            <Box
+                sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 1,
                 }}
-                precision={0.5}
-                size= "large"
-            />
-
-            {ratingError && (
+            >
                 <Typography
-                    variant="caption"
-                    color="error"
+                    variant="body1"
                 >
-                    {ratingError}
+                    Review
                 </Typography>
-            )}
+
+                <TextField
+                    value = {reviewText}
+                    onChange={e => setReviewText(e.target.value)}
+                    error={Boolean(reviewTextError)}
+                    multiline
+                    minRows={8}
+                    slotProps={{
+                        htmlInput: {
+                            maxLength: MAX_REVIEW_LENGTH
+                        }
+                    }}
+                    helperText={`${reviewText.length}/${MAX_REVIEW_LENGTH}`}
+                />
+            </Box>
 
 
-
-            <TextField
-                label = "Review"
-                value = {reviewText}
-                onChange={e => setReviewText(e.target.value)}
-                error={Boolean(reviewTextError)}
-                multiline
-                slotProps={{
-                    htmlInput: {
-                        maxLength: MAX_REVIEW_LENGTH
-                    }
-                }}
-                helperText={`${reviewText.length}/${MAX_REVIEW_LENGTH}`}
-            />
 
             {submitError && (
                 <Alert severity="error">
@@ -135,7 +183,9 @@ function ReviewForm({title, subtitle, existingRating, existingReviewText, imageU
             >
                 <Button
                     onClick={onCancel}
-
+                    sx = {{
+                        color: "error.main"
+                    }}
                 >
                     Cancel
                 </Button>
