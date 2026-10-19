@@ -12,6 +12,7 @@ export function AlbumSearchDisplayCard({searchResult, onClick}: AlbumSearchDispl
     return (
         <MediaCard
             title = {searchResult.title}
+            subtitle={searchResult.artist}
             imageUrl = {searchResult.imageUrl}
             imageAlt={`${searchResult.title}`}
             onClick = {onClick}

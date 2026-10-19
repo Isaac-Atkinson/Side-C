@@ -88,6 +88,7 @@ function MediaCard({title, subtitle, rating, imageUrl, imageAlt, link, onClick, 
                             noWrap
                             sx={{
                                 width: "100%",
+                                fontWeight: "bold",
                             }}
                         >
                             {title}

@@ -62,6 +62,7 @@ function AuthForm({onSubmit, buttonMsg}: AuthFormProps) {
                     p: 3,
                     border: "1px solid",
                     borderColor: "divider",
+                    borderRadius: 2
             }}
             >
                 <TextField

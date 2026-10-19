@@ -1,6 +1,7 @@
 
 import RegisterForm from "../../components/forms/authentification/RegisterForm.tsx";
-import {Link} from "react-router-dom";
+import {Link as RouterLink} from "react-router-dom";
+import {Link} from "@mui/material";
 import {Box, Typography} from "@mui/material";
 import PageContainer from "../../components/layout/pageContainer.tsx";
 
@@ -16,7 +17,6 @@ function registerPage() {
                     flex: 1,
                     display: "flex",
                     flexDirection: "column",
-                    justifyContent: "center",
                     alignItems: "center",
                     gap: 3,
                 }}
@@ -27,7 +27,7 @@ function registerPage() {
 
                 <RegisterForm/>
 
-                <Link to="/login">
+                <Link component = {RouterLink} to="/login">
                     Login
                 </Link>
             </Box>

@@ -6,8 +6,11 @@ function PageContainer({ children }: { children: ReactNode }) {
         <Container
             maxWidth={false}
             sx={{
-                py: 4,
-                px: 4
+                flex: 1,
+                display: "flex",
+                flexDirection: "column",
+                py: 3,
+                px: 8
         }}
         >
             {children}

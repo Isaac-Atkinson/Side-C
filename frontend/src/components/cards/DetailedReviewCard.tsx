@@ -28,7 +28,7 @@ function DetailedReviewCard({title, subtitle, rating, reviewText, imageUrl, imag
                 bgcolor: "background.paper",
                 border: 1,
                 borderColor: "divider",
-                borderRadius: 4,
+                borderRadius: 2,
             }}
         >
             <Box

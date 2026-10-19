@@ -1,5 +1,5 @@
 import {AppBar, Box, Button, Toolbar} from "@mui/material";
-import {Link, useNavigate} from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import SearchBar from "../search/SearchBar.tsx";
 import {useUserContext} from "../../context/UserContext.tsx";
 
@@ -7,6 +7,12 @@ import {useUserContext} from "../../context/UserContext.tsx";
 function NavBar() {
     const {username, loading, logout} = useUserContext();
     const navigate = useNavigate();
+
+    const location = useLocation();
+
+    const hiddenRoutes = ["/login", "/register"]
+
+    const hideLoginButton = hiddenRoutes.includes(location.pathname)
 
     const handleLogout = async () => {
         await logout();
@@ -18,19 +24,22 @@ function NavBar() {
             position="static"
         >
             <Toolbar>
-                <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-                    <SearchBar />
+                {username && (
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                        <SearchBar />
 
-                    <Button
-                        component={Link} to="/reviews/albums"
-                        variant="contained"
-                        color="inherit"
+                        <Button
+                            component={Link} to="/reviews/albums"
+                            variant="contained"
+                            color="inherit"
 
-                    >
-                        Reviews
-                    </Button>
+                        >
+                            Reviews
+                        </Button>
 
-                </Box>
+                    </Box>
+                )}
+
 
 
                 <Box sx={{ ml: "auto" }}>
@@ -43,15 +52,17 @@ function NavBar() {
                             Logout
                         </Button>
                     ) : (
-                        <Button
-                            variant="contained"
-                            component={Link} to="/login"
-                            sx = {{
-                                bgcolor: "actionButton.main"
-                            }}
-                        >
-                            Login
-                        </Button>
+                        !hideLoginButton && (
+                            <Button
+                                variant="contained"
+                                component={Link} to="/login"
+                                sx = {{
+                                    bgcolor: "actionButton.main"
+                                }}
+                            >
+                                Login
+                            </Button>
+                        )
                     ))}
 
                 </Box>

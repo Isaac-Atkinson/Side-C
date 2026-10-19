@@ -4,10 +4,18 @@ import useReviews from "../../hooks/UseReviews.tsx";
 import {Alert, CircularProgress} from "@mui/material";
 import CardGrid from "../../components/layout/CardGrid.tsx";
 import {ArtistReviewCard} from "../../components/cards/ReviewCards.tsx";
+import {useOutletContext} from "react-router-dom";
+import {SORT_OPTIONS} from "../../components/layout/SortOptions.tsx";
+
+type ReviewLayoutContext = {
+    sortBy: string;
+}
 
 
 
 function ArtistReviewsPage(){
+
+    const {sortBy} = useOutletContext<ReviewLayoutContext>()
 
     const {
         reviews : artistReviews,
@@ -17,6 +25,20 @@ function ArtistReviewsPage(){
         `${API_BASE_URL}/artists/reviews`,
         "Could not load artist reviews"
     )
+
+    const sortedReviews = [...artistReviews].sort((a, b) => {
+        switch (sortBy) {
+            case SORT_OPTIONS.ALPHABETICAL_AZ:
+                return a.artist.name.localeCompare(b.artist.name);
+            case SORT_OPTIONS.ALPHABETICAL_ZA:
+                return b.artist.name.localeCompare(a.artist.name);
+            case SORT_OPTIONS.HIGHEST_RATED:
+                return b.rating - a.rating;
+            case SORT_OPTIONS.LOWEST_RATED:
+                return a.rating - b.rating;
+            default:
+                return 0;
+        }});
 
     if(loading) {
         return (
@@ -45,7 +67,7 @@ function ArtistReviewsPage(){
 
     return (
             <CardGrid>
-                {artistReviews.map(review => (
+                {sortedReviews.map(review => (
                     <ArtistReviewCard
                         key = {review.id}
                         artistReview={review}
