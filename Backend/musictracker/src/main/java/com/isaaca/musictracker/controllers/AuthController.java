@@ -30,18 +30,6 @@ public class AuthController {
         return ResponseEntity.ok(new CurrentUserResponse(authentication.getName()));
     }
 
-    @PostMapping("/logout")
-    public ResponseEntity<Void> logout(HttpServletRequest request) {
-        HttpSession session = request.getSession();
-
-        if(session != null) {
-            session.invalidate();
-        }
-
-        SecurityContextHolder.clearContext();
-        return ResponseEntity.ok().build();
-    }
-
     @PostMapping("/register")
     public ResponseEntity<Void> registerUser(@Valid @RequestBody RegisterRequest registerRequest){
         userService.registerUser(registerRequest);
@@ -52,6 +40,13 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<Void> loginUser(@Valid @RequestBody LoginRequest loginRequest, HttpServletRequest request, HttpServletResponse response){
         userService.loginUser(loginRequest, request, response);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logoutUser(HttpServletRequest request) {
+        userService.logoutUser(request);
 
         return ResponseEntity.ok().build();
     }

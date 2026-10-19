@@ -5,5 +5,8 @@ public record AlbumSearchResult(
         String lastFMUrl,
         String title,
         String artist,
-        String imageUrl
+        String imageUrl,
+
+        boolean reviewed,
+        Integer reviewId
 ) {}

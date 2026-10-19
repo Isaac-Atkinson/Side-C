@@ -4,4 +4,8 @@ export type AlbumSearchResult = {
     title: string,
     artist: string,
     imageUrl: string,
+
+    reviewed: boolean,
+    reviewId: number,
+    rating: number,
 }

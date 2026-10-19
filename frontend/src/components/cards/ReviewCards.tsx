@@ -1,8 +1,7 @@
 import type {AlbumReview} from "../../types/AlbumReview.ts";
 import MediaCard from "./MediaCard.tsx";
-import AlbumIcon from "@mui/icons-material/Album";
 import type {ArtistReview} from "../../types/ArtistReview.ts";
-import PersonIcon from "@mui/icons-material/Person";
+import {AlbumPlaceholder, ArtistPlaceholder} from "../placeholders/placeholders.tsx";
 
 type AlbumReviewCardProps = {
     albumReview: AlbumReview;
@@ -16,7 +15,7 @@ export function AlbumReviewCard({albumReview} : AlbumReviewCardProps) {
             imageUrl={albumReview.album.imageUrl}
             imageAlt={`${albumReview.album.title} cover`}
             link = {`/albums/${albumReview.id}`}
-            placeholder={<AlbumIcon fontSize="large" />}
+            placeholder={AlbumPlaceholder}
         />
     )
 }
@@ -35,7 +34,7 @@ export function ArtistReviewCard({artistReview}: ArtistReviewCardProps) {
             imageUrl={artistReview.artist.imageUrl}
             imageAlt={`${artistReview.artist.name}`}
             link = {`/artists/${artistReview.id}`}
-            placeholder={<PersonIcon fontSize="large" />}
+            placeholder={ArtistPlaceholder}
         />
     )
 }

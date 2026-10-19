@@ -2,6 +2,7 @@ package com.isaaca.musictracker.services;
 
 import com.isaaca.musictracker.dto.request.AlbumReviewRequest;
 import com.isaaca.musictracker.dto.response.search.AlbumSearchResult;
+import com.isaaca.musictracker.externalapi.lastfm.LastFMAlbumSearchResult;
 import com.isaaca.musictracker.externalapi.lastfm.LastFMArtistResult;
 import com.isaaca.musictracker.externalapi.lastfm.albuminfo.LastFMAlbumInfo;
 import com.isaaca.musictracker.externalapi.lastfm.albuminfo.LastFMResponseAlbumInfo;
@@ -10,6 +11,8 @@ import com.isaaca.musictracker.externalapi.lastfm.albumsearch.LastFMImage;
 import com.isaaca.musictracker.externalapi.lastfm.artistinfo.LastFMArtistInfo;
 import com.isaaca.musictracker.externalapi.lastfm.artistinfo.LastFMResponseArtistInfo;
 import com.isaaca.musictracker.externalapi.lastfm.artistsearch.LastFMArtistSearchResponse;
+import com.isaaca.musictracker.repositories.AlbumReviewRepository;
+import com.isaaca.musictracker.repositories.ArtistReviewRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import tools.jackson.databind.ObjectMapper;
@@ -27,6 +30,8 @@ import java.util.List;
 @Service
 public class LastFMService {
 
+    private final ArtistReviewRepository artistReviewRepository;
+    private final AlbumReviewRepository albumReviewRepository;
     @Value("${LASTFM_API_KEY}")
     private String API_KEY;
 
@@ -42,12 +47,14 @@ public class LastFMService {
 
     private final ObjectMapper mapper;
 
-    public LastFMService(ObjectMapper mapper) {
+    public LastFMService(ObjectMapper mapper, ArtistReviewRepository artistReviewRepository, AlbumReviewRepository albumReviewRepository) {
         this.mapper = mapper;
+        this.artistReviewRepository = artistReviewRepository;
+        this.albumReviewRepository = albumReviewRepository;
     }
 
 
-    public List<AlbumSearchResult> lookUpAlbums(String title) throws IOException, InterruptedException, URISyntaxException {
+    public List<LastFMAlbumSearchResult> lookUpAlbums(String title) throws IOException, InterruptedException, URISyntaxException {
 
 
         String url =
@@ -70,12 +77,12 @@ public class LastFMService {
 
         LastFMAlbumSearchResponse parsedResponse = mapper.readValue(response.body(), LastFMAlbumSearchResponse.class);
 
-        List<AlbumSearchResult> results = parsedResponse
+        List<LastFMAlbumSearchResult> results = parsedResponse
                 .getLastFMResults()
                 .getAlbumMatches()
                 .getAlbums()
                 .stream()
-                .map(album -> new AlbumSearchResult(
+                .map(album -> new LastFMAlbumSearchResult(
                         album.getMbid(),
                         album.getLastFMUrl(),
                         album.getName(),
@@ -208,5 +215,7 @@ public class LastFMService {
         String url = images.getLast().getImageUrl();
         return (url == null || url.isBlank()) ? null : url;
     }
+
+
 
 }

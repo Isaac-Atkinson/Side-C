@@ -1,4 +1,5 @@
 import {Box, Button, Rating, Typography} from "@mui/material";
+import type {ReactNode} from "react";
 
 
 type DetailedReviewCardProps = {
@@ -8,12 +9,13 @@ type DetailedReviewCardProps = {
     reviewText?: string;
     imageUrl?: string;
     imageAlt: string;
+    placeholder: ReactNode;
 
     onEdit: () => void;
     onDelete: () => void;
 }
 
-function DetailedReviewCard({title, subtitle, rating, reviewText, imageUrl, imageAlt, onDelete, onEdit}: DetailedReviewCardProps) {
+function DetailedReviewCard({title, subtitle, rating, reviewText, imageUrl, imageAlt, placeholder, onDelete, onEdit}: DetailedReviewCardProps) {
 
 
 
@@ -44,15 +46,34 @@ function DetailedReviewCard({title, subtitle, rating, reviewText, imageUrl, imag
                         alignItems: "flex-start"
                     }}
                 >
-                    <Box
-                        component="img"
-                        src={imageUrl}
-                        alt={imageAlt}
-                        sx={{
-                            width: "30%",
-                            borderRadius: 2
-                        }}
-                    />
+
+                    {imageUrl ? (
+                        <Box
+                            component="img"
+                            src={imageUrl}
+                            alt={imageAlt}
+                            sx={{
+                                width: "30%",
+                                borderRadius: 2
+                            }}
+                        />
+                    ) : (
+                        <Box
+                            sx={{
+                                width: "30%",
+                                aspectRatio: "1 / 1",
+                                borderRadius: 1,
+                                flexShrink: 0,
+                                bgcolor: "action.hover",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                            }}
+                        >
+                            {placeholder}
+                        </Box>
+                    )}
+
 
                     <Box sx={{ flex: 1 }}>
                         <Typography variant="h3">

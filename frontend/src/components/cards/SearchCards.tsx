@@ -1,8 +1,7 @@
 import type {AlbumSearchResult} from "../../types/AlbumSearchResult.ts";
 import MediaCard from "./MediaCard.tsx";
-import AlbumIcon from "@mui/icons-material/Album";
 import type {ArtistSearchResult} from "../../types/ArtistSearchResult.ts";
-import PersonIcon from "@mui/icons-material/Person";
+import {AlbumPlaceholder, ArtistPlaceholder} from "../placeholders/placeholders.tsx";
 
 type AlbumSearchDisplayCardProps = {
     searchResult : AlbumSearchResult;
@@ -16,7 +15,9 @@ export function AlbumSearchDisplayCard({searchResult, onClick}: AlbumSearchDispl
             imageUrl = {searchResult.imageUrl}
             imageAlt={`${searchResult.title}`}
             onClick = {onClick}
-            placeholder={<AlbumIcon fontSize="large" />}
+            placeholder={AlbumPlaceholder}
+
+            link={searchResult.reviewed ? `/albums/${searchResult.reviewId}` : null}
         />
     )
 }
@@ -35,7 +36,9 @@ export function ArtistSearchDisplayCard({searchResult, onClick}: ArtistSearchDis
             imageUrl = {searchResult.imageUrl}
             imageAlt={`${searchResult.name}`}
             onClick = {onClick}
-            placeholder={<PersonIcon fontSize="large" />}
+            placeholder={ArtistPlaceholder}
+
+            link={searchResult.reviewed ? `/artists/${searchResult.reviewId}` : null}
         />
     )
 }

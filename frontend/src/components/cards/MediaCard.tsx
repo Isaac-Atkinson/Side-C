@@ -16,9 +16,11 @@ type ReviewCardDataProps = {
     rating?: number;
     imageUrl?: string;
     imageAlt : string;
-    link? : string;
-    onClick?: () => void;
     placeholder : ReactNode;
+    link? : string | null;
+
+    onClick?: () => void;
+
 };
 
 
@@ -65,7 +67,6 @@ function MediaCard({title, subtitle, rating, imageUrl, imageAlt, link, onClick, 
                                 alignItems: "center",
                                 justifyContent: "center",
                                 bgcolor: "action.hover",
-                                color: "text.secondary",
                             }}
                         >
                             {placeholder}

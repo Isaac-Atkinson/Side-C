@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {type ReactNode, useState} from "react";
 import {Alert, Box, Button, Rating, TextField, Typography} from "@mui/material";
 import {MAX_REVIEW_LENGTH} from "../../../config/api.ts";
 
@@ -8,11 +8,14 @@ type ReviewFormProps = {
     existingRating?: number
     existingReviewText?: string;
     imageUrl?: string;
+    placeholder: ReactNode;
+
+
     onSubmit: (rating : number, reviewText: string) => Promise<string | null>;
     onCancel: () => void;
 }
 
-function ReviewForm({title, subtitle, existingRating, existingReviewText, imageUrl, onSubmit, onCancel}: ReviewFormProps) {
+function ReviewForm({title, subtitle, existingRating, existingReviewText, imageUrl, placeholder, onSubmit, onCancel}: ReviewFormProps) {
     const[rating, setRating] = useState<number | null>(existingRating ? existingRating : null);
     const[reviewText, setReviewText] = useState(existingReviewText ? existingReviewText : "");
 
@@ -63,18 +66,37 @@ function ReviewForm({title, subtitle, existingRating, existingReviewText, imageU
                     gap: 2
                 }}
             >
-                <Box
-                    component="img"
-                    src={imageUrl}
-                    alt={`${title}`}
+
+                {imageUrl ? (
+                    <Box
+                        component="img"
+                        src={imageUrl}
+                        alt={`${title}`}
+                        sx={{
+                            width: "30%",
+                            height: "30%",
+                            borderRadius: 1,
+                            objectFit: "cover",
+                            flexShrink: 0,
+                        }}
+                    />
+                ) : (
+                    <Box
                     sx={{
                         width: "30%",
-                        height: "30%",
+                        aspectRatio: "1 / 1",
                         borderRadius: 1,
-                        objectFit: "cover",
                         flexShrink: 0,
+                        bgcolor: "action.hover",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
                     }}
-                />
+                    >
+                        {placeholder}
+                    </Box>
+                )}
+
 
                 <Box
                     sx={{

@@ -4,7 +4,10 @@ public record ArtistSearchResult(
         String musicBrainzId,
         String lastFMUrl,
         String name,
-        String imageUrl
+        String imageUrl,
+
+        boolean reviewed,
+        Integer reviewId
 ) {
 
 }

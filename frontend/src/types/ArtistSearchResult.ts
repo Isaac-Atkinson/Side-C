@@ -3,4 +3,7 @@ export type ArtistSearchResult = {
     lastFMUrl: string,
     name: string,
     imageUrl: string,
+
+    reviewed: boolean,
+    reviewId: number,
 }

@@ -127,9 +127,6 @@ public class AlbumService {
         albumReviewRepository.deleteById(id);
     }
 
-    public List<AlbumSearchResult> getAlbumSearchResults(String name) throws IOException, URISyntaxException, InterruptedException {
-        return lastFMService.lookUpAlbums(name);
-    }
 
     private Album buildAlbum(AlbumReviewRequest request) throws URISyntaxException, IOException, InterruptedException {
         String artistName = request.artist();

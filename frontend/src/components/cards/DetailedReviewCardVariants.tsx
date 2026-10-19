@@ -6,6 +6,7 @@ import type {ArtistReview} from "../../types/ArtistReview.ts";
 import {useState} from "react";
 import {EditAlbumForm, EditArtistForm} from "../forms/review/ReviewFormVariants.tsx";
 import {Dialog, DialogContent, DialogTitle} from "@mui/material";
+import {AlbumPlaceholder, ArtistPlaceholder} from "../placeholders/placeholders.tsx";
 
 type DetailedAlbumCardProps = {
     albumReview: AlbumReview;
@@ -41,6 +42,7 @@ export function DetailedAlbumReviewCard({albumReview, onAlbumUpdated}: DetailedA
                 reviewText={albumReview.reviewText}
                 imageUrl={albumReview.album.imageUrl}
                 imageAlt={`${albumReview.album.title} cover`}
+                placeholder={AlbumPlaceholder}
 
                 onDelete={handleDelete}
                 onEdit={() => setEditing(true)}
@@ -101,6 +103,7 @@ export function DetailedArtistReviewCard({artistReview, onArtistUpdated}: Detail
             reviewText={artistReview.reviewText}
             imageUrl={artistReview.artist.imageUrl}
             imageAlt={`${artistReview.artist.name}`}
+            placeholder={ArtistPlaceholder}
 
             onDelete={handleDelete}
             onEdit={() => setEditing(true)}

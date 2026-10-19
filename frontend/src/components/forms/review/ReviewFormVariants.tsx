@@ -4,6 +4,7 @@ import type {AlbumSearchResult} from "../../../types/AlbumSearchResult.ts";
 import type {ArtistSearchResult} from "../../../types/ArtistSearchResult.ts";
 import type {AlbumReview} from "../../../types/AlbumReview.ts";
 import type {ArtistReview} from "../../../types/ArtistReview.ts";
+import {AlbumPlaceholder, ArtistPlaceholder} from "../../placeholders/placeholders.tsx";
 
 
 type AddAlbumFormProps = {
@@ -50,6 +51,7 @@ export function AddAlbumForm({album, onSuccess, onCancel} : AddAlbumFormProps) {
             imageUrl={album.imageUrl}
             onSubmit={submit}
             onCancel={onCancel}
+            placeholder={AlbumPlaceholder}
         />
     )
 }
@@ -97,6 +99,7 @@ export function AddArtistForm({artist, onSuccess, onCancel} : AddArtistFormProps
             imageUrl={artist.imageUrl}
             onSubmit={submit}
             onCancel={onCancel}
+            placeholder={ArtistPlaceholder}
         />
     )
 }
@@ -143,6 +146,8 @@ export function EditAlbumForm({albumReview, onAlbumUpdated, onSuccess, onCancel}
             existingRating={albumReview.rating}
             existingReviewText={albumReview.reviewText}
             imageUrl={albumReview.album.imageUrl}
+            placeholder={AlbumPlaceholder}
+
             onSubmit={submit}
             onCancel={onCancel}
         />
@@ -190,6 +195,8 @@ export function EditArtistForm({artistReview, onArtistUpdated, onSuccess, onCanc
             existingRating={artistReview.rating}
             existingReviewText={artistReview.reviewText}
             imageUrl={artistReview.artist.imageUrl}
+            placeholder={ArtistPlaceholder}
+
             onSubmit={submit}
             onCancel={onCancel}
         />

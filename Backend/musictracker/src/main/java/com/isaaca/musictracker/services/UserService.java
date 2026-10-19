@@ -7,6 +7,7 @@ import com.isaaca.musictracker.dto.request.LoginRequest;
 import com.isaaca.musictracker.dto.request.RegisterRequest;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -64,5 +65,15 @@ public class UserService {
         SecurityContextHolder.setContext(context);
 
         securityContextRepository.saveContext(context, request, response);
+    }
+
+    public void logoutUser(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+
+        if(session != null) {
+            session.invalidate();
+        }
+
+        SecurityContextHolder.clearContext();
     }
 }

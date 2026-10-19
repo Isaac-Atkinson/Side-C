@@ -106,35 +106,6 @@ public class ArtistService {
         artistReviewRepository.deleteById(id);
     }
 
-    public List<ArtistSearchResult> getArtistSearchResults(String name) throws IOException, URISyntaxException, InterruptedException {
-        List<LastFMArtistResult> artists = lastFMService.lookUpArtists(name);
-
-        return artists.stream()
-                .map(artist -> {
-
-                    String imageUrl = null;
-
-                    if (artist.musicBrainzId() != null &&
-                            !artist.musicBrainzId().isBlank()) {
-
-                        try {
-                            imageUrl = fanartService.getFanartImageUrl(
-                                    artist.musicBrainzId()
-                            );
-                        } catch (Exception e) {
-                            imageUrl = null;
-                        }
-                    }
-
-                    return new ArtistSearchResult(
-                            artist.musicBrainzId(),
-                            artist.lastFMUrl(),
-                            artist.name(),
-                            imageUrl
-                    );
-                })
-                .toList();
-    }
 
     private Artist buildArtist(ArtistReviewRequest artistRequest) {
         Artist artist = new Artist();

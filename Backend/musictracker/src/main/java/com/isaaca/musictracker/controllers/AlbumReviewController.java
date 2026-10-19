@@ -21,7 +21,6 @@ public class AlbumReviewController {
 
     private final AlbumService albumService;
 
-
     public AlbumReviewController(AlbumService albumService) {
         this.albumService = albumService;
     }
