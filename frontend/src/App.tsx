@@ -6,7 +6,7 @@ import ArtistReviewDetailPage from "./pages/review/ArtistReviewDetailPage.tsx";
 import SearchPage from "./pages/search/SearchPage.tsx";
 import RegisterPage from "./pages/login/RegisterPage.tsx";
 import LoginPage from "./pages/login/LoginPage.tsx";
-import NavBar from "./components/NavBar.tsx";
+import NavBar from "./components/layout/NavBar.tsx";
 import {Box} from "@mui/material";
 import ReviewsLayout from "./components/layout/ReviewsLayout.tsx";
 

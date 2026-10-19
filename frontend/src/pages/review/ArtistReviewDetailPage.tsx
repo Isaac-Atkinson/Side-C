@@ -1,7 +1,7 @@
 import {useParams} from "react-router-dom";
 import {API_BASE_URL} from "../../config/api.ts";
 import type {ArtistReview} from "../../types/ArtistReview.ts";
-import DetailedArtistReviewCard from "../../components/cards/DetailedArtistReviewCard.tsx";
+import {DetailedArtistReviewCard} from "../../components/cards/DetailedReviewCardVariants.tsx";
 import useReview from "../../hooks/UseReview.tsx";
 import {Alert, CircularProgress} from "@mui/material";
 import PageContainer from "../../components/layout/pageContainer.tsx";

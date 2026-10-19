@@ -1,7 +1,7 @@
 import {AppBar, Box, Button, Toolbar} from "@mui/material";
 import {Link, useNavigate} from "react-router-dom";
-import SearchBar from "./SearchBar.tsx";
-import {useUserContext} from "../context/UserContext.tsx";
+import SearchBar from "../search/SearchBar.tsx";
+import {useUserContext} from "../../context/UserContext.tsx";
 
 
 function NavBar() {

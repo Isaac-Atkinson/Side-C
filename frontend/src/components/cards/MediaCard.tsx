@@ -59,7 +59,8 @@ function MediaCard({title, subtitle, rating, imageUrl, imageAlt, link, onClick, 
                     ) : (
                         <Box
                             sx={{
-                                height: 220,
+                                aspectRatio: "1 / 1",
+                                objectFit: "cover",
                                 display: "flex",
                                 alignItems: "center",
                                 justifyContent: "center",

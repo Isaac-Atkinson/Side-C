@@ -93,6 +93,7 @@ function ReviewForm({title, subtitle, existingRating, existingReviewText, imageU
                     {subtitle && (
                         <Typography
                             variant="h5"
+                            color={"textSecondary"}
                             noWrap
                         >
                             {subtitle}
