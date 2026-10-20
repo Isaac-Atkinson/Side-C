@@ -5,4 +5,5 @@ export type ArtistReview = {
     rating: number;
     reviewText : string;
     artist: Artist;
+    created: string;
 }

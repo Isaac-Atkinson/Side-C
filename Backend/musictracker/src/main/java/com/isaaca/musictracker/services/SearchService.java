@@ -68,8 +68,7 @@ public class SearchService {
                 album.artist(),
                 album.imageUrl(),
                 existingReview.isPresent(),
-                existingReview.map(AlbumReview::getId).orElse(null),
-                existingReview.map(AlbumReview::getRating).orElse(null)
+                existingReview.map(AlbumReview::getId).orElse(null)
         );
     }
 

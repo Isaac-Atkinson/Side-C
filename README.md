@@ -1,6 +1,11 @@
-# Music Tracker
+# Side C
 
-A full-stack web application for searching, reviewing and tracking albums and artists.
+A full-stack web application for searching, rating and reviewing albums and artists.
+
+<img src="Screenshots/Review_Page.png" alt="Screenshot for of review page">
+
+
+
 
 ## Tech Stack
 
@@ -13,9 +18,9 @@ A full-stack web application for searching, reviewing and tracking albums and ar
 - Java
 - Spring Boot
 - Spring Security
-- Spring Data JPA
-- REST APIs
-
-
-### Database
 - PostgreSQL
+- REST API
+
+
+
+

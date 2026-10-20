@@ -4,5 +4,6 @@ export type AlbumReview = {
     id: number,
     rating: number,
     reviewText : string,
-    album: Album
+    album: Album,
+    created: string
 };

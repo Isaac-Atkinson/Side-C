@@ -7,6 +7,8 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import java.time.Instant;
+
 @Entity
 public class ArtistReview {
 
@@ -29,6 +31,16 @@ public class ArtistReview {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    private Instant created;
+
+    public Instant getCreated() {
+        return created;
+    }
+
+    public void setCreated(Instant created) {
+        this.created = created;
+    }
 
     public Integer getId() {
         return id;

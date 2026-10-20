@@ -29,6 +29,12 @@ function AlbumReviewsPage() {
 
     const sortedReviews = [...albumReviews].sort((a, b) => {
         switch (sortBy) {
+           case SORT_OPTIONS.MOST_RECENT:
+                return (new Date(b.created).getTime() -
+                        new Date(a.created).getTime());
+           case SORT_OPTIONS.OLDEST:
+                return (new Date(a.created).getTime() -
+                        new Date(b.created).getTime());
            case SORT_OPTIONS.ALPHABETICAL_AZ:
                 return a.album.title.localeCompare(b.album.title);
            case SORT_OPTIONS.ALPHABETICAL_ZA:

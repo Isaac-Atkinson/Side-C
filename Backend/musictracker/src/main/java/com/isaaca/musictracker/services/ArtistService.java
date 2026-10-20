@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -124,6 +125,7 @@ public class ArtistService {
         artistReview.setUser(user);
         artistReview.setRating(artistRequest.rating());
         artistReview.setReviewText(artistRequest.reviewText());
+        artistReview.setCreated(Instant.now());
 
         return artistReviewRepository.save(artistReview);
     }
