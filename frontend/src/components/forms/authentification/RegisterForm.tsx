@@ -2,6 +2,7 @@ import {API_BASE_URL} from "../../../config/api.ts";
 import AuthForm from "./AuthForm.tsx";
 import {useNavigate} from "react-router-dom";
 import {useSnackbar} from "../../../context/SnackBarContext.tsx";
+import {apiFetch} from "../../../api/ApiFetch.ts";
 
 
 function RegisterForm() {
@@ -13,7 +14,7 @@ function RegisterForm() {
         username: string;
         password: string;
     }) => {
-        const response = await fetch(`${API_BASE_URL}/auth/register`, {
+        const response = await apiFetch(`${API_BASE_URL}/auth/register`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

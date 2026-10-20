@@ -1,5 +1,6 @@
 import {createContext, type ReactNode, useContext, useEffect, useState} from "react";
 import {API_BASE_URL} from "../config/api.ts";
+import {apiFetch} from "../api/ApiFetch.ts";
 
 type UserContextType = {
     username : string | null;
@@ -16,9 +17,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
    const getUser = async () => {
        try{
-           const response = await fetch(`${API_BASE_URL}/auth/user`, {
-               credentials: "include",
-           });
+           const response = await apiFetch(`${API_BASE_URL}/auth/user`);
 
            if(response.ok){
                const data = await response.json();
@@ -34,15 +33,19 @@ export function UserProvider({ children }: { children: ReactNode }) {
    }
 
     const logout = async () => {
-        await fetch(`${API_BASE_URL}/auth/logout`, {
+        await apiFetch(`${API_BASE_URL}/auth/logout`, {
             method: "POST",
-            credentials: "include",
         });
         setUsername(null);
     };
 
    useEffect(() => {
-       getUser();
+       const initialiseSession = async () => {
+           await getUser();
+           await apiFetch(`${API_BASE_URL}/auth/csrf`);
+       }
+
+       initialiseSession();
    }, [])
 
 

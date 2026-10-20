@@ -2,6 +2,7 @@ import AuthForm from "./AuthForm.tsx";
 import {API_BASE_URL} from "../../../config/api.ts";
 import {useNavigate} from "react-router-dom";
 import {useUserContext} from "../../../context/UserContext.tsx";
+import {apiFetch} from "../../../api/ApiFetch.ts";
 
 function LoginForm(){
     const navigate = useNavigate();
@@ -11,12 +12,11 @@ function LoginForm(){
         username: string;
         password: string;
     }) => {
-        const response= await fetch(`${API_BASE_URL}/auth/login`, {
+        const response= await apiFetch(`${API_BASE_URL}/auth/login`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            credentials: "include",
             body: JSON.stringify(data)
         });
 

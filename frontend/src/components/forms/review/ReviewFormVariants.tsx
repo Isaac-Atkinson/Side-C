@@ -5,6 +5,7 @@ import type {ArtistSearchResult} from "../../../types/ArtistSearchResult.ts";
 import type {AlbumReview} from "../../../types/AlbumReview.ts";
 import type {ArtistReview} from "../../../types/ArtistReview.ts";
 import {AlbumPlaceholder, ArtistPlaceholder} from "../../placeholders/placeholders.tsx";
+import {apiFetch} from "../../../api/ApiFetch.ts";
 
 
 type AddAlbumFormProps = {
@@ -16,10 +17,9 @@ type AddAlbumFormProps = {
 export function AddAlbumForm({album, onSuccess, onCancel} : AddAlbumFormProps) {
     const submit = async (rating : number, reviewText : string) => {
 
-        const response = await fetch(`${API_BASE_URL}/albums/reviews`, {
+        const response = await apiFetch(`${API_BASE_URL}/albums/reviews`, {
             method: "POST",
             headers: {"Content-Type": "application/json"},
-            credentials: "include",
             body: JSON.stringify({
                 musicBrainzId: album.musicBrainzId,
                 lastFMUrl: album.lastFMUrl,
@@ -65,10 +65,9 @@ type AddArtistFormProps = {
 export function AddArtistForm({artist, onSuccess, onCancel} : AddArtistFormProps) {
     const submit = async (rating : number, reviewText : string) => {
 
-        const response = await fetch(`${API_BASE_URL}/artists/reviews`, {
+        const response = await apiFetch(`${API_BASE_URL}/artists/reviews`, {
             method: "POST",
             headers: {"Content-Type": "application/json"},
-            credentials: "include",
             body: JSON.stringify({
                 musicBrainzId : artist.musicBrainzId,
                 lastFMUrl: artist.lastFMUrl,
@@ -114,10 +113,9 @@ type EditAlbumFormProps = {
 export function EditAlbumForm({albumReview, onAlbumUpdated, onSuccess, onCancel}: EditAlbumFormProps) {
     const submit = async (rating : number, reviewText : string) => {
 
-        const response = await fetch(`${API_BASE_URL}/albums/reviews/${albumReview.id}`, {
+        const response = await apiFetch(`${API_BASE_URL}/albums/reviews/${albumReview.id}`, {
             method: "PUT",
             headers: {"Content-Type": "application/json"},
-            credentials: "include",
             body: JSON.stringify({
                 rating: Number (rating),
                 reviewText: reviewText,
@@ -164,10 +162,9 @@ type EditArtistFormProps = {
 export function EditArtistForm({artistReview, onArtistUpdated, onSuccess, onCancel}: EditArtistFormProps) {
     const submit = async (rating : number, reviewText : string) => {
 
-        const response = await fetch(`${API_BASE_URL}/artists/reviews/${artistReview.id}`, {
+        const response = await apiFetch(`${API_BASE_URL}/artists/reviews/${artistReview.id}`, {
             method: "PUT",
             headers: {"Content-Type": "application/json"},
-            credentials: "include",
             body: JSON.stringify({
                 rating: Number (rating),
                 reviewText: reviewText,

@@ -96,7 +96,7 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:8080/api/search/albums?title=melodrama
+GET http://localhost:8080/api/auth/csrf
 
 ###
 

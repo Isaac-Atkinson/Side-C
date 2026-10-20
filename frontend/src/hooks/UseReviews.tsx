@@ -1,4 +1,5 @@
 import {useEffect, useState} from "react";
+import {apiFetch} from "../api/ApiFetch.ts";
 
 
 function useReviews<T>(url : string, errMessage : string){
@@ -9,9 +10,7 @@ function useReviews<T>(url : string, errMessage : string){
     useEffect(() => {
         const loadReviews = async () => {
             try{
-                const response = await fetch(url,{
-                    credentials: "include",
-                });
+                const response = await apiFetch(url);
 
                 if(!response.ok){
                     throw new Error(errMessage);

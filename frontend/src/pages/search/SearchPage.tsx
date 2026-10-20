@@ -9,6 +9,7 @@ import CardGrid from "../../components/layout/CardGrid.tsx";
 import { AlbumSearchDisplayCard, ArtistSearchDisplayCard } from "../../components/cards/SearchCards.tsx";
 import PageContainer from "../../components/layout/pageContainer.tsx";
 import {useSnackbar} from "../../context/SnackBarContext.tsx";
+import {apiFetch} from "../../api/ApiFetch.ts";
 
 
 function SearchPage(){
@@ -33,9 +34,8 @@ function SearchPage(){
             setError(null);
 
             try{
-                const response = await fetch(
+                const response = await apiFetch(
                     `${API_BASE_URL}/search?query=${encodeURIComponent(search)}`,{
-                        credentials: "include",
                     }
                 )
 

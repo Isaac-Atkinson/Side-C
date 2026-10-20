@@ -7,6 +7,7 @@ import {useState} from "react";
 import {EditAlbumForm, EditArtistForm} from "../forms/review/ReviewFormVariants.tsx";
 import {Dialog, DialogContent, DialogTitle} from "@mui/material";
 import {AlbumPlaceholder, ArtistPlaceholder} from "../placeholders/placeholders.tsx";
+import {apiFetch} from "../../api/ApiFetch.ts";
 
 type DetailedAlbumCardProps = {
     albumReview: AlbumReview;
@@ -21,10 +22,9 @@ export function DetailedAlbumReviewCard({albumReview, onAlbumUpdated}: DetailedA
     const handleDelete = async () => {
 
 
-        const response = await fetch(`${API_BASE_URL}/albums/reviews/${albumReview.id}`,
+        const response = await apiFetch(`${API_BASE_URL}/albums/reviews/${albumReview.id}`,
             {
                 method : "DELETE",
-                credentials: "include",
             }
         );
 
@@ -83,10 +83,9 @@ export function DetailedArtistReviewCard({artistReview, onArtistUpdated}: Detail
     const handleDelete = async () => {
 
 
-        const response = await fetch(`${API_BASE_URL}/artists/reviews/${artistReview.id}`,
+        const response = await apiFetch(`${API_BASE_URL}/artists/reviews/${artistReview.id}`,
             {
                 method : "DELETE",
-                credentials: "include",
             }
         );
 
