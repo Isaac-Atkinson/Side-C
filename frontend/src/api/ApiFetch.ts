@@ -18,7 +18,7 @@ export async function apiFetch(url: string, options : RequestInit = {}): Promise
 }
 
 async function getCsrfToken() : Promise<string | null> {
-    
+
     const response = await fetch(`${API_BASE_URL}/auth/csrf`, {
         credentials: "include",
     })
