@@ -9,6 +9,7 @@ import LoginPage from "./pages/login/LoginPage.tsx";
 import NavBar from "./components/layout/NavBar.tsx";
 import {Box} from "@mui/material";
 import ReviewsLayout from "./components/layout/ReviewsLayout.tsx";
+import NotFoundPage from "./pages/redirect/NotFoundPage.tsx";
 
 
 
@@ -47,6 +48,8 @@ function App() {
                       <Route path={"artists/:id"} element={<ArtistReviewDetailPage />}/>
 
                       <Route path="/search" element={<SearchPage />} />
+
+                      <Route path="*" element={<NotFoundPage />} />
 
                   </Routes>
               </Box>

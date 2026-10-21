@@ -1,10 +1,14 @@
 # Side C
 
-Side C is a full-stack music review application for searching, rating and reviewing albums and artists.
+Side C is a music review application for searching, rating and reviewing albums and artists.
 
 Users can create an account, search for music, add ratings and written reviews, and manage their own reviews.
 
 <img src="Screenshots/Review_Page.png" alt="Screenshot of reviews page">
+
+## Live Demo
+
+https://side-c-music-review.onrender.com
 
 
 ## Features
@@ -38,7 +42,7 @@ Users can create an account, search for music, add ratings and written reviews, 
 - Mockito
 - MockMvc
 
-## Running locally
+## Running Locally
 
 Requirements:
 
@@ -50,7 +54,7 @@ Requirements:
 
 ### Backend
 
-set the required environment variables:
+Set the required environment variables:
 
 - `DB_URL`
 - `DB_USERNAME`
@@ -59,7 +63,7 @@ set the required environment variables:
 - `FANART_API_KEY`
 - `FRONTEND_URL`
 
-Then run:
+Then from the backend directory run:
 
 ```bash
 ./mvnw spring-boot:run
@@ -67,8 +71,10 @@ Then run:
 
 ### Frontend
 
-Rename `.env.example` to `.env` 
-then run:
+Rename `.env.example` to `.env` and set `VITE_API_BASE_URL` to point to your backend
+<br>
+<br>
+Then from the frontend directory run:
 
 ```bash
 npm install
