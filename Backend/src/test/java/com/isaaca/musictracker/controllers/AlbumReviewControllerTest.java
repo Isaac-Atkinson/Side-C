@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import tools.jackson.databind.ObjectMapper;
 
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,6 +47,8 @@ class AlbumReviewControllerTest {
                     List.of()
             );
 
+    Instant created = Instant.parse("2026-10-20T12:00:00Z");
+
 
     @Test
     void getAllAlbumReviewsReturnsAllReviews() throws Exception {
@@ -53,14 +56,16 @@ class AlbumReviewControllerTest {
                 1,
                 10,
                 new Album(),
-                "great album"
+                "great album",
+                created
         );
 
         AlbumReviewResponse review2 = new AlbumReviewResponse(
                 2,
                 10,
                 new Album(),
-                "Fantastic"
+                "Fantastic",
+                created
         );
 
         when(albumService.getAllAlbumReviewsByUser("username"))
@@ -80,7 +85,8 @@ class AlbumReviewControllerTest {
                 1,
                 10,
                 new Album(),
-                "great album"
+                "great album",
+                created
         );
 
 
@@ -112,7 +118,8 @@ class AlbumReviewControllerTest {
                 1,
                 10,
                 new Album(),
-                "great album"
+                "great album",
+                created
         );
 
         AlbumReviewRequest reviewRequest = new AlbumReviewRequest(
@@ -300,7 +307,8 @@ class AlbumReviewControllerTest {
                 1,
                 5,
                 new Album(),
-                "Actually not so great"
+                "Actually not so great",
+                created
         );
 
         UpdateAlbumReviewRequest updateRequest = new UpdateAlbumReviewRequest(

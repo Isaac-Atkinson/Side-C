@@ -18,6 +18,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import tools.jackson.databind.ObjectMapper;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,20 +48,24 @@ class ArtistReviewControllerTest {
                     List.of()
             );
 
+    Instant created = Instant.parse("2026-10-20T12:00:00Z");
+
     @Test
     void getAllArtistReviewsReturnsAllReviews() throws Exception {
         ArtistReviewResponse review1 = new ArtistReviewResponse(
                 1,
                 10,
                 new Artist(),
-                "Generational"
+                "Generational",
+                created
         );
 
         ArtistReviewResponse review2 = new ArtistReviewResponse(
                 2,
                 10,
                 new Artist(),
-                "Fantastic"
+                "Fantastic",
+                created
         );
 
         when(artistService.getAllArtistReviewsByUser("username"))
@@ -80,7 +85,8 @@ class ArtistReviewControllerTest {
                 1,
                 10,
                 new Artist(),
-                "Generational"
+                "Generational",
+                created
         );
 
 
@@ -112,7 +118,8 @@ class ArtistReviewControllerTest {
                 1,
                 10,
                 new Artist(),
-                "Generational"
+                "Generational",
+                created
         );
 
 
@@ -284,7 +291,8 @@ class ArtistReviewControllerTest {
                 1,
                 5,
                 new Artist(),
-                "Actually not so great"
+                "Actually not so great",
+                created
         );
 
         UpdateArtistReviewRequest updateRequest = new UpdateArtistReviewRequest(
