@@ -1,6 +1,6 @@
 import AlbumReviewsPage from "./pages/review/AlbumReviewsPage.tsx";
 import ArtistReviewsPage from "./pages/review/ArtistReviewsPage.tsx";
-import {Route, Routes} from "react-router-dom";
+import {Navigate, Route, Routes} from "react-router-dom";
 import AlbumReviewDetailPage from "./pages/review/AlbumReviewDetailPage.tsx";
 import ArtistReviewDetailPage from "./pages/review/ArtistReviewDetailPage.tsx";
 import SearchPage from "./pages/search/SearchPage.tsx";
@@ -39,11 +39,15 @@ function App() {
                           <Route path="artists" element={<ArtistReviewsPage />} />
                       </Route>
 
-                      <Route path={"albums/:id"} element={<AlbumReviewDetailPage />}/>
-                      <Route path={"artists/:id"} element={<ArtistReviewDetailPage />}/>
-                      <Route path="/search" element={<SearchPage />} />
+                      <Route path="/" element={<Navigate to="/login" replace />} />
                       <Route path = "/register" element={<RegisterPage />} />
                       <Route path = "/login" element={<LoginPage/>} />
+
+                      <Route path={"albums/:id"} element={<AlbumReviewDetailPage />}/>
+                      <Route path={"artists/:id"} element={<ArtistReviewDetailPage />}/>
+
+                      <Route path="/search" element={<SearchPage />} />
+
                   </Routes>
               </Box>
           </Box>
