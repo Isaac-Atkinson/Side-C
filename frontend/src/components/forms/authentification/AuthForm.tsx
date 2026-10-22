@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {Alert, Box, Button, TextField} from "@mui/material";
+import {Alert, Box, Button, CircularProgress, TextField} from "@mui/material";
 
 type AuthFormProps = {
     onSubmit: (data: {
@@ -7,8 +7,9 @@ type AuthFormProps = {
         password: string,
     }) => Promise<string | null>;
     buttonMsg : string;
+    loading: boolean;
 }
-function AuthForm({onSubmit, buttonMsg}: AuthFormProps) {
+function AuthForm({onSubmit, buttonMsg, loading}: AuthFormProps) {
     const[username, setUsername] = useState("");
     const[password, setPassword] = useState("");
 
@@ -49,11 +50,11 @@ function AuthForm({onSubmit, buttonMsg}: AuthFormProps) {
             setSubmitError(error);
         }
     }
-    return (
-        <div>
-            <Box
-                component="form"
-                onSubmit={handleSubmit}
+            return (
+
+                    <Box
+                    component="form"
+                    onSubmit={handleSubmit}
                 sx={{
                     display: "flex",
                     flexDirection: "column",
@@ -75,6 +76,7 @@ function AuthForm({onSubmit, buttonMsg}: AuthFormProps) {
 
                 <TextField
                     label = "Password"
+                    type = "password"
                     value = {password}
                     onChange={e => setPassword(e.target.value)}
                     error={Boolean(passwordError)}
@@ -90,15 +92,17 @@ function AuthForm({onSubmit, buttonMsg}: AuthFormProps) {
                 <Button
                     type="submit"
                     variant="contained"
+                    disabled={loading}
                     sx = {{
                         bgcolor: "actionButton.main",
                     }}
                 >
-                    {buttonMsg}
+
+                    {loading ? <CircularProgress /> : (buttonMsg)}
                 </Button>
 
             </Box>
-        </div>
+
     )
 }
 

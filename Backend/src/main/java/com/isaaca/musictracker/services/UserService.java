@@ -37,7 +37,7 @@ public class UserService {
         this.securityContextRepository = securityContextRepository;
     }
 
-    public User registerUser(RegisterRequest registerRequest) {
+    public void registerUser(RegisterRequest registerRequest, HttpServletRequest request, HttpServletResponse response) {
         if(userRepository.findUserByUsername(registerRequest.username()).isPresent()){
             throw new UserAlreadyExistsException();
         }
@@ -46,7 +46,22 @@ public class UserService {
         user.setUsername(registerRequest.username());
         user.setPassword(passwordEncoder.encode(registerRequest.password()));
 
-        return userRepository.save(user);
+        userRepository.save(user);
+
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        registerRequest.username(),
+                        registerRequest.password()
+                )
+        );
+
+        SecurityContext context = SecurityContextHolder.createEmptyContext();
+
+        context.setAuthentication(authentication);
+
+        SecurityContextHolder.setContext(context);
+
+        securityContextRepository.saveContext(context, request, response);
     }
 
     public void loginUser(LoginRequest loginRequest, HttpServletRequest request, HttpServletResponse response) {

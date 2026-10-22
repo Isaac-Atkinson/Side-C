@@ -1,10 +1,15 @@
 import LoginForm from "../../components/forms/authentification/LoginForm.tsx";
-import {Link as RouterLink} from "react-router-dom";
-import {Link} from "@mui/material";
 import {Box, Typography} from "@mui/material";
 import PageContainer from "../../components/layout/pageContainer.tsx";
 
+
 function LoginPage(){
+
+
+
+
+
+
     return(
 
         <PageContainer>
@@ -15,7 +20,9 @@ function LoginPage(){
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
+                    justifyContent: "center",
                     gap: 3,
+                    pb: 8
 
                 }}
             >
@@ -25,9 +32,7 @@ function LoginPage(){
 
                 <LoginForm/>
 
-                <Link component={RouterLink} to="/register">
-                    Create an account
-                </Link>
+
             </Box>
         </PageContainer>
 
