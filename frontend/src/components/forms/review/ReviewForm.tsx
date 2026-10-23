@@ -29,7 +29,7 @@ type ReviewFormProps = {
 function ReviewForm({title, subtitle, existingRating, existingReviewText, existingListenedOn, showListenedOn, imageUrl, placeholder, onSubmit, onCancel}: ReviewFormProps) {
     const[rating, setRating] = useState<number | null>(existingRating ? existingRating : null);
     const[reviewText, setReviewText] = useState(existingReviewText ? existingReviewText : "");
-    const[listenedOn, setListenedOn] = useState<Dayjs | null>(existingListenedOn ? dayjs(existingListenedOn) : null);
+    const[listenedOn, setListenedOn] = useState<Dayjs | null>(existingListenedOn ? dayjs(existingListenedOn) : dayjs());
 
     const [ratingError, setRatingError] = useState("");
     const [reviewTextError, setReviewTextError] = useState("");

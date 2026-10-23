@@ -27,7 +27,8 @@ function DetailedReviewCard({title, subtitle, rating, reviewText, listenedOn, sh
     return (
         <Box
             sx={{
-                width: "60%",
+                width: "100%",
+                maxWidth: 900,
                 mx: "auto",
                 bgcolor: "background.paper",
                 border: 1,
