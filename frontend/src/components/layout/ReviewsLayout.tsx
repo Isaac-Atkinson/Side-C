@@ -10,7 +10,7 @@ function ReviewsLayout(){
     const {pathname} = useLocation();
     const currentTab = pathname.includes("/albums") ? "albums" : "artists";
 
-    const [sortBy, setSortBy] = useState(SORT_OPTIONS.MOST_RECENT);
+    const [sortBy, setSortBy] = useState(SORT_OPTIONS.CREATED_NEWEST);
 
     return (
         <PageContainer>
@@ -43,18 +43,24 @@ function ReviewsLayout(){
                         value={sortBy}
                         onChange={(e) => setSortBy(e.target.value)}
                     >
-                        <MenuItem value = {SORT_OPTIONS.MOST_RECENT}>
-                            Most recent
+                        <MenuItem value = {SORT_OPTIONS.CREATED_NEWEST}>
+                            Created: Newest
                         </MenuItem>
-                        <MenuItem value = {SORT_OPTIONS.OLDEST}>
-                            Oldest
+                        <MenuItem value = {SORT_OPTIONS.CREATED_OLDEST}>
+                            Created: Oldest
+                        </MenuItem>
+                        <MenuItem value = {SORT_OPTIONS.LISTENED_NEWEST}>
+                            Listened: Newest
+                        </MenuItem>
+                        <MenuItem value = {SORT_OPTIONS.LISTENED_OLDEST}>
+                            Listened: Oldest
                         </MenuItem>
                         <MenuItem value={SORT_OPTIONS.HIGHEST_RATED}>
-                            Highest rated
+                            Rating: Highest
                         </MenuItem>
 
                         <MenuItem value={SORT_OPTIONS.LOWEST_RATED}>
-                            Lowest rated
+                            Rating: Lowest
                         </MenuItem>
                         <MenuItem value={SORT_OPTIONS.ALPHABETICAL_AZ}>
                             Alphabetical: A-Z

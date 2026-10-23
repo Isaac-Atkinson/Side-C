@@ -1,14 +1,16 @@
 import LoginForm from "../../components/forms/authentification/LoginForm.tsx";
 import {Box, Typography} from "@mui/material";
 import PageContainer from "../../components/layout/pageContainer.tsx";
+import {Navigate} from "react-router-dom";
+import {useUserContext} from "../../context/UserContext.tsx";
 
 
 function LoginPage(){
+    const {username} = useUserContext();
 
-
-
-
-
+    if (username) {
+        return <Navigate to="/reviews/albums" replace />;
+    }
 
     return(
 

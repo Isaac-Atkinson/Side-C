@@ -28,10 +28,10 @@ function ArtistReviewsPage(){
 
     const sortedReviews = [...artistReviews].sort((a, b) => {
         switch (sortBy) {
-            case SORT_OPTIONS.MOST_RECENT:
+            case SORT_OPTIONS.CREATED_NEWEST:
                 return (new Date(b.created).getTime() -
                     new Date(a.created).getTime());
-            case SORT_OPTIONS.OLDEST:
+            case SORT_OPTIONS.CREATED_OLDEST:
                 return (new Date(a.created).getTime() -
                     new Date(b.created).getTime());
             case SORT_OPTIONS.ALPHABETICAL_AZ:

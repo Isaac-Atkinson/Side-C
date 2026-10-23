@@ -6,4 +6,5 @@ export type AlbumReview = {
     reviewText : string,
     album: Album,
     created: string
+    listenedOn: string
 };

@@ -1,26 +1,40 @@
 import {type ReactNode, useState} from "react";
 import {Alert, Box, Button, Rating, TextField, Typography} from "@mui/material";
 import {MAX_REVIEW_LENGTH} from "../../../config/api.ts";
+import {DatePicker} from "@mui/x-date-pickers";
+import dayjs, { type Dayjs } from "dayjs";
 
 type ReviewFormProps = {
     title: string;
     subtitle?: string;
+
     existingRating?: number
     existingReviewText?: string;
+    existingListenedOn?: string;
+    showListenedOn?: boolean;
+
     imageUrl?: string;
     placeholder: ReactNode;
 
 
-    onSubmit: (rating : number, reviewText: string) => Promise<string | null>;
+    onSubmit: (
+        rating : number,
+        reviewText: string,
+        listenedOn : string | null)
+        => Promise<string | null>;
+
     onCancel: () => void;
 }
 
-function ReviewForm({title, subtitle, existingRating, existingReviewText, imageUrl, placeholder, onSubmit, onCancel}: ReviewFormProps) {
+function ReviewForm({title, subtitle, existingRating, existingReviewText, existingListenedOn, showListenedOn, imageUrl, placeholder, onSubmit, onCancel}: ReviewFormProps) {
     const[rating, setRating] = useState<number | null>(existingRating ? existingRating : null);
     const[reviewText, setReviewText] = useState(existingReviewText ? existingReviewText : "");
+    const[listenedOn, setListenedOn] = useState<Dayjs | null>(existingListenedOn ? dayjs(existingListenedOn) : null);
 
     const [ratingError, setRatingError] = useState("");
     const [reviewTextError, setReviewTextError] = useState("");
+    const [listenedOnError, setListenedOnError] = useState("");
+
     const [submitError, setSubmitError] = useState("");
 
     const validateForm = () => {
@@ -28,11 +42,18 @@ function ReviewForm({title, subtitle, existingRating, existingReviewText, imageU
 
         setRatingError("");
         setReviewTextError("");
+        setListenedOnError("");
 
         if (!rating) {
             setRatingError("Rating is required");
             valid = false;
         }
+
+        if(showListenedOn && !listenedOn){
+            setListenedOnError("Date is required");
+            valid = false;
+        }
+
         return valid;
     }
 
@@ -41,7 +62,11 @@ function ReviewForm({title, subtitle, existingRating, existingReviewText, imageU
 
         if(!validateForm()) return;
 
-        const error = await onSubmit(Number (rating), reviewText);
+        const listenedOnString = listenedOn
+            ? listenedOn.format("YYYY-MM-DD")
+            : null;
+
+        const error = await onSubmit(Number (rating), reviewText, listenedOnString);
 
         if (error) {
             setSubmitError(error);
@@ -131,34 +156,63 @@ function ReviewForm({title, subtitle, existingRating, existingReviewText, imageU
             <Box
                 sx={{
                     display: "flex",
-                    flexDirection: "column",
-                    gap: 0.5,
+                    gap: 2
+
                 }}
             >
-                <Typography
-                    variant="body1"
-                >
-                    Rating
-                </Typography>
-
-                <Rating
-                    value={rating != null ? rating / 2 : null}
-                    onChange={(_, value) => {
-                        setRating(value == null ? null : value * 2);
+                <Box
+                    sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 0.5,
                     }}
-                    precision={0.5}
-                    size= "large"
-                />
-
-                {ratingError && (
+                >
                     <Typography
-                        variant="caption"
-                        color="error"
+                        variant="body1"
                     >
-                        {ratingError}
+                        Rating
                     </Typography>
+
+                    <Rating
+                        value={rating != null ? rating / 2 : null}
+                        onChange={(_, value) => {
+                            setRating(value == null ? null : value * 2);
+                        }}
+                        precision={0.5}
+                        size= "large"
+                    />
+
+                    {ratingError && (
+                        <Typography
+                            variant="caption"
+                            color="error"
+                        >
+                            {ratingError}
+                        </Typography>
+                    )}
+
+
+                </Box>
+
+                {showListenedOn && (
+                    <Box sx={{ ml: "auto", mt: 1 }}>
+
+                        <DatePicker
+                            label="Listened on"
+                            value={listenedOn}
+                            onChange={(newValue) => setListenedOn(newValue)}
+                            disableFuture
+                            slotProps={{
+                                textField: {
+                                    error: Boolean(listenedOnError),
+                                    helperText: listenedOnError,
+                                },
+                            }}
+                        />
+                    </Box>
                 )}
             </Box>
+
 
 
             <Box
@@ -187,6 +241,8 @@ function ReviewForm({title, subtitle, existingRating, existingReviewText, imageU
                     }}
                     helperText={`${reviewText.length}/${MAX_REVIEW_LENGTH}`}
                 />
+
+
             </Box>
 
 
@@ -217,7 +273,7 @@ function ReviewForm({title, subtitle, existingRating, existingReviewText, imageU
                     type="submit"
                     variant="contained"
                     sx = {{
-                        bgcolor: "actionButton.main"
+                        bgcolor: "primary.main",
                     }}
                 >
                     Submit

@@ -72,7 +72,8 @@ class AlbumServiceTest {
                 "Blonde",
                 "Frank Ocean",
                 10,
-                "great"
+                "great",
+                "2026-10-23"
         );
 
         id = 1;
@@ -235,7 +236,8 @@ class AlbumServiceTest {
 
         UpdateAlbumReviewRequest updateRequest = new UpdateAlbumReviewRequest(
                 5,
-                "Not so great"
+                "Not so great",
+                "2026-09-23"
         );
 
 
@@ -254,13 +256,15 @@ class AlbumServiceTest {
 
         assertEquals(updateRequest.rating(), savedReview.getRating());
         assertEquals(updateRequest.reviewText(), savedReview.getReviewText());
+        assertEquals(updateRequest.listenedOn(), savedReview.getListenedOn().toString());
     }
 
     @Test
     void updateAlbumReviewThrowsIfReviewDoesNotExist() {
         UpdateAlbumReviewRequest updateRequest = new UpdateAlbumReviewRequest(
                 5,
-                "Not so great"
+                "Not so great",
+                "2026-09-23"
         );
 
 

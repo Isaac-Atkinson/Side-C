@@ -38,8 +38,12 @@ export function DetailedAlbumReviewCard({albumReview, onAlbumUpdated}: DetailedA
             <DetailedReviewCard
                 title={albumReview.album.title}
                 subtitle={albumReview.album.artist.name}
+
                 rating={albumReview.rating}
                 reviewText={albumReview.reviewText}
+                listenedOn={albumReview.listenedOn}
+                showListenedOn={true}
+
                 imageUrl={albumReview.album.imageUrl}
                 imageAlt={`${albumReview.album.title} cover`}
                 placeholder={AlbumPlaceholder}
@@ -98,8 +102,11 @@ export function DetailedArtistReviewCard({artistReview, onArtistUpdated}: Detail
         <>
         <DetailedReviewCard
             title={artistReview.artist.name}
+
             rating={artistReview.rating}
             reviewText={artistReview.reviewText}
+            showListenedOn={false}
+
             imageUrl={artistReview.artist.imageUrl}
             imageAlt={`${artistReview.artist.name}`}
             placeholder={ArtistPlaceholder}

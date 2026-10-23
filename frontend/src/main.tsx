@@ -7,6 +7,8 @@ import {CssBaseline, ThemeProvider} from "@mui/material";
 import {theme} from "./theme.ts";
 import {SnackBarProvider} from "./context/SnackBarContext.tsx";
 import {UserProvider} from "./context/UserContext.tsx";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 
 createRoot(document.getElementById("root")!).render(
@@ -14,11 +16,13 @@ createRoot(document.getElementById("root")!).render(
         <ThemeProvider theme={theme}>
             <CssBaseline />
             <BrowserRouter>
-                <UserProvider>
-                    <SnackBarProvider>
-                        <App />
-                    </SnackBarProvider>
-                </UserProvider>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <UserProvider>
+                        <SnackBarProvider>
+                            <App />
+                        </SnackBarProvider>
+                    </UserProvider>
+                </LocalizationProvider>
             </BrowserRouter>
         </ThemeProvider>
     </StrictMode>,

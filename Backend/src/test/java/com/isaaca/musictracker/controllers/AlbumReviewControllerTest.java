@@ -4,10 +4,13 @@ import com.isaaca.musictracker.constants.ReviewLimits;
 import com.isaaca.musictracker.dto.request.AlbumReviewRequest;
 import com.isaaca.musictracker.dto.request.UpdateAlbumReviewRequest;
 import com.isaaca.musictracker.dto.response.review.AlbumReviewResponse;
+import com.isaaca.musictracker.dto.response.review.ArtistReviewResponse;
 import com.isaaca.musictracker.entities.Album;
+import com.isaaca.musictracker.entities.Artist;
 import com.isaaca.musictracker.exceptions.AlbumAlreadyReviewedException;
 import com.isaaca.musictracker.exceptions.AlbumReviewNotFoundException;
 import com.isaaca.musictracker.services.AlbumService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
@@ -20,6 +23,7 @@ import tools.jackson.databind.ObjectMapper;
 
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,27 +53,49 @@ class AlbumReviewControllerTest {
 
     Instant created = Instant.parse("2026-10-20T12:00:00Z");
 
+    AlbumReviewResponse review;
 
-    @Test
-    void getAllAlbumReviewsReturnsAllReviews() throws Exception {
-        AlbumReviewResponse review1 = new AlbumReviewResponse(
+    AlbumReviewRequest reviewRequest;
+
+
+
+    @BeforeEach
+    void setUp() {
+        review = new AlbumReviewResponse(
                 1,
                 10,
                 new Album(),
                 "great album",
-                created
+                created,
+                LocalDate.parse("2026-10-23")
         );
+
+        reviewRequest = new AlbumReviewRequest(
+                "1",
+                "url",
+                "Melodrama",
+                "Lorde",
+                10,
+                "great album",
+                "2026-10-23"
+        );
+    }
+
+
+    @Test
+    void getAllAlbumReviewsReturnsAllReviews() throws Exception {
 
         AlbumReviewResponse review2 = new AlbumReviewResponse(
                 2,
                 10,
                 new Album(),
                 "Fantastic",
-                created
+                created,
+                LocalDate.parse("2026-10-23")
         );
 
         when(albumService.getAllAlbumReviewsByUser("username"))
-                .thenReturn(List.of(review1, review2));
+                .thenReturn(List.of(review, review2));
 
         mockMvc.perform(get("/api/albums/reviews")
                 .principal(authentication))
@@ -80,16 +106,6 @@ class AlbumReviewControllerTest {
     }
     @Test
     void getAlbumReviewByIdReturnsReview() throws Exception {
-
-        AlbumReviewResponse review = new AlbumReviewResponse(
-                1,
-                10,
-                new Album(),
-                "great album",
-                created
-        );
-
-
 
         when(albumService.getAlbumReviewById(1, "username"))
                 .thenReturn(Optional.of(review));
@@ -114,22 +130,7 @@ class AlbumReviewControllerTest {
 
     @Test
     void addAlbumReviewReturnsCreatedReview() throws Exception {
-        AlbumReviewResponse review = new AlbumReviewResponse(
-                1,
-                10,
-                new Album(),
-                "great album",
-                created
-        );
 
-        AlbumReviewRequest reviewRequest = new AlbumReviewRequest(
-                "1",
-                "url",
-                "Melodrama",
-                "Lorde",
-                10,
-                "great album"
-        );
 
         when(albumService.addAlbumReview(reviewRequest, "username"))
                 .thenReturn(review);
@@ -147,14 +148,7 @@ class AlbumReviewControllerTest {
 
     @Test
     void addAlbumReviewReturnsConflictForDuplicateReview() throws Exception {
-        AlbumReviewRequest reviewRequest = new AlbumReviewRequest(
-                "1",
-                "url",
-                "Melodrama",
-                "Lorde",
-                10,
-                "great album"
-        );
+
 
         doThrow(new AlbumAlreadyReviewedException())
                 .when(albumService)
@@ -171,12 +165,13 @@ class AlbumReviewControllerTest {
     @Test
     void addAlbumReviewReturnsBadRequestForMissingTitle() throws Exception {
         AlbumReviewRequest invalidRequest = new AlbumReviewRequest(
-                "1",
-                "url",
+                reviewRequest.musicBrainzId(),
+                reviewRequest.lastFMUrl(),
                 "",
-                "Lorde",
-                10,
-                "great album"
+                reviewRequest.artist(),
+                reviewRequest.rating(),
+                reviewRequest.reviewText(),
+                reviewRequest.listenedOn()
         );
 
         mockMvc.perform(post("/api/albums/reviews")
@@ -190,12 +185,13 @@ class AlbumReviewControllerTest {
     @Test
     void addAlbumReviewReturnsBadRequestForMissingArtist() throws Exception {
         AlbumReviewRequest invalidRequest = new AlbumReviewRequest(
-                "1",
-                "url",
-                "Melodrama",
+                reviewRequest.musicBrainzId(),
+                reviewRequest.lastFMUrl(),
+                reviewRequest.title(),
                 "",
-                10,
-                "great album"
+                reviewRequest.rating(),
+                reviewRequest.reviewText(),
+                reviewRequest.listenedOn()
         );
 
         mockMvc.perform(post("/api/albums/reviews")
@@ -209,12 +205,13 @@ class AlbumReviewControllerTest {
     @Test
     void addAlbumReviewReturnsBadRequestForMissingLastFMUrl() throws Exception {
         AlbumReviewRequest invalidRequest = new AlbumReviewRequest(
-                "1",
+                reviewRequest.musicBrainzId(),
                 null,
-                "Melodrama",
-                "",
-                10,
-                "great album"
+                reviewRequest.title(),
+                reviewRequest.artist(),
+                reviewRequest.rating(),
+                reviewRequest.reviewText(),
+                reviewRequest.listenedOn()
         );
 
         mockMvc.perform(post("/api/albums/reviews")
@@ -228,12 +225,33 @@ class AlbumReviewControllerTest {
     @Test
     void addAlbumReviewReturnsBadRequestForMissingRating() throws Exception {
         AlbumReviewRequest invalidRequest = new AlbumReviewRequest(
-                "1",
-                "url",
-                "Melodrama",
-                "Lorde",
+                reviewRequest.musicBrainzId(),
+                reviewRequest.lastFMUrl(),
+                reviewRequest.title(),
+                reviewRequest.artist(),
                 null,
-                "great album"
+                reviewRequest.reviewText(),
+                reviewRequest.listenedOn()
+        );
+
+        mockMvc.perform(post("/api/albums/reviews")
+                        .principal(authentication)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(invalidRequest))
+                )
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void addAlbumReviewReturnsBadRequestForMissingListenedOn() throws Exception {
+        AlbumReviewRequest invalidRequest = new AlbumReviewRequest(
+                reviewRequest.musicBrainzId(),
+                reviewRequest.lastFMUrl(),
+                reviewRequest.title(),
+                reviewRequest.artist(),
+                reviewRequest.rating(),
+                reviewRequest.reviewText(),
+                ""
         );
 
         mockMvc.perform(post("/api/albums/reviews")
@@ -247,12 +265,13 @@ class AlbumReviewControllerTest {
     @Test
     void addAlbumReviewReturnsBadRequestForRatingOverLimit() throws Exception {
         AlbumReviewRequest invalidRequest = new AlbumReviewRequest(
-                "1",
-                "url",
-                "Melodrama",
-                "Lorde",
+                reviewRequest.musicBrainzId(),
+                reviewRequest.lastFMUrl(),
+                reviewRequest.title(),
+                reviewRequest.artist(),
                 ReviewLimits.MAX_RATING + 1,
-                "great album"
+                reviewRequest.reviewText(),
+                reviewRequest.listenedOn()
         );
 
         mockMvc.perform(post("/api/albums/reviews")
@@ -266,12 +285,13 @@ class AlbumReviewControllerTest {
     @Test
     void addAlbumReviewReturnsBadRequestForRatingBelowLimit() throws Exception {
         AlbumReviewRequest invalidRequest = new AlbumReviewRequest(
-                "1",
-                "url",
-                "Melodrama",
-                "Lorde",
+                reviewRequest.musicBrainzId(),
+                reviewRequest.lastFMUrl(),
+                reviewRequest.title(),
+                reviewRequest.artist(),
                 ReviewLimits.MIN_RATING - 1,
-                "great album"
+                reviewRequest.reviewText(),
+                reviewRequest.listenedOn()
         );
 
         mockMvc.perform(post("/api/albums/reviews")
@@ -285,12 +305,13 @@ class AlbumReviewControllerTest {
     @Test
     void addAlbumReviewReturnsBadRequestForReviewTextLengthOverLimit() throws Exception {
         AlbumReviewRequest invalidRequest = new AlbumReviewRequest(
-                "1",
-                "url",
-                "Melodrama",
-                "Lorde",
-                0,
-                "a".repeat(ReviewLimits.MAX_REVIEW_LENGTH + 1)
+                reviewRequest.musicBrainzId(),
+                reviewRequest.lastFMUrl(),
+                reviewRequest.title(),
+                reviewRequest.artist(),
+                reviewRequest.rating(),
+                "a".repeat(ReviewLimits.MAX_REVIEW_LENGTH + 1),
+                reviewRequest.listenedOn()
         );
 
         mockMvc.perform(post("/api/albums/reviews")
@@ -303,21 +324,24 @@ class AlbumReviewControllerTest {
 
     @Test
     void updateAlbumReviewReturnsUpdatedReview() throws Exception {
-        AlbumReviewResponse review = new AlbumReviewResponse(
+
+        AlbumReviewResponse updatedReview = new AlbumReviewResponse(
                 1,
                 5,
                 new Album(),
                 "Actually not so great",
-                created
+                created,
+                LocalDate.parse("2026-09-23")
         );
 
         UpdateAlbumReviewRequest updateRequest = new UpdateAlbumReviewRequest(
                 5,
-                "Actually not so great"
+                "Actually not so great",
+                "2026-09-23"
         );
 
         when(albumService.updateAlbumReview(1, updateRequest, "username"))
-            .thenReturn(review);
+            .thenReturn(updatedReview);
 
         mockMvc.perform(put("/api/albums/reviews/1")
                 .principal(authentication)
@@ -326,14 +350,17 @@ class AlbumReviewControllerTest {
         )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.rating").value(5))
-                .andExpect(jsonPath("$.reviewText").value("Actually not so great"));
+                .andExpect(jsonPath("$.reviewText").value("Actually not so great"))
+                .andExpect(jsonPath("$.listenedOn").value("2026-09-23"));
+
     }
 
     @Test
     void updateAlbumReviewReturnsNotFoundIfReviewDoesNotExist() throws Exception {
         UpdateAlbumReviewRequest updateRequest = new UpdateAlbumReviewRequest(
                 5,
-                "Actually not so great"
+                "Actually not so great",
+                "2026-09-23"
         );
 
         doThrow(new AlbumReviewNotFoundException())
@@ -352,7 +379,25 @@ class AlbumReviewControllerTest {
     void updateAlbumReviewReturnsBadRequestForMissingRating() throws Exception {
         UpdateAlbumReviewRequest invalidRequest = new UpdateAlbumReviewRequest(
                 null,
-                "Great album"
+                "Great album",
+                "2026-09-23"
+
+        );
+
+        mockMvc.perform(put("/api/albums/reviews/1")
+                        .principal(authentication)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(invalidRequest))
+                )
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void updateAlbumReviewReturnsBadRequestForMissingListenedOn() throws Exception {
+        UpdateAlbumReviewRequest invalidRequest = new UpdateAlbumReviewRequest(
+                10,
+                "Great album",
+                ""
 
         );
 
@@ -368,7 +413,8 @@ class AlbumReviewControllerTest {
     void updateAlbumReviewReturnsBadRequestForRatingAboveLimit() throws Exception {
         UpdateAlbumReviewRequest invalidRequest = new UpdateAlbumReviewRequest(
                 ReviewLimits.MAX_RATING + 1,
-                "Great album"
+                "Great album",
+                "2026-09-23"
         );
 
         mockMvc.perform(put("/api/albums/reviews/1")
@@ -383,7 +429,8 @@ class AlbumReviewControllerTest {
     void updateAlbumReviewReturnsBadRequestForRatingBelowLimit() throws Exception {
         UpdateAlbumReviewRequest invalidRequest = new UpdateAlbumReviewRequest(
                 ReviewLimits.MIN_RATING - 1,
-                "Great album"
+                "Great album",
+                "2026-09-23"
         );
 
         mockMvc.perform(put("/api/albums/reviews/1")
@@ -398,7 +445,8 @@ class AlbumReviewControllerTest {
     void updateAlbumReviewReturnsBadRequestForReviewTextLengthOverLimit() throws Exception {
         UpdateAlbumReviewRequest invalidRequest = new UpdateAlbumReviewRequest(
                 0,
-                "a".repeat(ReviewLimits.MAX_REVIEW_LENGTH + 1)
+                "a".repeat(ReviewLimits.MAX_REVIEW_LENGTH + 1),
+                "2026-09-23"
         );
 
         mockMvc.perform(put("/api/albums/reviews/1")

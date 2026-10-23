@@ -15,7 +15,7 @@ type AddAlbumFormProps = {
 }
 
 export function AddAlbumForm({album, onSuccess, onCancel} : AddAlbumFormProps) {
-    const submit = async (rating : number, reviewText : string) => {
+    const submit = async (rating : number, reviewText : string, listenedOn : string | null) => {
 
         const response = await apiFetch(`${API_BASE_URL}/albums/reviews`, {
             method: "POST",
@@ -26,7 +26,8 @@ export function AddAlbumForm({album, onSuccess, onCancel} : AddAlbumFormProps) {
                 title: album.title,
                 artist: album.artist,
                 rating: Number (rating),
-                reviewText: reviewText
+                reviewText: reviewText,
+                listenedOn: listenedOn
             })
         });
 
@@ -49,9 +50,11 @@ export function AddAlbumForm({album, onSuccess, onCancel} : AddAlbumFormProps) {
             title={album.title}
             subtitle={album.artist}
             imageUrl={album.imageUrl}
+            placeholder={AlbumPlaceholder}
+            showListenedOn={true}
             onSubmit={submit}
             onCancel={onCancel}
-            placeholder={AlbumPlaceholder}
+
         />
     )
 }
@@ -96,9 +99,9 @@ export function AddArtistForm({artist, onSuccess, onCancel} : AddArtistFormProps
         <ReviewForm
             title={artist.name}
             imageUrl={artist.imageUrl}
+            placeholder={ArtistPlaceholder}
             onSubmit={submit}
             onCancel={onCancel}
-            placeholder={ArtistPlaceholder}
         />
     )
 }
@@ -111,7 +114,7 @@ type EditAlbumFormProps = {
 }
 
 export function EditAlbumForm({albumReview, onAlbumUpdated, onSuccess, onCancel}: EditAlbumFormProps) {
-    const submit = async (rating : number, reviewText : string) => {
+    const submit = async (rating : number, reviewText : string, listenedOn : string | null) => {
 
         const response = await apiFetch(`${API_BASE_URL}/albums/reviews/${albumReview.id}`, {
             method: "PUT",
@@ -119,6 +122,7 @@ export function EditAlbumForm({albumReview, onAlbumUpdated, onSuccess, onCancel}
             body: JSON.stringify({
                 rating: Number (rating),
                 reviewText: reviewText,
+                listenedOn: listenedOn,
             })
         });
 
@@ -141,8 +145,12 @@ export function EditAlbumForm({albumReview, onAlbumUpdated, onSuccess, onCancel}
         <ReviewForm
             title={albumReview.album.title}
             subtitle={albumReview.album.artist.name}
+
             existingRating={albumReview.rating}
             existingReviewText={albumReview.reviewText}
+            existingListenedOn={albumReview.listenedOn}
+            showListenedOn={true}
+
             imageUrl={albumReview.album.imageUrl}
             placeholder={AlbumPlaceholder}
 
@@ -168,6 +176,7 @@ export function EditArtistForm({artistReview, onArtistUpdated, onSuccess, onCanc
             body: JSON.stringify({
                 rating: Number (rating),
                 reviewText: reviewText,
+
             })
         });
 
@@ -189,8 +198,10 @@ export function EditArtistForm({artistReview, onArtistUpdated, onSuccess, onCanc
     return (
         <ReviewForm
             title={artistReview.artist.name}
+
             existingRating={artistReview.rating}
             existingReviewText={artistReview.reviewText}
+
             imageUrl={artistReview.artist.imageUrl}
             placeholder={ArtistPlaceholder}
 

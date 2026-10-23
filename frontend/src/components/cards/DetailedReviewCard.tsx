@@ -5,8 +5,12 @@ import type {ReactNode} from "react";
 type DetailedReviewCardProps = {
     title: string;
     subtitle?: string;
+
     rating: number;
     reviewText?: string;
+    listenedOn?: string
+    showListenedOn: boolean
+
     imageUrl?: string;
     imageAlt: string;
     placeholder: ReactNode;
@@ -15,7 +19,7 @@ type DetailedReviewCardProps = {
     onDelete: () => void;
 }
 
-function DetailedReviewCard({title, subtitle, rating, reviewText, imageUrl, imageAlt, placeholder, onDelete, onEdit}: DetailedReviewCardProps) {
+function DetailedReviewCard({title, subtitle, rating, reviewText, listenedOn, showListenedOn, imageUrl, imageAlt, placeholder, onDelete, onEdit}: DetailedReviewCardProps) {
 
 
 
@@ -95,6 +99,14 @@ function DetailedReviewCard({title, subtitle, rating, reviewText, imageUrl, imag
                             size= "large"
                             readOnly
                         />
+
+                        {showListenedOn && (
+                            <Typography
+                                variant = "h6"
+                            >
+                                {"Listened: " + listenedOn}
+                            </Typography>
+                        )}
                     </Box>
 
 

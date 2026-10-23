@@ -4,13 +4,15 @@ import com.isaaca.musictracker.entities.Album;
 import com.isaaca.musictracker.entities.AlbumReview;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 public record AlbumReviewResponse(
         Integer id,
         Integer rating,
         Album album,
         String reviewText,
-        Instant created
+        Instant created,
+        LocalDate listenedOn
 ) {
     public static AlbumReviewResponse fromAlbumReview(AlbumReview review) {
         return new AlbumReviewResponse(
@@ -18,7 +20,8 @@ public record AlbumReviewResponse(
                 review.getRating(),
                 review.getAlbum(),
                 review.getReviewText(),
-                review.getCreated()
+                review.getCreated(),
+                review.getListenedOn()
         );
     }
 }

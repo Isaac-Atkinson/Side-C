@@ -21,6 +21,9 @@ public record AlbumReviewRequest(
         Integer rating,
 
         @Size(max = ReviewLimits.MAX_REVIEW_LENGTH)
-        String reviewText
+        String reviewText,
+
+        @NotBlank
+        String listenedOn
 ) {
 }

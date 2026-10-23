@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Entity
 public class AlbumReview {
@@ -32,7 +33,19 @@ public class AlbumReview {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @NotNull
     private Instant created;
+
+    @NotNull
+    private LocalDate listenedOn;
+
+    public LocalDate getListenedOn() {
+        return listenedOn;
+    }
+
+    public void setListenedOn(LocalDate listenedOn) {
+        this.listenedOn = listenedOn;
+    }
 
     public Instant getCreated() {
         return created;

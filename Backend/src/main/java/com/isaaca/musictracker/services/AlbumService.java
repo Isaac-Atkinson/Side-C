@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -112,6 +113,7 @@ public class AlbumService {
 
         albumReview.setRating(request.rating());
         albumReview.setReviewText(request.reviewText());
+        albumReview.setListenedOn(LocalDate.parse(request.listenedOn()));
 
         albumReviewRepository.save(albumReview);
 
@@ -166,6 +168,7 @@ public class AlbumService {
         albumReview.setRating(request.rating());
         albumReview.setReviewText(request.reviewText());
         albumReview.setCreated(Instant.now());
+        albumReview.setListenedOn(LocalDate.parse(request.listenedOn()));
 
         return albumReview;
     }
