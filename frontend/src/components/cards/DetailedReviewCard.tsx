@@ -1,5 +1,6 @@
 import {Box, Button, Rating, Typography} from "@mui/material";
 import type {ReactNode} from "react";
+import dayjs from "dayjs";
 
 
 type DetailedReviewCardProps = {
@@ -34,21 +35,15 @@ function DetailedReviewCard({title, subtitle, rating, reviewText, listenedOn, sh
                 border: 1,
                 borderColor: "divider",
                 borderRadius: 2,
+                p:3
             }}
         >
-            <Box
-                sx={{
-                    width: "100%",
-                    maxWidth: 900,
-                    mx: "auto",
-                    p: 3,
-                }}
-            >
+
                 <Box
                     sx={{
                         display: "flex",
-                        gap: 4,
-                        alignItems: "flex-start"
+                        alignItems: "stretch",
+                        gap: 3,
                     }}
                 >
 
@@ -59,7 +54,11 @@ function DetailedReviewCard({title, subtitle, rating, reviewText, listenedOn, sh
                             alt={imageAlt}
                             sx={{
                                 width: "30%",
-                                borderRadius: 2
+                                aspectRatio: "1 / 1",
+                                objectFit: "cover",
+                                borderRadius: 2,
+                                flexShrink: 0,
+                                alignSelf: "flex-start"
                             }}
                         />
                     ) : (
@@ -67,7 +66,7 @@ function DetailedReviewCard({title, subtitle, rating, reviewText, listenedOn, sh
                             sx={{
                                 width: "30%",
                                 aspectRatio: "1 / 1",
-                                borderRadius: 1,
+                                borderRadius: 2,
                                 flexShrink: 0,
                                 bgcolor: "action.hover",
                                 display: "flex",
@@ -79,9 +78,15 @@ function DetailedReviewCard({title, subtitle, rating, reviewText, listenedOn, sh
                         </Box>
                     )}
 
-
-                    <Box sx={{ flex: 1 }}>
-                        <Typography variant="h3">
+                    <Box
+                        sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            flex: 1,
+                            minWidth: 0
+                        }}
+                    >
+                        <Typography variant="h4" >
                             {title}
                         </Typography>
 
@@ -89,84 +94,76 @@ function DetailedReviewCard({title, subtitle, rating, reviewText, listenedOn, sh
                             <Typography
                                 variant="h6"
                                 color={"textSecondary"}
+
                             >
                                 {subtitle}
                             </Typography>
                         )}
 
-                        <Rating
-                            value={Number(rating) / 2}
-                            precision={0.5}
-                            size= "large"
-                            readOnly
-                        />
-
-                        {showListenedOn && (
-                            <Typography
-                                variant = "h6"
-                            >
-                                {"Listened: " + listenedOn}
-                            </Typography>
-                        )}
-                    </Box>
-
-
-
-                </Box>
-
-                <Box
-                    sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap : 1,
-                        mt: 2
-                    }}
-                >
-
-                    {reviewText && (
                         <Box
                             sx={{
-                                display: "flex",
-                                flexDirection: "column",
-                                gap: 2,
-                                p: 1,
+                                display:"flex",
+                                flexDirection: "row",
+                                gap: 1.5,
+                                mt: 1
                             }}
                         >
 
 
+                            <Rating
+                                value={Number(rating) / 2}
+                                precision={0.5}
+                                size= "large"
+                                readOnly
+                            />
+
+                            {showListenedOn && (
+                                <Typography
+                                    variant = "h6"
+                                    color="textSecondary"
+                                    sx={{fontWeight: "normal", mt:"auto"}}
+                                >
+                                    {"Listened: " + dayjs(listenedOn).format("DD/MM/YYYY")}
+                                </Typography>
+                            )}
+
+                        </Box>
+
+                        {reviewText && (
                             <Typography
                                 variant="body1"
                                 sx={{
                                     whiteSpace: "pre-wrap",
                                     overflowWrap: "break-word",
+                                    mt: 2,
+                                    mb: 2
                                 }}
                             >
                                 {reviewText}
                             </Typography>
+                        )}
+
+                        <Box sx={{
+                            display: "flex",
+                            justifyContent: "flex-end",
+                            gap: 1,
+                            mt: "auto",
+
+
+                        }}>
+                            <Button variant="contained" onClick ={onEdit}>
+                                Edit
+                            </Button>
+
+                            <Button variant="outlined" color="error" onClick={onDelete}>
+                                Delete
+                            </Button>
                         </Box>
-                    )}
 
-
-
-
-                    <Box sx={{
-                        display: "flex",
-                        justifyContent: "flex-end",
-                        gap: 1,
-                        mt: 4,
-
-                    }}>
-                        <Button variant="contained" onClick ={onEdit}>
-                            Edit
-                        </Button>
-
-                        <Button variant="outlined" color="error" onClick={onDelete}>
-                            Delete
-                        </Button>
                     </Box>
-                </Box>
 
-            </Box>
+
+                </Box>
 
         </Box>
 
