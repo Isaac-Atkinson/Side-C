@@ -8,6 +8,12 @@ Users can create an account, search for music, add ratings and written reviews, 
 
 ## Live Demo
 
+Demo account:
+
+Username: demo
+<br>
+Password: 12345678
+
 https://side-c-music-review.onrender.com
 
 
