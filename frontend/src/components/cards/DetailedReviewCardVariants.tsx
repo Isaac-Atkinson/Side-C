@@ -8,6 +8,7 @@ import {EditAlbumForm, EditArtistForm} from "../forms/review/ReviewFormVariants.
 import {Dialog, DialogContent, DialogTitle} from "@mui/material";
 import {AlbumPlaceholder, ArtistPlaceholder} from "../placeholders/placeholders.tsx";
 import {apiFetch} from "../../api/ApiFetch.ts";
+import {useSnackbar} from "../../context/SnackBarContext.tsx";
 
 type DetailedAlbumCardProps = {
     albumReview: AlbumReview;
@@ -18,6 +19,7 @@ export function DetailedAlbumReviewCard({albumReview, onAlbumUpdated}: DetailedA
 
     const [editing, setEditing] = useState(false);
     const navigate = useNavigate();
+    const {showSnackbar} = useSnackbar();
 
     const handleDelete = async () => {
 
@@ -29,7 +31,9 @@ export function DetailedAlbumReviewCard({albumReview, onAlbumUpdated}: DetailedA
         );
 
         if(response.ok){
+            showSnackbar("Album review deleted");
             navigate("/reviews/albums");
+
         }
     }
 
@@ -83,6 +87,7 @@ type DetailedArtistCardProps = {
 export function DetailedArtistReviewCard({artistReview, onArtistUpdated}: DetailedArtistCardProps) {
     const [editing, setEditing] = useState(false);
     const navigate = useNavigate();
+    const {showSnackbar} = useSnackbar();
 
     const handleDelete = async () => {
 
@@ -94,6 +99,7 @@ export function DetailedArtistReviewCard({artistReview, onArtistUpdated}: Detail
         );
 
         if(response.ok){
+            showSnackbar("Artist review deleted");
             navigate("/reviews/artists");
         }
     }
