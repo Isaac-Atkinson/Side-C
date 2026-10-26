@@ -6,6 +6,7 @@ import type {AlbumReview} from "../../../types/AlbumReview.ts";
 import type {ArtistReview} from "../../../types/ArtistReview.ts";
 import {AlbumPlaceholder, ArtistPlaceholder} from "../../placeholders/placeholders.tsx";
 import {apiFetch} from "../../../api/ApiFetch.ts";
+import {useState} from "react";
 
 
 type AddAlbumFormProps = {
@@ -15,33 +16,46 @@ type AddAlbumFormProps = {
 }
 
 export function AddAlbumForm({album, onSuccess, onCancel} : AddAlbumFormProps) {
+
+    const[loading, setLoading] = useState(false);
+
     const submit = async (rating : number, reviewText : string, listenedOn : string | null) => {
 
-        const response = await apiFetch(`${API_BASE_URL}/albums/reviews`, {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({
-                musicBrainzId: album.musicBrainzId,
-                lastFMUrl: album.lastFMUrl,
-                title: album.title,
-                artist: album.artist,
-                rating: Number (rating),
-                reviewText: reviewText,
-                listenedOn: listenedOn
-            })
-        });
+        try{
 
-        if(response.ok){
+            setLoading(true);
 
-            onSuccess();
-            return null;
-        } else if(response.status === 409){
-            return "You have already reviewed this album";
-        } else if(response.status === 400){
-            return "Invalid information entered";
-        } else {
-            return "Something went wrong";
+            const response = await apiFetch(`${API_BASE_URL}/albums/reviews`, {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({
+                    musicBrainzId: album.musicBrainzId,
+                    lastFMUrl: album.lastFMUrl,
+                    title: album.title,
+                    artist: album.artist,
+                    rating: rating,
+                    reviewText: reviewText,
+                    listenedOn: listenedOn
+                })
+            });
+
+            if(response.ok){
+
+                onSuccess();
+                return null;
+            } else if(response.status === 409){
+                return "You have already reviewed this album";
+            } else if(response.status === 400){
+                return "Invalid information entered";
         }
+
+            return "Something went wrong";
+        } catch {
+            return "Something went wrong";
+        } finally {
+            setLoading(false);
+        }
+
 
     }
 
@@ -49,9 +63,14 @@ export function AddAlbumForm({album, onSuccess, onCancel} : AddAlbumFormProps) {
         <ReviewForm
             title={album.title}
             subtitle={album.artist}
+
             imageUrl={album.imageUrl}
             placeholder={AlbumPlaceholder}
+
             showListenedOn={true}
+
+            loading={loading}
+
             onSubmit={submit}
             onCancel={onCancel}
 
@@ -66,32 +85,45 @@ type AddArtistFormProps = {
 }
 
 export function AddArtistForm({artist, onSuccess, onCancel} : AddArtistFormProps) {
+
+    const[loading, setLoading] = useState(false);
+
     const submit = async (rating : number, reviewText : string) => {
 
-        const response = await apiFetch(`${API_BASE_URL}/artists/reviews`, {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({
-                musicBrainzId : artist.musicBrainzId,
-                lastFMUrl: artist.lastFMUrl,
-                name: artist.name,
-                imageUrl: artist.imageUrl,
-                rating: Number (rating),
-                reviewText: reviewText,
-            })
-        });
 
-        if(response.ok){
+        try{
+            setLoading(true);
 
-            onSuccess();
-            return null;
-        } else if(response.status === 409){
-            return "You have already reviewed this artist";
-        } else if(response.status === 400){
-            return "Invalid information entered";
-        } else {
+            const response = await apiFetch(`${API_BASE_URL}/artists/reviews`, {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({
+                    musicBrainzId : artist.musicBrainzId,
+                    lastFMUrl: artist.lastFMUrl,
+                    name: artist.name,
+                    imageUrl: artist.imageUrl,
+                    rating: rating,
+                    reviewText: reviewText,
+                })
+            });
+
+            if(response.ok){
+
+                onSuccess();
+                return null;
+            } else if(response.status === 409){
+                return "You have already reviewed this artist";
+            } else if(response.status === 400){
+                return "Invalid information entered";
+            }
+
             return "Something went wrong";
+        } catch {
+            return "Something went wrong";
+        } finally {
+            setLoading(false);
         }
+
 
     }
 
@@ -99,7 +131,11 @@ export function AddArtistForm({artist, onSuccess, onCancel} : AddArtistFormProps
         <ReviewForm
             title={artist.name}
             imageUrl={artist.imageUrl}
+
             placeholder={ArtistPlaceholder}
+
+            loading={loading}
+
             onSubmit={submit}
             onCancel={onCancel}
         />
@@ -114,30 +150,43 @@ type EditAlbumFormProps = {
 }
 
 export function EditAlbumForm({albumReview, onAlbumUpdated, onSuccess, onCancel}: EditAlbumFormProps) {
+
+    const[loading, setLoading] = useState(false);
+
     const submit = async (rating : number, reviewText : string, listenedOn : string | null) => {
 
-        const response = await apiFetch(`${API_BASE_URL}/albums/reviews/${albumReview.id}`, {
-            method: "PUT",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({
-                rating: Number (rating),
-                reviewText: reviewText,
-                listenedOn: listenedOn,
-            })
-        });
+        try{
+            setLoading(true);
 
-        if(response.ok){
+            const response = await apiFetch(`${API_BASE_URL}/albums/reviews/${albumReview.id}`, {
+                method: "PUT",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({
+                    rating: rating,
+                    reviewText: reviewText,
+                    listenedOn: listenedOn,
+                })
+            });
 
-            const updatedAlbumReview: AlbumReview = await response.json();
-            onAlbumUpdated(updatedAlbumReview);
+            if(response.ok){
 
-            onSuccess();
-            return null;
-        } else if(response.status === 404){
-            return "Review not found";
-        } else {
+                const updatedAlbumReview: AlbumReview = await response.json();
+                onAlbumUpdated(updatedAlbumReview);
+
+                onSuccess();
+                return null;
+            } else if(response.status === 404){
+                return "Review not found";
+            }
+
             return "Something went wrong";
+        } catch {
+            return "Something went wrong";
+        } finally {
+            setLoading(false);
         }
+
+
 
     }
 
@@ -154,6 +203,8 @@ export function EditAlbumForm({albumReview, onAlbumUpdated, onSuccess, onCancel}
             imageUrl={albumReview.album.imageUrl}
             placeholder={AlbumPlaceholder}
 
+            loading={loading}
+
             onSubmit={submit}
             onCancel={onCancel}
         />
@@ -168,30 +219,45 @@ type EditArtistFormProps = {
 }
 
 export function EditArtistForm({artistReview, onArtistUpdated, onSuccess, onCancel}: EditArtistFormProps) {
+
+    const[loading, setLoading] = useState(false);
+
     const submit = async (rating : number, reviewText : string) => {
 
-        const response = await apiFetch(`${API_BASE_URL}/artists/reviews/${artistReview.id}`, {
-            method: "PUT",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({
-                rating: Number (rating),
-                reviewText: reviewText,
 
-            })
-        });
 
-        if(response.ok){
+        try{
+            setLoading(true);
 
-            const updatedArtistReview: ArtistReview = await response.json();
-            onArtistUpdated(updatedArtistReview);
+            const response = await apiFetch(`${API_BASE_URL}/artists/reviews/${artistReview.id}`, {
+                method: "PUT",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({
+                    rating: rating,
+                    reviewText: reviewText,
 
-            onSuccess();
-            return null;
-        } else if(response.status === 404){
-            return "Review not found";
-        } else {
+                })
+            });
+
+            if(response.ok){
+
+                const updatedArtistReview: ArtistReview = await response.json();
+                onArtistUpdated(updatedArtistReview);
+
+                onSuccess();
+                return null;
+            } else if(response.status === 404){
+                return "Review not found";
+            }
+
             return "Something went wrong";
+        } catch {
+            return "Something went wrong";
+        } finally {
+            setLoading(false);
         }
+
+
 
     }
 
@@ -204,6 +270,8 @@ export function EditArtistForm({artistReview, onArtistUpdated, onSuccess, onCanc
 
             imageUrl={artistReview.artist.imageUrl}
             placeholder={ArtistPlaceholder}
+
+            loading={loading}
 
             onSubmit={submit}
             onCancel={onCancel}

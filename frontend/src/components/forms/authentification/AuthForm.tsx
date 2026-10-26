@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {Alert, Box, Button, CircularProgress, TextField} from "@mui/material";
+import {Alert, Box, Button, TextField} from "@mui/material";
 
 type AuthFormProps = {
     onSubmit: (data: {
@@ -92,13 +92,13 @@ function AuthForm({onSubmit, buttonMsg, loading}: AuthFormProps) {
                 <Button
                     type="submit"
                     variant="contained"
-                    disabled={loading}
+                    loading={loading}
                     sx = {{
                         bgcolor: "actionButton.main",
                     }}
                 >
 
-                    {loading ? <CircularProgress /> : (buttonMsg)}
+                    {buttonMsg}
                 </Button>
 
             </Box>

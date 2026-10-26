@@ -16,6 +16,8 @@ type ReviewFormProps = {
     imageUrl?: string;
     placeholder: ReactNode;
 
+    loading: boolean;
+
 
     onSubmit: (
         rating : number,
@@ -26,7 +28,7 @@ type ReviewFormProps = {
     onCancel: () => void;
 }
 
-function ReviewForm({title, subtitle, existingRating, existingReviewText, existingListenedOn, showListenedOn, imageUrl, placeholder, onSubmit, onCancel}: ReviewFormProps) {
+function ReviewForm({title, subtitle, existingRating, existingReviewText, existingListenedOn, showListenedOn, imageUrl, placeholder, loading, onSubmit, onCancel}: ReviewFormProps) {
     const[rating, setRating] = useState<number | null>(existingRating ? existingRating : null);
     const[reviewText, setReviewText] = useState(existingReviewText ? existingReviewText : "");
     const[listenedOn, setListenedOn] = useState<Dayjs | null>(existingListenedOn ? dayjs(existingListenedOn) : dayjs());
@@ -272,6 +274,7 @@ function ReviewForm({title, subtitle, existingRating, existingReviewText, existi
                 <Button
                     type="submit"
                     variant="contained"
+                    loading={loading}
                     sx = {{
                         bgcolor: "primary.main",
                     }}
