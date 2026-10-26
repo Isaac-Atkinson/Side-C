@@ -1,5 +1,6 @@
 package com.isaaca.musictracker.dto.response.review;
 
+import com.isaaca.musictracker.dto.entities.AlbumDTO;
 import com.isaaca.musictracker.entities.Album;
 import com.isaaca.musictracker.entities.AlbumReview;
 
@@ -9,7 +10,7 @@ import java.time.LocalDate;
 public record AlbumReviewResponse(
         Integer id,
         Integer rating,
-        Album album,
+        AlbumDTO album,
         String reviewText,
         Instant created,
         LocalDate listenedOn
@@ -18,7 +19,7 @@ public record AlbumReviewResponse(
         return new AlbumReviewResponse(
                 review.getId(),
                 review.getRating(),
-                review.getAlbum(),
+                AlbumDTO.from(review.getAlbum()),
                 review.getReviewText(),
                 review.getCreated(),
                 review.getListenedOn()

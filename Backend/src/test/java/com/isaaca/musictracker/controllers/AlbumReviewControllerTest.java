@@ -1,6 +1,8 @@
 package com.isaaca.musictracker.controllers;
 
 import com.isaaca.musictracker.constants.ReviewLimits;
+import com.isaaca.musictracker.dto.entities.AlbumDTO;
+import com.isaaca.musictracker.dto.entities.ArtistDTO;
 import com.isaaca.musictracker.dto.request.AlbumReviewRequest;
 import com.isaaca.musictracker.dto.request.UpdateAlbumReviewRequest;
 import com.isaaca.musictracker.dto.response.review.AlbumReviewResponse;
@@ -61,10 +63,18 @@ class AlbumReviewControllerTest {
 
     @BeforeEach
     void setUp() {
+
+        AlbumDTO album = new AlbumDTO(
+                1,
+                "Melodrama",
+                ArtistDTO.from(new Artist()),
+                "url"
+        );
+
         review = new AlbumReviewResponse(
                 1,
                 10,
-                new Album(),
+                album,
                 "great album",
                 created,
                 LocalDate.parse("2026-10-23")
@@ -85,10 +95,17 @@ class AlbumReviewControllerTest {
     @Test
     void getAllAlbumReviewsReturnsAllReviews() throws Exception {
 
+        AlbumDTO album2 = new AlbumDTO(
+                2,
+                "Discovery",
+                ArtistDTO.from(new Artist()),
+                "url"
+        );
+
         AlbumReviewResponse review2 = new AlbumReviewResponse(
                 2,
                 10,
-                new Album(),
+                album2,
                 "Fantastic",
                 created,
                 LocalDate.parse("2026-10-23")
@@ -328,7 +345,12 @@ class AlbumReviewControllerTest {
         AlbumReviewResponse updatedReview = new AlbumReviewResponse(
                 1,
                 5,
-                new Album(),
+                new AlbumDTO(
+                        1,
+                        "Melodrama",
+                        ArtistDTO.from(new Artist()),
+                        "url"
+                ),
                 "Actually not so great",
                 created,
                 LocalDate.parse("2026-09-23")

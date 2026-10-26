@@ -17,6 +17,8 @@ describe("ReviewForm", () => {
             <ReviewForm
                 title="Discovery"
                 placeholder={<div />}
+
+                loading={false}
                 onSubmit={vi.fn()}
                 onCancel={vi.fn()}
             />
@@ -42,8 +44,11 @@ describe("ReviewForm", () => {
                 <ReviewForm
                     title="Discovery"
                     placeholder={<div />}
+
+                    loading={false}
                     onSubmit={vi.fn()}
                     onCancel={vi.fn()}
+
                     showListenedOn={true}
                 />
             </LocalizationProvider>
@@ -65,8 +70,11 @@ describe("ReviewForm", () => {
             <ReviewForm
                 title="Discovery"
                 placeholder={<div />}
+
+                loading={false}
                 onSubmit={vi.fn()}
                 onCancel={vi.fn()}
+
                 showListenedOn={false}
             />
         );
@@ -91,8 +99,10 @@ describe("ReviewForm", () => {
                     existingReviewText={"Great album"}
                     existingListenedOn={"2026-10-23"}
 
+                    loading={false}
                     onSubmit={onSubmit}
                     onCancel={vi.fn()}
+
                     showListenedOn={true}
                 />
             </LocalizationProvider>

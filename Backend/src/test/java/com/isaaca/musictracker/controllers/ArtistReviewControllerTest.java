@@ -1,6 +1,7 @@
 package com.isaaca.musictracker.controllers;
 
 import com.isaaca.musictracker.constants.ReviewLimits;
+import com.isaaca.musictracker.dto.entities.ArtistDTO;
 import com.isaaca.musictracker.dto.request.ArtistReviewRequest;
 import com.isaaca.musictracker.dto.request.UpdateArtistReviewRequest;
 import com.isaaca.musictracker.dto.response.review.ArtistReviewResponse;
@@ -55,7 +56,7 @@ class ArtistReviewControllerTest {
         ArtistReviewResponse review1 = new ArtistReviewResponse(
                 1,
                 10,
-                new Artist(),
+                ArtistDTO.from(new Artist()),
                 "Generational",
                 created
         );
@@ -63,7 +64,7 @@ class ArtistReviewControllerTest {
         ArtistReviewResponse review2 = new ArtistReviewResponse(
                 2,
                 10,
-                new Artist(),
+                ArtistDTO.from(new Artist()),
                 "Fantastic",
                 created
         );
@@ -84,7 +85,7 @@ class ArtistReviewControllerTest {
         ArtistReviewResponse review = new ArtistReviewResponse(
                 1,
                 10,
-                new Artist(),
+                ArtistDTO.from(new Artist()),
                 "Generational",
                 created
         );
@@ -117,7 +118,7 @@ class ArtistReviewControllerTest {
         ArtistReviewResponse review = new ArtistReviewResponse(
                 1,
                 10,
-                new Artist(),
+                ArtistDTO.from(new Artist()),
                 "Generational",
                 created
         );
@@ -290,7 +291,7 @@ class ArtistReviewControllerTest {
         ArtistReviewResponse review = new ArtistReviewResponse(
                 1,
                 5,
-                new Artist(),
+                ArtistDTO.from(new Artist()),
                 "Actually not so great",
                 created
         );

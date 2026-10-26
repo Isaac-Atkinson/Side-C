@@ -1,5 +1,7 @@
 package com.isaaca.musictracker.services;
 
+import com.isaaca.musictracker.dto.entities.AlbumDTO;
+import com.isaaca.musictracker.dto.entities.ArtistDTO;
 import com.isaaca.musictracker.dto.request.AlbumReviewRequest;
 import com.isaaca.musictracker.dto.request.UpdateAlbumReviewRequest;
 import com.isaaca.musictracker.dto.response.review.AlbumReviewResponse;
@@ -23,7 +25,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -59,6 +60,8 @@ class AlbumServiceTest {
 
     private User user;
     private AlbumReviewRequest request;
+    private Album album;
+    private AlbumDTO albumDTO;
     private int id;
 
     @BeforeEach
@@ -77,6 +80,25 @@ class AlbumServiceTest {
         );
 
         id = 1;
+
+        Artist artist = new Artist();
+        artist.setName(request.artist());
+        artist.setImageUrl("artist-image");
+
+        album = new Album();
+        album.setId(id);
+        album.setTitle(request.title());
+        album.setArtist(artist);
+        album.setLastFMUrl(request.lastFMUrl());
+        album.setMusicBrainzId(request.musicBrainzId());
+        album.setImageUrl("album-image");
+
+        albumDTO = new AlbumDTO(
+                id,
+                request.title(),
+                new ArtistDTO(null, request.artist(), "artist-image"),
+                "album-image"
+        );
     }
 
     @Test
@@ -85,13 +107,13 @@ class AlbumServiceTest {
         review1.setId(1);
         review1.setRating(10);
         review1.setReviewText("Great");
-        review1.setAlbum(new Album());
+        review1.setAlbum(album);
 
         AlbumReview review2 = new AlbumReview();
         review2.setId(2);
         review2.setRating(7);
         review2.setReviewText("Pretty good");
-        review2.setAlbum(new Album());
+        review2.setAlbum(album);
 
         when(albumReviewRepository.findByUser_Username(user.getUsername()))
                 .thenReturn(List.of(review1, review2));
@@ -103,10 +125,12 @@ class AlbumServiceTest {
         assertEquals(review1.getId(), responses.get(0).id());
         assertEquals(review1.getRating(), responses.get(0).rating());
         assertEquals(review1.getReviewText(), responses.get(0).reviewText());
+        assertEquals(albumDTO, responses.get(0).album());
 
         assertEquals(review2.getId(), responses.get(1).id());
         assertEquals(review2.getRating(), responses.get(1).rating());
         assertEquals(review2.getReviewText(), responses.get(1).reviewText());
+        assertEquals(albumDTO, responses.get(1).album());
     }
 
     @Test
@@ -115,7 +139,7 @@ class AlbumServiceTest {
         review.setId(id);
         review.setRating(10);
         review.setReviewText("great");
-        review.setAlbum(new Album());
+        review.setAlbum(album);
 
 
         when(albumReviewRepository.findByIdAndUser_Username(id, user.getUsername()))
@@ -128,6 +152,7 @@ class AlbumServiceTest {
         assertEquals(review.getId(), response.get().id());
         assertEquals(review.getReviewText(), response.get().reviewText() );
         assertEquals(review.getRating(), response.get().rating());
+        assertEquals(albumDTO, response.get().album());
     }
 
     @Test
@@ -146,12 +171,12 @@ class AlbumServiceTest {
         when(userRepository.findUserByUsername(user.getUsername()))
                 .thenReturn(Optional.of(user));
 
-        Album album = new Album();
-        album.setLastFMUrl(request.lastFMUrl());
         when(albumRepository.findByLastFMUrl(album.getLastFMUrl()))
                 .thenReturn(Optional.of(album));
 
-        albumService.addAlbumReview(request, user.getUsername());
+        AlbumReviewResponse response = albumService.addAlbumReview(request, user.getUsername());
+
+        assertEquals(albumDTO, response.album());
 
         verify(albumRepository, never()).save(any());
 
@@ -193,7 +218,14 @@ class AlbumServiceTest {
         when(artistRepository.save(any(Artist.class)))
                 .thenAnswer(invocation -> invocation.getArgument(0));
 
-        albumService.addAlbumReview(request, user.getUsername());
+        AlbumReviewResponse response = albumService.addAlbumReview(request, user.getUsername());
+
+        assertEquals(new AlbumDTO(
+                null,
+                request.title(),
+                new ArtistDTO(null, request.artist(), null),
+                "img"
+        ), response.album());
 
         verify(albumRepository).save(any(Album.class));
 
@@ -233,6 +265,7 @@ class AlbumServiceTest {
         AlbumReview existingReview = new AlbumReview();
         existingReview.setRating(10);
         existingReview.setReviewText("Great");
+        existingReview.setAlbum(album);
 
         UpdateAlbumReviewRequest updateRequest = new UpdateAlbumReviewRequest(
                 5,
@@ -244,7 +277,9 @@ class AlbumServiceTest {
         when(albumReviewRepository.findByIdAndUser_Username(id, user.getUsername() ))
                 .thenReturn(Optional.of(existingReview));
 
-        albumService.updateAlbumReview(id, updateRequest,  user.getUsername());
+        AlbumReviewResponse response = albumService.updateAlbumReview(id, updateRequest, user.getUsername());
+
+        assertEquals(albumDTO, response.album());
 
         ArgumentCaptor<AlbumReview> captor =
                 ArgumentCaptor.forClass(AlbumReview.class);

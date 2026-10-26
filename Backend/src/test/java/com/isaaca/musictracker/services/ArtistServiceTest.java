@@ -1,6 +1,6 @@
 package com.isaaca.musictracker.services;
 
-import com.isaaca.musictracker.dto.request.ArtistReviewRequest;
+import com.isaaca.musictracker.dto.entities.ArtistDTO;
 import com.isaaca.musictracker.dto.request.ArtistReviewRequest;
 import com.isaaca.musictracker.dto.request.UpdateArtistReviewRequest;
 import com.isaaca.musictracker.dto.response.review.ArtistReviewResponse;
@@ -9,7 +9,6 @@ import com.isaaca.musictracker.entities.ArtistReview;
 import com.isaaca.musictracker.entities.User;
 import com.isaaca.musictracker.exceptions.ArtistAlreadyReviewedException;
 import com.isaaca.musictracker.exceptions.ArtistReviewNotFoundException;
-import com.isaaca.musictracker.externalapi.lastfm.artistinfo.LastFMArtistInfo;
 import com.isaaca.musictracker.repositories.ArtistRepository;
 import com.isaaca.musictracker.repositories.ArtistReviewRepository;
 import com.isaaca.musictracker.repositories.UserRepository;
@@ -20,7 +19,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -28,9 +26,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.never;
 
 @ExtendWith(MockitoExtension.class)
 class ArtistServiceTest {
@@ -55,6 +51,8 @@ class ArtistServiceTest {
 
     private User user;
     private ArtistReviewRequest request;
+    private Artist artist;
+    private ArtistDTO artistDTO;
     private int id;
 
     @BeforeEach
@@ -72,6 +70,14 @@ class ArtistServiceTest {
         );
 
         id = 1;
+
+        artist = new Artist();
+        artist.setName(request.name());
+        artist.setMusicBrainzId(request.musicBrainzId());
+        artist.setLastFMUrl(request.lastFMUrl());
+        artist.setImageUrl(request.imageUrl());
+
+        artistDTO = new ArtistDTO(null, request.name(), request.imageUrl());
     }
 
     @Test
@@ -80,11 +86,13 @@ class ArtistServiceTest {
         review1.setId(1);
         review1.setRating(10);
         review1.setReviewText("Great");
+        review1.setArtist(artist);
 
         ArtistReview review2 = new ArtistReview();
         review2.setId(2);
         review2.setRating(7);
         review2.setReviewText("Pretty good");
+        review2.setArtist(artist);
 
         when(artistReviewRepository.findByUser_Username(user.getUsername()))
                 .thenReturn(List.of(review1, review2));
@@ -96,10 +104,12 @@ class ArtistServiceTest {
         assertEquals(review1.getId(), responses.get(0).id());
         assertEquals(review1.getRating(), responses.get(0).rating());
         assertEquals(review1.getReviewText(), responses.get(0).reviewText());
+        assertEquals(artistDTO, responses.get(0).artist());
 
         assertEquals(review2.getId(), responses.get(1).id());
         assertEquals(review2.getRating(), responses.get(1).rating());
         assertEquals(review2.getReviewText(), responses.get(1).reviewText());
+        assertEquals(artistDTO, responses.get(1).artist());
     }
 
     @Test
@@ -108,6 +118,7 @@ class ArtistServiceTest {
         review.setId(id);
         review.setRating(10);
         review.setReviewText("great");
+        review.setArtist(artist);
 
 
         when(artistReviewRepository.findByIdAndUser_Username(id, user.getUsername()))
@@ -120,6 +131,7 @@ class ArtistServiceTest {
         assertEquals(review.getId(), response.get().id());
         assertEquals(review.getReviewText(), response.get().reviewText() );
         assertEquals(review.getRating(), response.get().rating());
+        assertEquals(artistDTO, response.get().artist());
     }
 
     @Test
@@ -138,15 +150,15 @@ class ArtistServiceTest {
         when(userRepository.findUserByUsername(user.getUsername()))
                 .thenReturn(Optional.of(user));
 
-        Artist artist = new Artist();
-        artist.setLastFMUrl(request.lastFMUrl());
         when(artistRepository.findByLastFMUrl(artist.getLastFMUrl()))
                 .thenReturn(Optional.of(artist));
 
         when(artistReviewRepository.save(any(ArtistReview.class)))
                 .thenAnswer(invocation -> invocation.getArgument(0));
 
-        artistService.addArtistReview(request, user.getUsername());
+        ArtistReviewResponse response = artistService.addArtistReview(request, user.getUsername());
+
+        assertEquals(artistDTO, response.artist());
 
         verify(artistRepository, never()).save(any());
 
@@ -159,6 +171,7 @@ class ArtistServiceTest {
 
         assertEquals(request.rating(), savedReview.getRating());
         assertEquals(request.reviewText(), savedReview.getReviewText());
+        assertEquals(artist, savedReview.getArtist());
         assertEquals(user, savedReview.getUser());
     }
 
@@ -171,11 +184,15 @@ class ArtistServiceTest {
         when(artistRepository.findByLastFMUrl(request.lastFMUrl()))
                 .thenReturn(Optional.empty());
 
+        when(artistRepository.save(any(Artist.class)))
+                .thenAnswer(invocation -> invocation.getArgument(0));
 
         when(artistReviewRepository.save(any(ArtistReview.class)))
                 .thenAnswer(invocation -> invocation.getArgument(0));
 
-        artistService.addArtistReview(request, user.getUsername());
+        ArtistReviewResponse response = artistService.addArtistReview(request, user.getUsername());
+
+        assertEquals(artistDTO, response.artist());
 
         verify(artistRepository).save(any(Artist.class));
 
@@ -189,6 +206,8 @@ class ArtistServiceTest {
 
         assertEquals(request.rating(), savedReview.getRating());
         assertEquals(request.reviewText(), savedReview.getReviewText());
+        assertEquals(request.name(), savedReview.getArtist().getName());
+        assertEquals(request.imageUrl(), savedReview.getArtist().getImageUrl());
         assertEquals(user, savedReview.getUser());
     }
 
@@ -213,6 +232,7 @@ class ArtistServiceTest {
         ArtistReview existingReview = new ArtistReview();
         existingReview.setRating(10);
         existingReview.setReviewText("Great");
+        existingReview.setArtist(artist);
 
         UpdateArtistReviewRequest updateRequest = new UpdateArtistReviewRequest(
                 5,
@@ -223,7 +243,9 @@ class ArtistServiceTest {
         when(artistReviewRepository.findByIdAndUser_Username(id, user.getUsername() ))
                 .thenReturn(Optional.of(existingReview));
 
-        artistService.updateArtistReview(id, updateRequest,  user.getUsername());
+        ArtistReviewResponse response = artistService.updateArtistReview(id, updateRequest, user.getUsername());
+
+        assertEquals(artistDTO, response.artist());
 
         ArgumentCaptor<ArtistReview> captor =
                 ArgumentCaptor.forClass(ArtistReview.class);
